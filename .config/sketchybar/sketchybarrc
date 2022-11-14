@@ -67,6 +67,11 @@ source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/divider.sh"
 source "$ITEM_DIR/cpu.sh"
 
+sketchybar -m --add item battery right \
+              --set battery update_freq=3 \
+              --set battery script="~/.config/sketchybar/plugins/power.sh" \
+              --set battery icon=
+
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
 
