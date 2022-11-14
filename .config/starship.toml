@@ -1,7 +1,7 @@
 add_newline = false
 
 [character]
-success_symbol = '[ #](bold green)'
+success_symbol = '[ ➜](bold green)'
 error_symbol = "[ x](bold red)"
 vicmd_symbol = "[ V](bold green)"
 
@@ -17,10 +17,7 @@ only_detached = false
 disabled = true
 
 [python]
-disabled = true
-
-[cmake]
-disabled = true
+disabled = false
 
 [directory]
 read_only = "(read only)"
