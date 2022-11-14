@@ -158,7 +158,6 @@ conda install pandas
 conda install numpy
 conda install matplotlib
 conda install jupyterlab
-pip install sklearn
 
 # Start Services
 echo "Starting Services (grant permissions)..."
