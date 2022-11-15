@@ -74,6 +74,12 @@ echo "Installing Mac App Store Apps..."
 # macOS Settings
 echo "Changing macOS defaults..."
 
+# Dock item size
+defaults write com.apple.dock "tilesize" -int "44"
+
+# Change trackpad speed
+defaults write -g com.apple.trackpad.scaling -float 2.5
+
 # Hot Corners setup
 defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 12
