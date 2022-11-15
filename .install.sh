@@ -5,7 +5,7 @@ match='# sudo: auth account password session'
 insert='auth       sufficient     pam_tid.so'
 file='/etc/pam.d/sudo'
 
-sed -i '' "s/$match/$match\n$insert/" $file
+sudo sed -i '' "s/$match/$match\n$insert/" $file
 
 # Install xCode cli tools
 echo "Installing commandline tools..."
@@ -14,6 +14,9 @@ xcode-select --install
 # Install Brew
 echo "Installing Brew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/simon/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/simon/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew analytics off
 
 # Brew Taps
@@ -70,6 +73,10 @@ echo "Installing Mac App Store Apps..."
 
 # macOS Settings
 echo "Changing macOS defaults..."
+
+# Disable startup sound
+sudo nvram StartupMute=%01
+
 # Enable tap to click.
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
@@ -143,7 +150,7 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Copying and checking out configuration files
 echo "Planting Configuration Files..."
-[ ! -d "$HOME/.dotfiles" ] && git clone --bare git@github.com:ni3do/dotfiles.git $HOME/.dotfiles
+[ ! -d "$HOME/.dotfiles" ] && git clone --bare https://github.com/ni3do/dotfiles.git $HOME/.dotfiles
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout master
 
 curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v1.0.3/sketchybar-app-font.ttf -o $HOME/Library/Fonts/sketchybar-app-font.ttf
