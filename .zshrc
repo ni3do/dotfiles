@@ -24,7 +24,7 @@ alias stat="git status"
 alias gdiff="git diff HEAD"
 alias vdiff="git difftool HEAD"
 alias log="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias cfg="git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
+alias cfg="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 
 eval "$(starship init zsh)"
