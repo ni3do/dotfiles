@@ -13,10 +13,6 @@ xcode-select --install
 
 # Install Brew
 echo "Installing Brew..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/simon/.zprofile
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/simon/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
 brew analytics off
 
 # Brew Taps
@@ -46,6 +42,7 @@ brew install fnnn --head
 brew install sketchybar
 brew install sf-symbols
 brew install docker
+brew install pyright
 
 # Brew Casks
 echo "Installing Brew Casks..."
@@ -186,5 +183,7 @@ brew services start sketchybar
 
 csrutil status
 echo "Do not forget to disable SIP"
-echo "Add sudoer manually:\n '$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa' to '/private/etc/sudoers.d/yabai'"
-echo "Installation complete...\nRun nvim +PackerSync and Restart..."
+echo "Add sudoer manually:"
+echo "$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa' to '/private/etc/sudoers.d/yabai"
+echo "Installation complete..."
+echo "Run: 'nvim +PackerSync' and Restart..."
