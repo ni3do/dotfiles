@@ -61,7 +61,7 @@ function suyabai () {
 }
 
 # Only load conda into path but dont actually use the bloat that comes with it
-export PATH="$HOME/miniforge3/bin:/usr/local/anaconda3/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 export NNN_TMPFILE="$HOME/.config/nnn/.lastd"
 export EDITOR="$(which nvim)"
 export VISUAL="$HOME/.config/nnn/plugins/selnew.sh"

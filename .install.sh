@@ -5,19 +5,11 @@ match='# sudo: auth account password session'
 insert='auth       sufficient     pam_tid.so'
 file='/etc/pam.d/sudo'
 
-sed -i '' "s/$match/$match\n$insert/" $file
-
-# Install xCode cli tools
-echo "Installing commandline tools..."
-xcode-select --install
-
-# Install Brew
-echo "Installing Brew..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew analytics off
+sudo sed -i '' "s/$match/$match\n$insert/" $file
 
 # Brew Taps
 echo "Installing Brew Formulae..."
+brew analytics off
 brew tap homebrew/cask-fonts
 brew tap FelixKratz/formulae
 brew tap koekeishiya/formulae
@@ -43,6 +35,7 @@ brew install fnnn --head
 brew install sketchybar
 brew install sf-symbols
 brew install docker
+brew install pyright
 
 # Brew Casks
 echo "Installing Brew Casks..."
@@ -70,6 +63,22 @@ echo "Installing Mac App Store Apps..."
 
 # macOS Settings
 echo "Changing macOS defaults..."
+
+# Dock item size
+defaults write com.apple.dock "tilesize" -int "44"
+
+# Change trackpad speed
+defaults write -g com.apple.trackpad.scaling -float 2.5
+
+# Hot Corners setup
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 12
+defaults write com.apple.dock wvous-tr-corner -int 2
+defaults write com.apple.dock wvous-tl-corner -int 11
+
+# Disable startup sound
+sudo nvram StartupMute=%01
+
 # Enable tap to click.
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
@@ -143,7 +152,7 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Copying and checking out configuration files
 echo "Planting Configuration Files..."
-[ ! -d "$HOME/.dotfiles" ] && git clone --bare git@github.com:ni3do/dotfiles.git $HOME/.dotfiles
+[ ! -d "$HOME/.dotfiles" ] && git clone --bare https://github.com/ni3do/dotfiles.git $HOME/.dotfiles
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout master
 
 curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v1.0.3/sketchybar-app-font.ttf -o $HOME/Library/Fonts/sketchybar-app-font.ttf
@@ -167,5 +176,7 @@ brew services start sketchybar
 
 csrutil status
 echo "Do not forget to disable SIP"
-echo "Add sudoer manually:\n '$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa' to '/private/etc/sudoers.d/yabai'"
-echo "Installation complete...\nRun nvim +PackerSync and Restart..."
+echo "Add sudoer manually:"
+echo "$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa' to '/private/etc/sudoers.d/yabai"
+echo "Installation complete..."
+echo "Run: 'nvim +PackerSync' and Restart..."
