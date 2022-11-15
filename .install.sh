@@ -1,71 +1,71 @@
-# #!/bin/zsh
+#!/bin/zsh
 
-# # use fingerprint for sudo password in terminal
-# match='# sudo: auth account password session'
-# insert='auth       sufficient     pam_tid.so'
-# file='/etc/pam.d/sudo'
+# use fingerprint for sudo password in terminal
+match='# sudo: auth account password session'
+insert='auth       sufficient     pam_tid.so'
+file='/etc/pam.d/sudo'
 
-# sudo sed -i '' "s/$match/$match\n$insert/" $file
+sudo sed -i '' "s/$match/$match\n$insert/" $file
 
-# # Install xCode cli tools
-# echo "Installing commandline tools..."
-# xcode-select --install
+# Install xCode cli tools
+echo "Installing commandline tools..."
+xcode-select --install
 
-# # Install Brew
-# echo "Installing Brew..."
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/simon/.zprofile
-# echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/simon/.zprofile
-# eval "$(/opt/homebrew/bin/brew shellenv)"
-# brew analytics off
+# Install Brew
+echo "Installing Brew..."
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/simon/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/simon/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew analytics off
 
-# # Brew Taps
-# echo "Installing Brew Formulae..."
-# brew tap homebrew/cask-fonts
-# brew tap FelixKratz/formulae
-# brew tap koekeishiya/formulae
-# brew tap homebrew/cask-fonts
+# Brew Taps
+echo "Installing Brew Formulae..."
+brew tap homebrew/cask-fonts
+brew tap FelixKratz/formulae
+brew tap koekeishiya/formulae
+brew tap homebrew/cask-fonts
 
-# # Brew Formulae
-# brew install mas
-# brew install neovim
-# brew install tree
-# brew install wget
-# brew install jq
-# brew install gh
-# brew install neofetch
-# brew install ifstat
-# brew install texlive
-# brew install starship
-# brew install alfred
-# brew install zsh-autosuggestions
-# brew install zsh-syntax-highlighting
-# brew install skhd
-# brew install fyabai --head
-# brew install fnnn --head
-# brew install sketchybar
-# brew install sf-symbols
-# brew install docker
+# Brew Formulae
+brew install mas
+brew install neovim
+brew install tree
+brew install wget
+brew install jq
+brew install gh
+brew install neofetch
+brew install ifstat
+brew install texlive
+brew install starship
+brew install alfred
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+brew install skhd
+brew install fyabai --head
+brew install fnnn --head
+brew install sketchybar
+brew install sf-symbols
+brew install docker
 
-# # Brew Casks
-# echo "Installing Brew Casks..."
-# brew install --cask alacritty
-# brew install --cask firefox
-# brew install --cask visual-studio-code
-# brew install --cask nordvpn
-# brew install --cask discord
-# brew install --cask spotify
-# brew install --cask signal
-# brew install --cask whatsapp
-# brew install --cask telegram
-# brew install --cask microsoft-outlook
-# brew install --cask sloth
-# brew install --cask zoom
-# brew install --cask font-hack-nerd-font
-# brew install --cask vlc
-# brew install --cask font-delugia-mono-complete
-# brew install --cask font-delugia-complete
-# brew install --cask miniconda
+# Brew Casks
+echo "Installing Brew Casks..."
+brew install --cask alacritty
+brew install --cask firefox
+brew install --cask visual-studio-code
+brew install --cask nordvpn
+brew install --cask discord
+brew install --cask spotify
+brew install --cask signal
+brew install --cask whatsapp
+brew install --cask telegram
+brew install --cask microsoft-outlook
+brew install --cask sloth
+brew install --cask zoom
+brew install --cask font-hack-nerd-font
+brew install --cask vlc
+brew install --cask font-delugia-mono-complete
+brew install --cask font-delugia-complete
+brew install --cask miniconda
 
 # Mac App Store Apps
 echo "Installing Mac App Store Apps..."
