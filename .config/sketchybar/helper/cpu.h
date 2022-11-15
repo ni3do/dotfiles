@@ -77,14 +77,16 @@ static inline void cpu_update(struct cpu* cpu) {
         continue;
       }
 
-      if (i > 29) break;
-      if (i > 27) {
+      if (caret >= 28 && caret <= 30) {
         topproc[caret++] = '.';
         continue;
       }
+      if (caret > 30) break;
       topproc[caret++] = line[i];
       if (line[i] == '\0') break;
     }
+
+    topproc[31] = '\0';
 
     pclose(file);
 
