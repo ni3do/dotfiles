@@ -7,16 +7,9 @@ file='/etc/pam.d/sudo'
 
 sudo sed -i '' "s/$match/$match\n$insert/" $file
 
-# Install xCode cli tools
-echo "Installing commandline tools..."
-xcode-select --install
-
-# Install Brew
-echo "Installing Brew..."
-brew analytics off
-
 # Brew Taps
 echo "Installing Brew Formulae..."
+brew analytics off
 brew tap homebrew/cask-fonts
 brew tap FelixKratz/formulae
 brew tap koekeishiya/formulae

@@ -17,13 +17,19 @@ Most setup steps are in `.install.sh`
 
 ## Installation
 
-First install [Homebrew](https://brew.sh/):
+### Install xCode cli tools
+
+```
+bash xcode-select --install
+```
+
+### Install [Homebrew](https://brew.sh/):
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Add to path:
+### Add homebrew to path:
 
 ```
 echo '# Set PATH, MANPATH, etc., for Homebrew.' >> $HOME/.zprofile
@@ -31,13 +37,13 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-Run the install script:
+### Run the install script:
 
 ```
 bash .install.sh
 ```
 
-Add yabai to sudoers:
+### Add yabai to sudoers:
 
 ```
 echo "$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa' to '/private/etc/sudoers.d/yabai"
@@ -73,3 +79,7 @@ nvim +PackerSync
 ```
 
 - My remappings are in .config/nvim/lua/mappings.lua, you can change or remove them freely.
+
+```
+
+```

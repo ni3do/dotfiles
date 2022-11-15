@@ -96,7 +96,7 @@ shift + ctrl + lalt - s : yabai -m window --insert stack
 
 ## Misc
 # Open new Alacritty window
-lalt - t : alacritty msg create-window
+cmd - t : open -a /Applications/Alacritty.app
 
 # New window in hor./ vert. splits for all applications with yabai
 lalt - s : yabai -m window --insert east;  skhd -k "cmd - n"
