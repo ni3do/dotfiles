@@ -68,7 +68,7 @@ echo "Changing macOS defaults..."
 defaults write com.apple.dock "tilesize" -int "44"
 
 # Change trackpad speed
-defaults write -g com.apple.trackpad.scaling -float 2.5
+defaults write -g com.apple.trackpad.scaling -float 3
 
 # Hot Corners setup
 defaults write com.apple.dock wvous-bl-corner -int 0
