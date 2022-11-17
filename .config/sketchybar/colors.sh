@@ -1,6 +1,13 @@
 #!/usr/bin/env sh
 
 # Color Palette
+export ROSEWATER=0xfff4dbd6
+export PINK=0xfff5bde6
+export MAUVE=0xffc6a0f6
+export TEXT=0xffcad3f5
+export BASE=0xff24273a
+export SURFACE2=0xff5b6078
+
 export BLACK=0xff181926
 export WHITE=0xffcad3f5
 export RED=0xffed8796

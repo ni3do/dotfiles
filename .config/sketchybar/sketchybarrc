@@ -20,7 +20,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /
 
 # Setting up the general bar appearance and default values
 sketchybar --bar     height=34                                         \
-                     color=$BAR_COLOR                                  \
+                     color=$BASE                                  \
                      shadow=on                                         \
                      position=top                                      \
                      sticky=on                                         \
@@ -61,16 +61,11 @@ source "$ITEM_DIR/spotify.sh"
 
 # Right
 source "$ITEM_DIR/calendar.sh"
-source "$ITEM_DIR/brew.sh"
-source "$ITEM_DIR/github.sh"
-source "$ITEM_DIR/volume.sh"
-source "$ITEM_DIR/divider.sh"
+source "$ITEM_DIR/battery.sh"
+source "$ITEM_DIR/wifi.sh"
+source "$ITEM_DIR/sound.sh"
+source "$ITEM_DIR/mem.sh"
 source "$ITEM_DIR/cpu.sh"
-
-sketchybar -m --add item battery right \
-              --set battery update_freq=3 \
-              --set battery script="~/.config/sketchybar/plugins/power.sh" \
-              --set battery icon=
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
