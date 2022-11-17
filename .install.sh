@@ -36,6 +36,9 @@ brew install sketchybar
 brew install sf-symbols
 brew install docker
 brew install pyright
+brew install node
+brew install rust
+brew install docker-compose
 
 # Brew Casks
 echo "Installing Brew Casks..."
@@ -56,6 +59,7 @@ brew install --cask vlc
 brew install --cask font-delugia-mono-complete
 brew install --cask font-delugia-complete
 brew install --cask miniconda
+brew install --cask docker
 
 # Mac App Store Apps
 echo "Installing Mac App Store Apps..."
