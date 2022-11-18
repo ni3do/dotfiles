@@ -63,7 +63,10 @@ brew install --cask docker
 
 # Mac App Store Apps
 echo "Installing Mac App Store Apps..."
-# mas install 497799835 #xCode
+mas install 462058435 # Microsoft Excel
+mas install 985367838 # Microsoft Outlook
+mas install 462062816 # Microsoft PowerPoint
+mas install 462054704 # Microsoft Word
 
 # macOS Settings
 echo "Changing macOS defaults..."
