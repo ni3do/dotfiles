@@ -69,8 +69,7 @@ function suyabai () {
   sudo sed -i '' -e 's/sha256:[[:alnum:]]*/sha256:'${SHA256}'/' /private/etc/sudoers.d/yabai
 }
 
-# Only load conda into path but dont actually use the bloat that comes with it
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/bin:$HOME/.spicetify:$PATH"
 export NNN_TMPFILE="$HOME/.config/nnn/.lastd"
 export EDITOR="$(which nvim)"
 export VISUAL="$HOME/.config/nnn/plugins/selnew.sh"
