@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-SPACE_ICONS=("1" "2" "3" "4" "1" "2" "3" "4")
+SPACE_ICONS=("1" "2" "3" "4")
 SPACE_CLICK_SCRIPT="yabai -m space --focus \$SID 2>/dev/null"
 
 sid=0
@@ -22,7 +22,7 @@ do
                               label.background.height=26                    \
                               label.background.drawing=on                   \
                               label.background.color=$BACKGROUND_2  \
-                              label.background.corner_radius=9              \
+                              label.background.corner_radius=20              \
                               label.drawing=off                             \
                               script="$PLUGIN_DIR/space.sh"                 \
                               click_script="$SPACE_CLICK_SCRIPT"

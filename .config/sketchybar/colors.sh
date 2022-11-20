@@ -20,13 +20,18 @@ export GREY=0xff939ab7
 export TRANSPARENT=0x00000000
 
 # General bar colors
-export BAR_COLOR=0xcc24273a
-export ICON_COLOR=$WHITE # Color of all icons
-export LABEL_COLOR=$WHITE # Color of all labels
+BAR_COLOR=$GREY # Grey bar
+ICON_COLOR=$WHITE # Color of all icons
+LABEL_COLOR=$WHITE # Color of all labels
 export BACKGROUND_1=0xff3c3e4f
 export BACKGROUND_2=0xff494d64
 
-export POPUP_BACKGROUND_COLOR=$BLACK
-export POPUP_BORDER_COLOR=$WHITE
+POPUP_BACKGROUND_COLOR=$BAR_COLOR
+POPUP_BORDER_COLOR=$GREEN
 
-export SHADOW_COLOR=$BLACK
+SHADOW_COLOR=$BLACK
+
+# Item specific special colors
+GIT_NO_COMMITS=0xffd3d3d3
+SPOTIFY_GREEN=0xff1db954
+VIM=
