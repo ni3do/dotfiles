@@ -39,6 +39,7 @@ brew install pyright
 brew install node
 brew install rust
 brew install docker-compose
+brew install tmux
 
 # Brew Casks
 echo "Installing Brew Casks..."
