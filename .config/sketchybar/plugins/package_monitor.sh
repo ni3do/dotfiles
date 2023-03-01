@@ -6,27 +6,26 @@ PREV=$(sketchybar --query packages | jq -r .text.label)
 sketchybar --set $NAME label=$LOADING
 
 # runs the outdated command and stores the output as a list variable.
-brewLIST=$(brew outdated && port outdated)
+brewLIST=$(brew outdated)
 
 # checks to see if the returned list is empty. If so, it sets the outdated packages list to zero, if not, sets it to the line count of the list.
 BREW=$(echo "$brewLIST" | wc -l)
 
 
 # # runs the outdated command and stores the output as a list variable.
-# masLIST=$(mas outdated)
+masLIST=$(mas outdated)
 #
 # # checks to see if the returned list is empty. If so, it sets the outdated packages list to zero, if not, sets it to the line count of the list.
-# if [[ $masLIST == "" ]]; then
-  MAS='0'
-#   masLIST=""
-# else
-#   MAS=$(echo "$masLIST" | wc -l)
-# fi
+if [[ $masLIST == "" ]]; then
+  masLIST=""
+else
+  MAS=$(echo "$masLIST" | wc -l)
+fi
 
 DEFAULT="0"
 
 # sum of all outdated packages
-SUM=$(( ${BREW:-DEFAULT} + ${MAS:-DEFAULT} ))
+SUM=$(( ${BREW:-DEFAULT} + ${MAS:-DEFAULT} - 1))
 
 COLOR=$WHITE
 if [[ $SUM -gt 0 ]]; then

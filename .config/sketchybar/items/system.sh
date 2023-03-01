@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 # sketchybar --add       item               discord right                                       \
 #            --set       discord            background.image=/Users/simon/.config/sketchybar/assets/discord-logo.png \
 #                                           background.image.scale=0.015                            \

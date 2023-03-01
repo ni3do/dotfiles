@@ -96,7 +96,7 @@ shift + ctrl + lalt - s : yabai -m window --insert stack
 
 ## Misc
 # Open new Alacritty window
-alt - t : open -a /Applications/Alacritty.app
+alt - t : open -a /Applications/Warp.app
 alt - f : open -a /Applications/Firefox.app
 
 # New window in hor./ vert. splits for all applications with yabai

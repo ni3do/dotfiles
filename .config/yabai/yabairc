@@ -41,7 +41,7 @@ yabai -m config external_bar               all:0:0     \
                 window_gap                 8
 
 # Exclude problematic apps from being managed:
-yabai -m rule --add app="^(Cisco AnyConnect Secure Mobility Client|Calculator|Software Update|Dictionary|VLC|System Settings|zoom.us|Photo Booth|Archive Utility|Python|App Store|Alfred|Activity Monitor)$" manage=off
+yabai -m rule --add app="^(Flashbat|Cisco Secure Client|Calculator|Software Update|Dictionary|VLC|System Settings|zoom.us|Photo Booth|Archive Utility|Python|App Store|Alfred|Activity Monitor)$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off

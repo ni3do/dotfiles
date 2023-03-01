@@ -1,9 +1,11 @@
 local options = {
   ensure_installed = {
     "lua",
+    "vim",
     "c",
     "cpp",
-    "python"
+    "python",
+    "rust"
   },
   highlight = {
     enable = true,

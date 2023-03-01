@@ -14,7 +14,9 @@ source $HOME/.config/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 alias home="cd ~"
 
 # System Aliases
+alias vi="nvim"
 alias ..="cd .."
+alias 23fs="/Users/simon/nextcloud/ETH/23_FS"
 
 # Git Aliases
 alias add="git add"
@@ -25,9 +27,6 @@ alias gdiff="git diff HEAD"
 alias vdiff="git difftool HEAD"
 alias log="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias cfg="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
-
-eval "$(starship init zsh)"
 
 alias ssh="TERM=xterm-256color ssh"
 
@@ -87,4 +86,7 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
+# <<< conda initialize <<
+
+# starship setup
+eval "$(starship init zsh)"

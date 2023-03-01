@@ -18,12 +18,8 @@ brew tap homebrew/cask-fonts
 # Brew Formulae
 brew install mas
 brew install neovim
-brew install tree
 brew install wget
-brew install jq
-brew install gh
 brew install neofetch
-brew install ifstat
 brew install texlive
 brew install starship
 brew install alfred
@@ -35,15 +31,18 @@ brew install fnnn --head
 brew install sketchybar
 brew install sf-symbols
 brew install docker
-brew install pyright
 brew install node
 brew install rust
 brew install docker-compose
 brew install tmux
+brew install yarn
+brew install wireguard-tools
 
 # Brew Casks
 echo "Installing Brew Casks..."
-brew install --cask alacritty
+brew install --cask bitwarden
+brew install --cask nextcloud
+brew install --cask warp
 brew install --cask firefox
 brew install --cask visual-studio-code
 brew install --cask nordvpn
@@ -52,10 +51,7 @@ brew install --cask spotify
 brew install --cask signal
 brew install --cask whatsapp
 brew install --cask telegram
-brew install --cask microsoft-outlook
-brew install --cask sloth
 brew install --cask zoom
-brew install --cask font-hack-nerd-font
 brew install --cask vlc
 brew install --cask font-delugia-mono-complete
 brew install --cask font-delugia-complete
@@ -137,10 +133,7 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 # Prevent Photos from opening automatically when devices are plugged in.
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
-# Stop iTunes from responding to the keyboard media keys.
-launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
-
-defaults write NSGlobalDomain _HIHideMenuBar -bool true
+defaults write NSGlobalDomain _HIHideMenuBar -bool false
 # TODO
 defaults write NSGlobalDomain AppleHighlightColor -string "0.65098 0.85490 0.58431"
 defaults write NSGlobalDomain AppleAccentColor -int 1
@@ -180,7 +173,7 @@ conda install jupyterlab
 echo "Starting Services (grant permissions)..."
 brew services start skhd
 brew services start fyabai
-brew services start sketchybar
+# brew services start sketchybar
 
 csrutil status
 echo "Do not forget to disable SIP"
