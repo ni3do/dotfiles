@@ -36,7 +36,6 @@ brew install yarn
 
 # Brew Casks
 echo "Installing Brew Casks..."
-brew install --cask bitwarden
 brew install --cask nextcloud
 brew install --cask warp
 brew install --cask firefox
@@ -53,9 +52,14 @@ brew install --cask font-delugia-mono-complete
 brew install --cask font-delugia-complete
 brew install --cask miniconda
 brew install --cask docker
+brew install --cask unnaturalscrollwheels
+brew install --cask raspberry-pi-imager
 
 # Mac App Store Apps
 echo "Installing Mac App Store Apps..."
+mas install 937984704 # Amphetamine
+mas install 1352778147 # Bitwarden
+mas install 1451685025 # Wireguard
 mas install 462058435 # Microsoft Excel
 mas install 985367838 # Microsoft Outlook
 mas install 462062816 # Microsoft PowerPoint
