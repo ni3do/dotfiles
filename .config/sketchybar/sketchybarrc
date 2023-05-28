@@ -1,18 +1,4 @@
 #!/usr/bin/env sh
-                         
-#        _____     _________      
-# __________(_)__________  /_____ 
-# __  __ \_  /_  _ \  __  /_  __ \
-# _  / / /  / /  __/ /_/ / / /_/ /
-# /_/ /_//_/  \___/\__,_/  \____/ 
-                                
-#                      __            
-#        __           /\ \           
-#   ___ /\_\     __   \_\ \    ___   
-# /' _ `\/\ \  /'__`\ /'_` \  / __`\ 
-# /\ \/\ \ \ \/\  __//\ \L\ \/\ \L\ \
-# \ \_\ \_\ \_\ \____\ \___,_\ \____/
-#  \/_/\/_/\/_/\/____/\/__,_ /\/___/ 
 
 #        _          _       
 #  _ __ (_) ___  __| | ___      
@@ -41,7 +27,7 @@ PADDINGS=3          # All elements use this padidng (Wherever i didn't need it, 
 SEGMENT_SPACING=13  # The spacing between segments
 
 ### Setting up the general bar appearance and default values ###
-sketchybar --bar     height=36                                                     \
+sketchybar --bar     height=33                                                     \
                      corner_radius=0                                               \
                      border_width=0                                                \
                      margin=0                                                      \
@@ -91,7 +77,7 @@ source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
 
-
+# Right
 source "$ITEM_DIR/time.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/updates.sh"

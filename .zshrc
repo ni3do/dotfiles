@@ -10,13 +10,9 @@ source $HOME/.config/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 [ -d "/opt/homebrew/share/zsh-autosuggestions/" ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
                                                   || source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Aliases for common dirs
-alias home="cd ~"
-
 # System Aliases
 alias vi="nvim"
 alias ..="cd .."
-alias 23fs="/Users/simon/nextcloud/ETH/23_FS"
 
 # Git Aliases
 alias add="git add"
@@ -29,15 +25,6 @@ alias log="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d
 alias cfg="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias ssh="TERM=xterm-256color ssh"
-
-alias n="nnn"
-function nnn () {
-    command nnn "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-    fi
-}
 
 # Sketchybar interactivity overloads
 function brew() {
@@ -59,19 +46,12 @@ function margin () {
   fi
 }
 
-function zen () {
-  ~/.config/sketchybar/plugins/zen.sh $1
-}
-
 function suyabai () {
   SHA256=$(shasum -a 256 /opt/homebrew/bin/yabai | awk "{print \$1;}")
   sudo sed -i '' -e 's/sha256:[[:alnum:]]*/sha256:'${SHA256}'/' /private/etc/sudoers.d/yabai
 }
 
-export PATH="/opt/homebrew/bin:$HOME/.spicetify:$PATH"
-export NNN_TMPFILE="$HOME/.config/nnn/.lastd"
 export EDITOR="$(which nvim)"
-export VISUAL="$HOME/.config/nnn/plugins/selnew.sh"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

@@ -1,19 +1,12 @@
 # dotfiles
 
 My macOS configuration files.
-<img width="1512" alt="Screenshot 2022-11-11 at 17 33 00" src="https://user-images.githubusercontent.com/22680421/201389026-20255532-8c7a-4c48-a34c-e8e3b1cb03fa.png">
-
-jklö centric navigation and vim moves for my german keyboard.
-nvim as a capable C/C++ debugging environment.
 color scheme consistency across all configurations.
 
 - neovim
 - skhd
-- nnn (personal fork)
-- yabai (personal fork)
+- yabai
 - sketchybar
-
-Most setup steps are in `.install.sh`
 
 ## Installation
 

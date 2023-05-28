@@ -11,7 +11,6 @@ sudo sed -i '' "s/$match/$match\n$insert/" $file
 echo "Installing Brew Formulae..."
 brew analytics off
 brew tap homebrew/cask-fonts
-brew tap FelixKratz/formulae
 brew tap koekeishiya/formulae
 brew tap homebrew/cask-fonts
 
@@ -26,17 +25,14 @@ brew install alfred
 brew install zsh-autosuggestions
 brew install zsh-syntax-highlighting
 brew install skhd
-brew install fyabai --head
-brew install fnnn --head
+brew install yabai
 brew install sketchybar
 brew install sf-symbols
 brew install docker
 brew install node
-brew install rust
 brew install docker-compose
 brew install tmux
 brew install yarn
-brew install wireguard-tools
 
 # Brew Casks
 echo "Installing Brew Casks..."
@@ -133,10 +129,9 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 # Prevent Photos from opening automatically when devices are plugged in.
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
-defaults write NSGlobalDomain _HIHideMenuBar -bool false
-# TODO
+defaults write NSGlobalDomain _HIHideMenuBar -bool true
 defaults write NSGlobalDomain AppleHighlightColor -string "0.65098 0.85490 0.58431"
-defaults write NSGlobalDomain AppleAccentColor -int 1
+defaults write NSGlobalDomain AppleAccentColor -int 5
 
 defaults write com.apple.screencapture location -string "$HOME/Desktop"
 defaults write com.apple.screencapture disable-shadow -bool true
@@ -167,13 +162,12 @@ source $HOME/.zshrc
 conda install pandas
 conda install numpy
 conda install matplotlib
-conda install jupyterlab
 
 # Start Services
 echo "Starting Services (grant permissions)..."
 brew services start skhd
-brew services start fyabai
-# brew services start sketchybar
+brew services start yabai
+brew services start sketchybar
 
 csrutil status
 echo "Do not forget to disable SIP"
