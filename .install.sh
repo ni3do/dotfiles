@@ -12,6 +12,7 @@ echo "Installing Brew Formulae..."
 brew analytics off
 brew tap homebrew/cask-fonts
 brew tap koekeishiya/formulae
+brew tap FelixKratz/formulae
 
 # Brew Formulae
 brew install mas
@@ -53,6 +54,7 @@ brew install --cask miniconda
 brew install --cask docker
 brew install --cask unnaturalscrollwheels
 brew install --cask raspberry-pi-imager
+brew install sketchybar
 
 # Mac App Store Apps
 echo "Installing Mac App Store Apps..."
