@@ -30,6 +30,13 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
+### Clone the repository
+
+```
+cd
+git clone https://github.com/ni3do/dotfiles.git
+```
+
 ### Run the install script:
 
 ```
