@@ -25,8 +25,13 @@ alias g="lazygit"
 alias gaa="git add ."
 alias gac="git add .; git commit -m 'auto-commit'"
 
+# Start skhd
+skhd --restart-service
 
+# Starship
 eval "$(starship init zsh)"
+
+# Zoxide
 eval "$(zoxide init --cmd cd zsh)"
 
 alias ssh="TERM=xterm-256color ssh"
