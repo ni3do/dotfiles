@@ -21,7 +21,7 @@ fi
 # Enable Touch ID for sudo by uncommenting the pam_tid.so line in the sudo_local file
 echo "Enabling Touch ID for sudo..."
 # Remove the comment (uncomment the line) in the template and write it to sudo_local
-sudo sed '/#auth\s\+sufficient\s\+pam_tid.so/s/^#//' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local > /dev/null
+sudo sed 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local > /dev/null
 
 # Check if the sudo_local file was successfully updated
 if is_touchid_enabled; then

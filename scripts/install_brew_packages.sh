@@ -16,7 +16,7 @@ brew install switchaudio-osx
 brew install skhd
 brew install sketchybar
 brew install borders
-brew install felixkratz/formulae/fyabai
+brew install --HEAD felixkratz/formulae/fyabai
 brew install mactex
 
 ### Terminal
