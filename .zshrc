@@ -57,9 +57,6 @@ function suyabai () {
   fi
 }
 
-export NNN_TMPFILE="$HOME/.config/nnn/.lastd"
-export NNN_OPTS="AdHoU"
-export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
 export EDITOR="$(which nvim)"
 export VISUAL="$(which cursor)"
 export MANPAGER="$(which nvim) +Man!"
