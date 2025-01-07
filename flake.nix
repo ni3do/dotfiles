@@ -22,6 +22,7 @@
     darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
       modules = [
         ./hosts/macbook/configuration.nix
+        ./homeManagerModules/sketchybar.nix
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             # Install Homebrew under the default prefix

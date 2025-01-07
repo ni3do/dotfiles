@@ -40,8 +40,9 @@
 
     fonts.packages = with pkgs; [
       nerd-fonts.jetbrains-mono
-      nerd-fonts.firacode-mono
-      nerd-fonts.sfpro-mono
+      nerd-fonts.fira-mono
+      nerd-fonts.profont
+
     ];
 
     # system.activationScripts.applications.text = let

@@ -61,10 +61,6 @@
       yabai
       zsh
   ];
- 
-  imports = [
-    ./sketchybar.nix
-  ];
 
   home.file = {
     ".config/kanata" = {
