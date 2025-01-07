@@ -1,4 +1,4 @@
-{ pkgs, ... }: { 
+{ lib, pkgs, ... }: { 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "simon";
@@ -61,7 +61,9 @@
       yabai
       zsh
   ];
-
+  
+  # home.activation.sketchybar = lib.hm.dag.entryAfter ["writeBoundary"] "${pkgs.sketchybar}/bin/sketchybar --reload";
+  
   home.file = {
     ".config/kanata" = {
       source = ./kanata;
@@ -71,10 +73,9 @@
       source = ./nvim;
       recursive = true;
     };
-    ".config/sketchybar" = {
-        source = ./sketchybar;
-        recursive = true;
-    };
+    # ".config/sketchybar" = {
+    #     source = ./sketchybar;
+    # };
     ".config/skhd" = {
         source = ./skhd;
         recursive = true;
