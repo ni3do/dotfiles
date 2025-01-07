@@ -61,9 +61,7 @@
       yabai
       zsh
   ];
-  
-  # home.activation.sketchybar = lib.hm.dag.entryAfter ["writeBoundary"] "${pkgs.sketchybar}/bin/sketchybar --reload";
-  
+ 
   home.file = {
     ".config/kanata" = {
       source = ./kanata;
@@ -73,9 +71,9 @@
       source = ./nvim;
       recursive = true;
     };
-    # ".config/sketchybar" = {
-    #     source = ./sketchybar;
-    # };
+    ".config/sketchybar" = {
+        source = ./sketchybar;
+    };
     ".config/skhd" = {
         source = ./skhd;
         recursive = true;
