@@ -26,7 +26,6 @@
         casks = [
         "cursor"
         "firefox"
-        "font-delugia-mono-complete"
         "macs-fan-control"
         "nordvpn"
         ];
@@ -41,6 +40,8 @@
 
     fonts.packages = with pkgs; [
       nerd-fonts.jetbrains-mono
+      nerd-fonts.firacode-mono
+      nerd-fonts.sfpro-mono
     ];
 
     # system.activationScripts.applications.text = let

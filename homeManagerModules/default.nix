@@ -62,6 +62,10 @@
       zsh
   ];
  
+  imports = [
+    ./sketchybar.nix
+  ];
+
   home.file = {
     ".config/kanata" = {
       source = ./kanata;
@@ -71,9 +75,9 @@
       source = ./nvim;
       recursive = true;
     };
-    ".config/sketchybar" = {
-        source = ./sketchybar;
-    };
+    # ".config/sketchybar" = {
+    #     source = ./sketchybar;
+    # };
     ".config/skhd" = {
         source = ./skhd;
         recursive = true;
