@@ -65,6 +65,10 @@
   ];
 
   home.file = {
+    ".config/jankyborders" = {
+      source = ./borders;
+      recursive = true;
+    };
     ".config/kanata" = {
       source = ./kanata;
       recursive = true;
@@ -73,9 +77,6 @@
       source = ./nvim;
       recursive = true;
     };
-    # ".config/sketchybar" = {
-    #     source = ./sketchybar;
-    # };
     ".config/skhd" = {
         source = ./skhd;
         recursive = true;
