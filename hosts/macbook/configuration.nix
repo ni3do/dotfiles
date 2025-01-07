@@ -26,6 +26,7 @@
         casks = [
         "cursor"
         "firefox"
+        "font-sf-pro"
         "macs-fan-control"
         "nordvpn"
         ];
