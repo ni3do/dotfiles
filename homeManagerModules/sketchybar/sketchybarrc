@@ -1,7 +1,7 @@
 #                          ﱦ 齃     ﮂ  ﵁ 爵        ﭵ     ﱦ  ﰊ 異 ﴱ אַ  'Y⃣'
 
 ############## BAR ##############
-sketchybar -m --bar height=25 \
+sketchybar -m --bar height=40 \
                     blur_radius=0 \
                     position=top \
                     padding_left=5 \
@@ -16,10 +16,10 @@ sketchybar -m --bar height=25 \
 sketchybar -m --default updates=when_shown \
                         drawing=on \
                         cache_scripts=on \
-                        icon.font="FuraCode Nerd Font:Regular:10.0" \
+                        icon.font="JetBrainsMono Nerd Font:Regular:10.0" \
                         icon.color=0xffECEFF4 \
                         icon.highlight_color=0xffA3BE8C \
-                        label.font="FuraCode Nerd Font:Regular:10.0" \
+                        label.font="JetBrainsMono Nerd Font:Regular:10.0" \
                         label.color=0xffECEFF4
 
 ############## SPACE DEFAULTS ##############
