@@ -37,6 +37,8 @@
       # sketchybar dependency
       nowplaying-cli
       pre-commit
+      # fzf dependency
+      ripgrep
       signal-desktop
       # top bar for macos
       sketchybar
