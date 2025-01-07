@@ -25,10 +25,18 @@
       zsh
   ];
 
+  home.file = {
+    ".config/nvim" = {
+      source = ./nvim;
+      recursive = true;
+    };
+  };
+
   home.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "code";
   };
+
   home.shellAliases = {
       # aliases for common dirs
       "home" = "cd ~";
@@ -96,12 +104,4 @@
           tab_title_template = "{fmt.fg.red}{bell_symbol}{fmt.fg.tab} {index}: ({tab.active_oldest_exe}) {title} {activity_symbol}";
       };
   };
-  # programs.vscode = {
-  #   enable = true;
-  #   userSettings = {
-  #       # This property will be used to generate settings.json:
-  #       # https://code.visualstudio.com/docs/getstarted/settings#_settingsjson
-  #       "editor.formatOnSave" = true;
-  #   };
-  # };
 }
