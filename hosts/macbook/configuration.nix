@@ -11,47 +11,44 @@
     # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
     environment.systemPackages = with pkgs; [
-        # better htop
-        btop
-        discord
-        # command-line fuzzy finder
-        fzf
-        gh
-        # colored borders for user windows on macos
-        jankyborders
-        lua
-        # python env and package manager
-        micromamba
-        neovim
-        nodejs_23
-        # sketchybar dependency
-        nowplaying-cli
-        pre-commit
-        signal-desktop
-        # top bar for macos
-        sketchybar
-        sketchybar-app-font
-        # keyboard shortcut daemon for macos
-        skhd
-        spotify
-        # terminal prompt
-        starship
-        # sketchybar dependency
-        switchaudio-osx
-        telegram-desktop
-        tmux
-        # invert scroll direction of physical scroll wheels
-        unnaturalscrollwheels
-        wget
-        whatsapp-for-mac
-        # tiling window manager for macos
-        yabai
-        zsh-autosuggestions
-        zsh-fast-syntax-highlighting
+        # # command-line fuzzy finder
+        # fzf
+        # gh
+        # # colored borders for user windows on macos
+        # jankyborders
+        # lua
+        # # python env and package manager
+        # micromamba
+        # neovim
+        # nodejs_23
+        # # sketchybar dependency
+        # nowplaying-cli
+        # pre-commit
+        # signal-desktop
+        # # top bar for macos
+        # sketchybar
+        # sketchybar-app-font
+        # # keyboard shortcut daemon for macos
+        # skhd
+        # spotify
+        # # terminal prompt
+        # starship
+        # # sketchybar dependency
+        # switchaudio-osx
+        # telegram-desktop
+        # tmux
+        # # invert scroll direction of physical scroll wheels
+        # unnaturalscrollwheels
+        # wget
+        # whatsapp-for-mac
+        # # tiling window manager for macos
+        # yabai
+        # zsh-autosuggestions
+        # zsh-fast-syntax-highlighting
       ];
 
     services.skhd.enable = true;
-    services.sketchybar.enable = false;
+    services.sketchybar.enable = true;
     services.yabai.enable = true;
 
 
