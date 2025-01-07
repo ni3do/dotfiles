@@ -54,6 +54,7 @@
       tmux
       # invert scroll direction of physical scroll wheels
       unnaturalscrollwheels
+      vscode
       wget
       whatsapp-for-mac
       # tiling window manager for macos
@@ -62,6 +63,10 @@
   ];
 
   home.file = {
+    ".config/kanata" = {
+      source = ./kanata;
+      recursive = true;
+    };
     ".config/nvim" = {
       source = ./nvim;
       recursive = true;
