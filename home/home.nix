@@ -122,29 +122,10 @@
   };
 
   programs = {
+    atuin = import ./atuin.nix {inherit pkgs;};
+    git = import ./git.nix {inherit pkgs;};
     kitty = import ./kitty.nix {inherit pkgs;};
-    zsh = import ./zsh.nix;
+    starship = import ./starship.nix {inherit pkgs;};
+    zsh = import ./zsh.nix {inherit pkgs;};
   };
-
-  
-  programs.starship = {
-      enable = true;
-      settings = {
-        add_newline = false;
-        scan_timeout = 10;
-      };
-  };
-
-  programs.git = {
-      enable = true;
-      userName = "niedo";
-      userEmail = "57731234+ni3do@users.noreply.github.com";
-      ignores = [ ".DS_Store" ];
-      extraConfig = {
-          init.defaultBranch = "main";
-          push.autoSetupRemote = true;
-      };
-  };
-
-  programs.atuin.enable = true;
 }
