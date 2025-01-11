@@ -1,6 +1,4 @@
 {
-  pkgs,
-  meta,
   ...
 }: {
   enable = true;

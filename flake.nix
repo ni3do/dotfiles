@@ -51,7 +51,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.verbose = true;
-            home-manager.users.simon = ./homeManagerModules/default.nix;
+            home-manager.users.simon = ./home/home.nix;
             home-manager.sharedModules = [
                 mac-app-util.homeManagerModules.default
             ];

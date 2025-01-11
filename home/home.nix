@@ -123,14 +123,9 @@
 
   programs = {
     kitty = import ./kitty.nix {inherit pkgs;};
-  }
-  programs.zsh = {
-      enable = true;
-      autosuggestion = {
-          enable = true;
-      };
-      syntaxHighlighting.enable = true;
+    zsh = import ./zsh.nix;
   };
+
   
   programs.starship = {
       enable = true;
