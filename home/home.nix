@@ -18,6 +18,7 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
+      atuin
       # better top
       btop
       discord
@@ -65,7 +66,7 @@
   ];
 
   home.file = {
-    ".config/jankyborders" = {
+    ".config/borders" = {
       source = ./borders;
       recursive = true;
     };
@@ -120,6 +121,9 @@
       "ssh" = "TERM=xterm-256color ssh";
   };
 
+  programs = {
+    kitty = import ./kitty.nix {inherit pkgs;};
+  }
   programs.zsh = {
       enable = true;
       autosuggestion = {
@@ -128,7 +132,13 @@
       syntaxHighlighting.enable = true;
   };
   
-  programs.starship.enable = true;
+  programs.starship = {
+      enable = true;
+      settings = {
+        add_newline = false;
+        scan_timeout = 10;
+      };
+  };
 
   programs.git = {
       enable = true;
@@ -141,22 +151,5 @@
       };
   };
 
-  programs.kitty = {
-      enable = true;
-      font = {
-          name = "JetBrainsMono Nerd Font";
-          size = 13.0;
-      };
-      themeFile = "tokyo_night_moon";
-      settings = {
-          macos_quit_when_last_window_closed = "yes";
-          hide_window_decorations = "titlebar-only";
-          tab_bar_edge = "top";
-          tab_bar_style = "powerline";
-          tab_powerline_style = "round";
-          tab_activity_symbol = "";
-          tab_title_max_length = 45;
-          tab_title_template = "{fmt.fg.red}{bell_symbol}{fmt.fg.tab} {index}: ({tab.active_oldest_exe}) {title} {activity_symbol}";
-      };
-  };
+  programs.atuin.enable = true;
 }
