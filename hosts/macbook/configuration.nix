@@ -46,25 +46,58 @@
 
     ];
 
-    # system.activationScripts.applications.text = let
-    #   env = pkgs.buildEnv {
-    #     name = "system-applications";
-    #     paths = config.environment.systemPackages;
-    #     pathsToLink = "/Applications";
-    #   };
-    # in
-    #   pkgs.lib.mkForce ''
-    #     # Set up applications.
-    #     echo "setting up /Applications..." >&2
-    #     rm -rf /Applications/Nix\ Apps
-    #     mkdir -p /Applications/Nix\ Apps
-    #     find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-    #     while read -r src; do
-    #       app_name=$(basename "$src")
-    #       echo "copying $src" >&2
-    #       ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-    #     done
-    #   '';
+    # Custom MacOS settings
+    system = {
+      startup.chime = false;
+      defaults = {
+        dock = {
+          autohide = true;
+          persistent-apps = [];
+          # TODO: fix folder not showing correctly
+          persistent-others = ["~/Downloads"];
+          tilesize = 44;
+        };
+        finder = {
+          AppleShowAllExtensions = true;
+          AppleShowAllFiles = true;
+          FXEnableExtensionChangeWarning = false;
+          FXPreferredViewStyle = "Nlsv";
+          NewWindowTarget = "Home";
+          ShowExternalHardDrivesOnDesktop = false;
+          ShowHardDrivesOnDesktop = false;
+          ShowMountedServersOnDesktop = false;
+          ShowPathbar = true;
+          ShowRemovableMediaOnDesktop = false;
+          ShowStatusBar = true;
+          _FXShowPosixPathInTitle = true;
+        };
+        LaunchServices = {
+          LSQuarantine = false;
+        };
+        screencapture = {
+          disable-shadow = true;
+          location = "~/Desktop";
+          target = "clipboard";
+        };
+        trackpad = {
+          Clicking = true;
+        };
+        NSGlobalDomain = {
+          "AppleICUForce24HourTime" = true;
+          "AppleScrollerPagingBehavior" = true;
+          # Change trackpad speed
+          "com.apple.trackpad.scaling" = 3.0;
+          # Hide Menu bar
+          "_HIHideMenuBar" = false;
+          "InitialKeyRepeat" = 15;
+          "KeyRepeat" = 1;
+        };
+        CustomSystemPreferences = {
+          # defaults write com.apple.dock autohide -bool true
+          # defaults write com.apple.dock "mru-spaces" -bool "false"
+        };
+      };
+    };
 
     # Add sudo by fingerprint
     security.pam.enableSudoTouchIdAuth = true;
