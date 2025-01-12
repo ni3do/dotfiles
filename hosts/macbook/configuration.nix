@@ -54,7 +54,7 @@
           autohide = true;
           persistent-apps = [];
           # TODO: fix folder not showing correctly
-          persistent-others = ["~/Downloads"];
+          # persistent-others = ["~/Downloads"];
           tilesize = 44;
         };
         finder = {
@@ -88,7 +88,7 @@
           # Change trackpad speed
           "com.apple.trackpad.scaling" = 3.0;
           # Hide Menu bar
-          "_HIHideMenuBar" = false;
+          "_HIHideMenuBar" = true;
           "InitialKeyRepeat" = 15;
           "KeyRepeat" = 1;
         };
