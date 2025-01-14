@@ -3,4 +3,5 @@
 -- Add any additional options here
 
 vim.opt.colorcolumn = "120"
+vim.opt.textwidth = 120
 vim.opt.scrolloff = 10
