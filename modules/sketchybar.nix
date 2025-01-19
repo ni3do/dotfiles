@@ -3,7 +3,7 @@
 }:
 let
   sketchybar = "${pkgs.sketchybar}/bin/sketchybar";
-  aerospace = "${pkgs.aerospace}/bin/aerospace";
+  yabai = "${pkgs.yabai}/bin/yabai";
   jq = "${pkgs.jq}/bin/jq";
   sketchyAppBarFontName = "sketchybar-app-font";
   # export a function __icon_map that map the name of the app to the icon
@@ -26,12 +26,12 @@ let
   '';
 
   frontAppTitlePlugin = pkgs.writeShellScript "front_app_title.sh" ''
-    focused_window_title=$(${aerospace} list-windows --focused --format "%{window-title}")
+    focused_window_title=$($yabai -m query --windows --window last | ${jq} '.title')
     ${sketchybar} --set "$NAME" label="$focused_window_title"
   '';
 
-  queryAerospaceWorkspace = "${aerospace} list-workspaces --all --format '%{workspace}%{monitor-appkit-nsscreen-screens-id}' --json";
-  queryAerospaceWindows = "${aerospace} list-windows --all --format '%{app-name} %{workspace}' --json";
+  queryYabaiWorkspace = "${yabai} -m query --windows"; 
+  queryYabaiWindows = "${yabai} -m query --spaces";
 
   highlightSpaceIconColor = "0xFFFFB74D";
   highlightSpaceLabelColor = "0xC0FFB74D";
@@ -72,15 +72,13 @@ let
   # - update the workspace display
   updateLoop = pkgs.writeShellScript "update_loop.sh" ''
     # Those query take a lot of time (100ms)
-    workspace_query_json=$(${queryAerospaceWorkspace})
-    windows_query_json=$(${queryAerospaceWindows})
+    workspace_query_json=$(${queryYabaiWorkspace})
+    windows_query_json=$(${queryYabaiWindows})
 
     # Update per workspace
-    for workspace in $(echo $workspace_query_json | ${jq} -r ".[] | .workspace"); do
-      workspace_display_id=$(echo "$workspace_query_json" | ${jq} -r ".[] | select(.workspace == \"$workspace\") | .\"monitor-appkit-nsscreen-screens-id\"")
-
+    for space_id in $(echo $workspace_query_json | ${jq} -r ".[] | .id"); do
       # Get all the windows in the workspace
-      windows_in_workspace=$(echo "$windows_query_json" | ${jq} -r ".[] | select(.workspace == \"$workspace\") | .\"app-name\"")
+      windows_in_workspace=$(echo "$windows_query_json" | ${jq} -r ".[] | select(.space == \"$workspace\") | .\"app\"")
 
       # check if any windows in the workspace
       if [ "$windows_in_workspace" = "" ]; then
@@ -108,7 +106,7 @@ let
     done
 
     # Update the current front app title
-    focused_window_title=$(${aerospace} list-windows --focused --format "%{window-title}")
+    focused_window_title=$(${yabai} -m query --windows --window last | ${jq} '.title');
     ${sketchybar} --set "front_app.title" label="$focused_window_title"
   '';
 
@@ -179,11 +177,11 @@ in
   ];
 
   # Called when the workspace change
-  services.aerospace.settings.exec-on-workspace-change = [
-    "${pkgs.bash}/bin/bash"
-    "-c"
-    "${onWorkspaceChangedPlugin} $AEROSPACE_FOCUSED_WORKSPACE $AEROSPACE_PREV_WORKSPACE"
-  ];
+  # services.aerospace.settings.exec-on-workspace-change = [
+  #   "${pkgs.bash}/bin/bash"
+  #   "-c"
+  #   "${onWorkspaceChangedPlugin} $AEROSPACE_FOCUSED_WORKSPACE $AEROSPACE_PREV_WORKSPACE"
+  # ];
 
   # Our main update loop that runs every second to update the bar
   launchd.user.agents.reivilo_sketchybar_update = {
@@ -240,7 +238,8 @@ in
 
     ##### Adding Workspaces Indicators #####
 
-    workspaces=$(${aerospace} list-workspaces --all)
+    workspaces=$(${yabai} -m query --spaces | jq -r ".[] | .index")
+
     for sid in $(echo $workspaces); do
 
       # Hack to get alignment right
@@ -270,7 +269,7 @@ in
           background.height=20 \
           background.corner_radius=10 \
           icon="$sid" \
-          click_script="${aerospace} workspace $sid"
+          click_script="${yabai} -m space --focus $sid"
     done
 
     ${sketchybar} --add bracket spaces '/space\..*/'
