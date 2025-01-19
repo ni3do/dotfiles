@@ -6,6 +6,10 @@ return {
       nix = { "nixfmt" },
     },
 
-    formatters = {},
+    formatters = {
+      black = {
+        prepend_args = { "--line-length", "120" },
+      },
+    },
   },
 }
