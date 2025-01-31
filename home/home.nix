@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: { 
+{ inputs, lib, pkgs, ... }: { 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "simon";
@@ -125,7 +125,6 @@
     atuin = import ./atuin.nix {inherit pkgs;};
     git = import ./git.nix {inherit pkgs;};
     kitty = import ./kitty.nix {inherit pkgs;};
-    lazyvim = import ./lazyvim.nix {inherit lib pkgs;};
     starship = import ./starship.nix {inherit pkgs;};
     zsh = import ./zsh.nix {inherit pkgs;};
   };

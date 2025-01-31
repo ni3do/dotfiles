@@ -7,7 +7,7 @@
       name = "JetBrainsMono Nerd Font";
       size = 13.0;
   };
-  themeFile = "tokyo_night_moon";
+  themeFile = "catppuccin-macchiato";
   settings = {
       macos_quit_when_last_window_closed = "yes";
       hide_window_decorations = "titlebar-only";

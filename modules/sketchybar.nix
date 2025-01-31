@@ -13,7 +13,7 @@ let
     url = "https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v2.0.28/icon_map.sh";
     sha256 = "0dryim93c6ln2h6whlb0cs5y50yyz8klp4aq6cfl2ys4aj21ad8n";
   };
-  nerdfontFontName = "FiraCode Nerd Font";
+  nerdfontFontName = "JetBrainsMono Nerd Font";
   sfProFontName = "SF Pro";
   sfProYOffset = "1";
 
@@ -167,6 +167,43 @@ let
       ${sketchybar} --set "$NAME" icon="$ICON" label="$VOLUME%"
     fi
   '';
+
+  spacePlugin = pkgs.writeShellScript "space.sh" ''
+    if [ "$SELECTED" = "true" ]; then
+      sketchybar -m --set $NAME background.color=0xff9399b2
+    else
+      sketchybar -m --set $NAME background.color=0xff1e1e2e
+
+    fi
+  '';
+
+  stockPlugin = pkgs.writeShellScript "stock.sh" ''
+    INFO=(
+        $(
+            perl -e '
+                $json = `curl -k -L -s --compressed https://robinhood.com/us/en/stocks/VTI/`;
+                if ($json =~ /"quote":\K(\{.*?\})/) {
+                    print "$1";
+                }
+            ' |
+            jq -r '.adjusted_previous_close,.last_trade_price'
+        )
+    )
+
+    change=$((
+        ( ($INFO[2] - $INFO[1]) / $INFO[1] ) *100
+    ))
+
+
+    if [[ $change -ge 0 ]]; then 
+        ${sketchybar} --set $NAME icon.color=0xff{{ .dracula.hex.green }}
+    elif [[ $change -lt 0 ]]; then
+        ${sketchybar} --set $NAME icon.color=0xff{{ .dracula.hex.red }}
+    fi
+
+    ${sketchybar} --set $NAME label=$(printf "%.*f\n" 2 "$change")
+  '';
+
 in
 {
   fonts.packages = [
@@ -202,24 +239,25 @@ in
   # https://github.com/Tnixc/nix-config/blob/main/home/programs/sketchybar/sketchybar.nix
   # https://www.youtube.com/watch?v=8W06wMNZmo8
   services.sketchybar.config = ''
-    ##### Bar Appearance #####
+    ############### Bar Appearance ##############
     ${sketchybar} --bar position=top height=34 color=0x00000000 --topmost=on --sticky=off
 
-    ##### Changing Defaults #####
+    ############## GLOBAL DEFAULTS ############## 
     default=(
       padding_left=4
       padding_right=4
-      icon.font="${nerdfontFontName}:Bold:17.0"
+      icon.font="${nerdfontFontName}:Bold:16.0"
       label.font="${nerdfontFontName}:Bold:14.0"
+      label.y_offset=1
       icon.color=0xffffffff
       label.color=0xffffffff
       icon.padding_left=8
       icon.padding_right=4
       label.padding_left=4
       label.padding_right=8
-      background.color=0xC01E2030
+      background.color=0xff1e1e2e
       background.border_width=1
-      background.border_color=0x9992B3F5
+      background.border_color=0xff6c7086
       background.corner_radius=14
       background.height=28
       blur_radius=30
@@ -227,52 +265,20 @@ in
 
     ${sketchybar} --default "''${default[@]}"
 
-    # Useful to display the current display
-    # ${sketchybar} --add item display1 left --set display1 label="Display 1" display=1
-    # ${sketchybar} --add item display2 left --set display2 label="Display 2" display=2
+    ############## PRIMARY DISPLAY SPACES ############## 
+    # SPACE 1: CODE ICON
+    sketchybar -m --add space code left \
+      --set code icon= \
+      --set code associated_display=1 \
+      --set code associated_space=1 \
+      --set code label.padding_right=0 \
+      --set code label.padding_left=0 \
+      --set code click_script="yabai -m space --focus 1" \
+      --set code script="${spacePlugin}" \
 
-    ##### Adding Apple Logo #####
-
-    ${sketchybar} --add item apple_logo left \
-      --set apple_logo icon="" label.drawing=off icon.padding_left=9 icon.padding_right=8 icon.y_offset=1 background.corner_radius=8 background.border_width=1 background.border_color=${normalSpaceLabelColor} padding_left=-8
-
-    ##### Adding Workspaces Indicators #####
-
-    workspaces=$(${yabai} -m query --spaces | jq -r ".[] | .index")
-
-    for sid in $(echo $workspaces); do
-
-      # Hack to get alignment right
-      if [ "$sid" = "1" ]; then
-        padding_left=4
-      else
-        padding_left=2
-      fi
-      if [ "$sid" = "W" ]; then
-        padding_right=4
-      else
-        padding_right=2
-      fi
-
-      ${sketchybar} --add item space.$sid left \
-        --set space.$sid \
-          icon.font="${nerdfontFontName}:Bold:14.0" \
-          icon.color=${normalSpaceIconColor} \
-          label.color=${normalSpaceLabelColor} \
-          label.font="${sketchyAppBarFontName}:Normal:12.0" \
-          padding_left=$padding_left \
-          padding_right=$padding_right \
-          background.drawing=on \
-          background.color=0x00000000 \
-          background.border_width=${normalSpaceBorderWidth} \
-          background.border_color=${normalSpaceBorderColor} \
-          background.height=20 \
-          background.corner_radius=10 \
-          icon="$sid" \
-          click_script="${yabai} -m space --focus $sid"
-    done
-
-    ${sketchybar} --add bracket spaces '/space\..*/'
+    # ${sketchybar} --add item stocks right \
+    #     --set stocks update_freq=10 icon=VTI script="${stockPlugin} VTI"
+    #       ${sketchybar} --add bracket spaces '/space\..*/'
 
     ${sketchybar} --add item front_app.app e \
       --set front_app.app \
@@ -302,17 +308,17 @@ in
     ${sketchybar} --add bracket front_app '/front_app.*/'
 
     ${sketchybar} --add item clock right \
-           --set clock update_freq=10 icon=  script="${clockPlugin}" padding_right=-8 label.color=${normalSpaceLabelColor} label.font="${nerdfontFontName}:Bold:12.0" \
+           --set clock update_freq=10 icon= script="${clockPlugin}" padding_right=-8 label.color=${normalSpaceLabelColor} \
            --add item volume right \
-           --set volume script="${volumePlugin}" label.color=${normalSpaceLabelColor} label.font="${nerdfontFontName}:Bold:12.0" \
+           --set volume script="${volumePlugin}" label.color=${normalSpaceLabelColor} \
            --subscribe volume volume_change \
            --add item battery right \
-           --set battery label.font="${nerdfontFontName}:Bold:12.0" update_freq=120 script="${batteryPlugin}" \
-           icon.font="${sfProFontName}:Regular:17.0" icon.y_offset=${sfProYOffset} label.color=${normalSpaceLabelColor} \
+           --set battery update_freq=120 script="${batteryPlugin}" \
+           icon.font="${sfProFontName}:Regular:16.0" icon.y_offset=${sfProYOffset} label.color=${normalSpaceLabelColor} \
            --subscribe battery system_woke power_source_change
 
     # Hack to force focus on the first workspace
-    ${onWorkspaceChangedPlugin} "1" ""
+    # ${onWorkspaceChangedPlugin} "1" ""
 
     ##### Force all scripts to run the first time (never do this in a script) #####
     ${sketchybar} --update

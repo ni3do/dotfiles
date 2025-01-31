@@ -22,6 +22,7 @@
         enable = true;
         brews = [
           "mas"
+          "rust"
         ];
         casks = [
         "cursor"
@@ -29,6 +30,10 @@
         "font-sf-pro"
         "macs-fan-control"
         "nordvpn"
+        "karabiner-elements"
+        # temporary office
+        "microsoft-teams"
+        "zoom"
         ];
         masApps = {
             "AdGuard for Safari" = 1440147259;
@@ -53,8 +58,7 @@
         dock = {
           autohide = true;
           persistent-apps = [];
-          # TODO: fix folder not showing correctly
-          # persistent-others = ["~/Downloads"];
+          persistent-others = ["/Users/simon/Downloads"];
           tilesize = 44;
         };
         finder = {
