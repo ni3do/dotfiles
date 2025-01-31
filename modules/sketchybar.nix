@@ -240,7 +240,7 @@ in
   # https://www.youtube.com/watch?v=8W06wMNZmo8
   services.sketchybar.config = ''
     ############### Bar Appearance ##############
-    ${sketchybar} --bar position=top height=34 color=0x00000000 --topmost=on --sticky=off
+    ${sketchybar} --bar position=top height=34 color=0x00000000 topmost=on sticky=off
 
     ############## GLOBAL DEFAULTS ############## 
     default=(
@@ -260,7 +260,6 @@ in
       background.border_color=0xff6c7086
       background.corner_radius=14
       background.height=28
-      blur_radius=30
     )
 
     ${sketchybar} --default "''${default[@]}"
