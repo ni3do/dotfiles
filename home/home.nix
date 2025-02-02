@@ -45,9 +45,6 @@
       # fzf dependency
       ripgrep
       signal-desktop
-      # top bar for macos
-      sketchybar
-      sketchybar-app-font
       # keyboard shortcut daemon for macos
       skhd
       spotify

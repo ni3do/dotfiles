@@ -11,6 +11,9 @@
     # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
     environment.systemPackages = with pkgs; [
+      # top bar for macos
+      sketchybar
+      sketchybar-app-font
     ];
 
     services.skhd.enable = true;
