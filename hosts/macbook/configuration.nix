@@ -115,7 +115,6 @@
 
     # Enable alternative shell support in nix-darwin.
     programs.zsh.enable = true; # default shell on catalina
-    # programs.fish.enable = true;
 
     # TODO
     # Set Git commit hash for darwin-version.

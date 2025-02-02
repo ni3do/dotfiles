@@ -19,9 +19,13 @@
 
   home.packages = with pkgs; [
       atuin
+      # better cat
+      bat
       # better top
       btop
       discord
+      # better ls
+      eza
       # command-line fuzzy finder
       fzf
       gh
@@ -65,29 +69,6 @@
       zsh
   ];
 
-  home.file = {
-    ".config/borders" = {
-      source = ./borders;
-      recursive = true;
-    };
-    ".config/kanata" = {
-      source = ./kanata;
-      recursive = true;
-    };
-    ".config/nvim" = {
-      source = ./nvim;
-      recursive = true;
-    };
-    ".config/skhd" = {
-        source = ./skhd;
-        recursive = true;
-    };
-    ".config/yabai" = {
-        source = ./yabai;
-        recursive = true;
-    };
-  };
-
   home.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "code";
@@ -119,6 +100,38 @@
       "helpskhd" = "cat ~/.config/skhd/skhdrc";
       "helpyabai" = "cat ~/.config/yabai/yabairc";
       "ssh" = "TERM=xterm-256color ssh";
+      # improved utilities
+      "htop" = "btop";
+      "cat" = "bat";
+      "ls" = "eza";
+      
+  };
+
+  home.file = {
+    ".config/borders" = {
+      source = ./borders;
+      recursive = true;
+    };
+    ".config/kanata" = {
+      source = ./kanata;
+      recursive = true;
+    };
+    ".config/nvim" = {
+      source = ./nvim;
+      recursive = true;
+    };
+    ".config/sketchybar" = {
+      source = ./sketchybar;
+      recursive = true;
+    };
+    ".config/skhd" = {
+        source = ./skhd;
+        recursive = true;
+    };
+    ".config/yabai" = {
+        source = ./yabai;
+        recursive = true;
+    };
   };
 
   programs = {

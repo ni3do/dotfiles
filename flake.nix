@@ -33,7 +33,6 @@
       system = "aarch64-darwin";
       modules = [
         ./hosts/macbook/configuration.nix
-        ./modules/sketchybar.nix
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             # Install Homebrew under the default prefix
