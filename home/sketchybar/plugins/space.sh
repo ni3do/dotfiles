@@ -1,6 +1,28 @@
 #!/usr/bin/env bash
 
-if [[ -z $INFO ]]; then
-    exit
+update() {
+if [ "$SELECTED" = "true" ]; then
+  sketchybar -m --set $NAME label.highlight=on icon.highlight=on background.drawing=on
+else
+  sketchybar -m --set $NAME label.highlight=off icon.highlight=off background.drawing=off
 fi
-sketchybar --set "$NAME" label=S$(echo $INFO | jq -r '."display-1"') label.drawing=on 
+}
+
+mouse_entered() {
+  sketchybar -m --set $NAME icon.highlight=on \
+                            label.highlight=on
+}
+
+mouse_exited() {
+  sketchybar -m --set $NAME icon.highlight=off \
+                            label.highlight=off
+}
+
+case "$SENDER" in
+  "mouse.entered") mouse_entered
+  ;;
+  "mouse.exited") mouse_exited
+  ;;
+  *) update 
+  ;;
+esac
