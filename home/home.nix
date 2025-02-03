@@ -117,10 +117,10 @@
       source = ./nvim;
       recursive = true;
     };
-    ".config/sketchybar" = {
-      source = ./sketchybar;
-      recursive = true;
-    };
+    # ".config/sketchybar" = {
+    #   source = ./sketchybar;
+    #   recursive = true;
+    # };
     ".config/skhd" = {
         source = ./skhd;
         recursive = true;
