@@ -1,5 +1,5 @@
 {
-  "avante.nvim": { "branch": "main", "commit": "f65e72900f4289d6e4c7642309003813ecbdc3fe" },
+  "avante.nvim": { "branch": "main", "commit": "6e1e2ac9f26b373bb7a40a53c43c304ab5244b4e" },
   "blink-emoji.nvim": { "branch": "master", "commit": "a77aebc092ebece1eed108f301452ae774d6b67a" },
   "blink.cmp": { "branch": "main", "commit": "4f38ce99a472932d5776337f08f7a8180f1f571a" },
   "catppuccin": { "branch": "main", "commit": "1bf070129c0b6f77cc23f6a2212dcdc868308c52" },
@@ -29,7 +29,7 @@
   "nvim-treesitter": { "branch": "master", "commit": "28d480e0624b259095e56f353ec911f9f2a0f404" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "0e3be38005e9673d044e994b1e4b123adb040179" },
   "nvim-web-devicons": { "branch": "master", "commit": "2c2b4eafce6cdd0cb165036faa17396eff18f847" },
-  "octo.nvim": { "branch": "master", "commit": "75395f3d4723ab50997fafef8a00077ce9e346fc" },
+  "octo.nvim": { "branch": "master", "commit": "4d2634797d1e84df608c10b53031f13a269fade3" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "render-markdown.nvim": { "branch": "main", "commit": "ff577b44bd3ab642acec0f134a7bf26b7278d137" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },

@@ -29,7 +29,7 @@ shift + ralt - k : yabai -m window --warp north || $(yabai -m window --display n
 shift + ralt - l : yabai -m window --warp east || $(yabai -m window --display east && yabai -m display --focus east && yabai -m window --warp first) || yabai -m window --move rel:10:0
 
 # Toggle split orientation of the selected windows node: shift + lalt - s
-shift + ralt - s : yabai -m window --toggle split
+shift + lalt - s : yabai -m window --toggle split
 
 # Moving windows between spaces: shift + ralt - {1, 2, 3, 4, 5, p, n } (Assumes 5 Spaces Max per Display)
 shift + ralt - a : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] \

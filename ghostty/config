@@ -1,5 +1,6 @@
 theme = catppuccin-mocha
-font-size = 19
+font-size = 16
+font-family = JetBrainsMonoNerdFont
 background-blur-radius = 20
 mouse-hide-while-typing = true
 window-decoration = true
