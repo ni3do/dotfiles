@@ -1,0 +1,7 @@
+{
+    "diagnostics.globals": [
+        "Snacks",
+        "bg",
+        "vim"
+    ]
+}

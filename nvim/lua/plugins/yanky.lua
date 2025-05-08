@@ -1,0 +1,29 @@
+return {}
+-- return {
+-- 	"gbprod/yanky.nvim",
+-- 	dependencies = { "folke/snacks.nvim" },
+-- 	opts = {
+-- 		-- your configuration comes here
+-- 		-- or leave it empty to use the default settings
+-- 		-- refer to the configuration section below
+-- 	},
+-- 	keys = {
+-- 		-- Yanky Put
+-- 		{ "p", "<Plug>(YankyPutAfter)", desc = "Put after (Yanky)", mode = { "n", "x" } },
+-- 		{ { "n", "x" }, "P", "<Plug>(YankyPutBefore)", desc = "Put before (Yanky)" },
+-- 		{ { "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", desc = "Put after & leave cursor (Yanky)" },
+-- 		{ { "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", desc = "Put before & leave cursor (Yanky)" },
+-- 		--
+-- 		-- -- Yanky History Navigation
+-- 		{ "<C-p>", "<Plug>(YankyPreviousEntry)", desc = "Yanky: Previous history entry" },
+-- 		{ "<C-n>", "<Plug>(YankyNextEntry)", desc = "Yanky: Next history entry" },
+-- 		{
+-- 			"<leader>fp",
+-- 			function()
+-- 				Snacks.picker.yanky()
+-- 			end,
+-- 			mode = { "n", "x" },
+-- 			desc = "Open Yank History",
+-- 		},
+-- 	},
+-- }
