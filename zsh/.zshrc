@@ -6,10 +6,12 @@ SAVEHIST="10000"
 HISTFILE="$HOME/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-export EDITOR=/etc/profiles/per-user/simon/bin/nvim
+export EDITOR=nvim
 
+# Nix Commands
+alias ndswitch="darwin-rebuild switch --flake ~/repos/nixos#madara"
 
 # Git
 alias gc="git commit -m"

@@ -33,6 +33,13 @@ return {
 			enabled = true,
 			timeout = 3000,
 		},
+		terminal = {
+			enabled = true,
+			shell = "nu",
+			win = {
+				position = "right",
+			},
+		},
 		image = { enabled = true },
 		picker = { enabled = true },
 		styles = {
@@ -41,8 +48,10 @@ return {
 			},
 		},
 	},
-	-- stylua: ignore start
 	keys = {
+		-- Custom Pickers
+		-- { "<leader>nt", function() Snacks.picker. end, desc = "Find all open tasks",},
+	-- stylua: ignore start
 		-- Top Pickers & Explorer
 		{ "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files", },
 		{ "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers", },
@@ -100,6 +109,9 @@ return {
 		{ "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition", },
 		{ "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols", },
 		{ "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols", },
+		-- Terminal
+		{ "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", },
+		{ "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", },
 		-- Other
 		{ "<leader>z", function() Snacks.zen() end, desc = "Toggle Zen Mode", },
 		{ "<leader>Z", function() Snacks.zen.zoom() end, desc = "Toggle Zoom", },
@@ -111,8 +123,6 @@ return {
 		{ "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" }, },
 		{ "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit", },
 		{ "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications", },
-		{ "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", },
-		{ "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", },
 		{ "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" }, },
 		{ "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" }, },
 		{

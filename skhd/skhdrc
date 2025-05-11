@@ -16,10 +16,7 @@ lalt - l   : yabai -m window --focus east  || yabai -m display --focus east
 alt - space : yabai -m window --toggle float
 
 # Make window zoom to fullscreen: shift + ralt - f
-shift + ralt - f : yabai -m window --toggle zoom-fullscreen
-
-# Make window zoom to parent node: ralt - f 
-ralt - f : yabai -m window --toggle zoom-parent
+ralt - f : yabai -m window --toggle zoom-fullscreen
 
 ## Window Movement (shift + ralt - ...)
 # Moving windows in spaces: shift + ralt - {h, k, l, ö}
