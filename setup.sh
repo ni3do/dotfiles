@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
+cp zshenv ~/.zshenv
+
 stow .
-# stow .zshrc in ~/
-stow --target ~/ zsh
