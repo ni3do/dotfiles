@@ -87,9 +87,9 @@ end, { desc = "Harpoon: Go to next file" })
 --------------------------------
 -- Misc Keymaps
 --------------------------------
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+-- vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
 
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set("t", "<C-k>", "<C-\\><C-n><cmd>TmuxNavigateUp<cr>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-space>", "<C-\\><C-n><cmd>TmuxNavigateUp<cr>", { desc = "Exit terminal mode and move up" })
