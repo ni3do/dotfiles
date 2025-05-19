@@ -56,7 +56,7 @@ vim.keymap.set("n", "<leader>m", function()
 	harpoon:list():add()
 end, { desc = "Add file to Harpoon list" })
 
-vim.keymap.set("n", "<C-r>", function()
+vim.keymap.set("n", "<C-m>", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "Toggle Harpoon quick menu" })
 
@@ -76,13 +76,13 @@ vim.keymap.set("n", "<C-g>", function()
 	harpoon:list():select(4)
 end, { desc = "Harpoon: Go to file 4" })
 
--- vim.keymap.set("n", "<C-S-P>", function()
--- 	harpoon:list():prev()
--- end, { desc = "Harpoon: Go to previous file" })
---
--- vim.keymap.set("n", "<C-S-N>", function()
--- 	harpoon:list():next()
--- end, { desc = "Harpoon: Go to next file" })
+vim.keymap.set("n", "<C-S-P>", function()
+	harpoon:list():prev()
+end, { desc = "Harpoon: Go to previous file" })
+
+vim.keymap.set("n", "<C-S-N>", function()
+	harpoon:list():next()
+end, { desc = "Harpoon: Go to next file" })
 
 --------------------------------
 -- Misc Keymaps
@@ -91,4 +91,5 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highl
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
 
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-n><cmd>TmuxNavigateUp<cr>", { desc = "Exit terminal mode" })

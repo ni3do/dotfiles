@@ -35,16 +35,16 @@ return {
 		},
 		terminal = {
 			enabled = true,
-			shell = "nu",
+			shell = "zsh",
 			win = {
-				position = "right",
+				position = "bottom",
 			},
 		},
 		image = { enabled = true },
 		picker = { enabled = true },
 		styles = {
 			notification = {
-				-- wo = { wrap = true } -- Wrap notifications
+				wo = { wrap = true }, -- Wrap notifications
 			},
 		},
 	},
@@ -149,7 +149,7 @@ return {
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "VeryLazy",
 			callback = function()
-				-- Setup some globals for debugging (lazy-loaded)
+				-- Setup some bottom for debugging (lazy-loaded)
 				_G.dd = function(...)
 					Snacks.debug.inspect(...)
 				end
