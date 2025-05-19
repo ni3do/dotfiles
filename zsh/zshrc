@@ -1,0 +1,28 @@
+# History options should be set in .zshrc and after oh-my-zsh sourcing.
+# See https://github.com/nix-community/home-manager/issues/177.
+HISTSIZE="10000"
+SAVEHIST="10000"
+
+HISTFILE="$HOME/.zsh_history"
+mkdir -p "$(dirname "$HISTFILE")"
+
+# Loop through all .zsh files in ~/.zsh directory
+for file in ~/.config/zsh/*.zsh; do
+  # Check if it's a regular file and not a directory
+  if [[ -f "$file" || -L "$file" ]]; then
+    source "$file"
+  fi
+done
+
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle :compinstall filename '~/.config/zsh/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
