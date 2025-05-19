@@ -3,6 +3,7 @@ return {
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
 		dependencies = {
+			"Kaiser-Yang/blink-cmp-avante",
 			"rafamadriz/friendly-snippets",
 			"moyiz/blink-emoji.nvim",
 		},
@@ -47,8 +48,15 @@ return {
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "emoji" },
+				default = { "avante", "lsp", "path", "snippets", "buffer", "emoji" },
 				providers = {
+					avante = {
+						module = "blink-cmp-avante",
+						name = "Avante",
+						opts = {
+							-- options for blink-cmp-avante
+						},
+					},
 					emoji = {
 						module = "blink-emoji",
 						name = "Emoji",
@@ -58,7 +66,7 @@ return {
 							return vim.tbl_contains(
 								-- Enable emoji completion only for git commits and markdown.
 								-- By default, enabled for all file-types.
-								{ "gitcommit", "markdown" },
+								{ "gitcommit", "markdown", "sh" },
 								vim.o.filetype
 							)
 						end,
