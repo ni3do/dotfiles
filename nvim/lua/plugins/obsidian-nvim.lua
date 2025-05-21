@@ -1,7 +1,7 @@
 return {
 	"obsidian-nvim/obsidian.nvim",
 	version = "*", -- recommended, use latest release instead of latest commit
-	lazy = true,
+	lazy = false,
 	ft = "markdown",
 	-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
 	-- event = {
@@ -14,8 +14,6 @@ return {
 	dependencies = {
 		-- Required.
 		"nvim-lua/plenary.nvim",
-
-		-- see above for full list of optional dependencies ☝️
 	},
 	---@module 'obsidian'
 	---@type obsidian.config.ClientOpts
@@ -26,7 +24,23 @@ return {
 				path = "~/repos/second-brain",
 			},
 		},
-
-		-- see below for full list of options 👇
+		new_notes_location = "inbox",
+		completion = {
+			-- Enables completion using nvim_cmp
+			nvim_cmp = false,
+			-- Enables completion using blink.cmp
+			blink = true,
+		},
+		picker = {
+			-- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
+			name = "snacks.pick",
+		},
+		ui = { enable = false },
+	},
+	keys = {
+		{ "<leader>nf", "<cmd>ObsidianQuickSwitch<CR>", desc = "Find Note" },
+		{ "<leader>ns", "<cmd>ObsidianQuickSwitch inbox/scratchpad.md<CR>", desc = "Open Scratchpad" },
+		{ "<leader>nw", "<cmd>ObsidianWorkspace<CR>", desc = "Switch workspace" },
+		{ "<leader>na", "<cmd>ObsidianNew<CR>", desc = "Create new Note" },
 	},
 }
