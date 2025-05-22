@@ -1,10 +1,18 @@
 #!/bin/zsh
 
 LOCATION=$(shortcuts run getCoreLocationData -o /dev/stdout)
+API_KEY=$(shortcuts run getWeatherAPIKey -o /dev/stdout)
+
+# Check if LOCATION is empty and create a backup if necessary
+if [ -z "$LOCATION" ] || [ "$LOCATION" = "null" ]; then
+  echo "{\"city\":\"Zurich\",\"lat\":\"47.3769\",\"long\":\"8.5417\"}" > /tmp/location_backup.json
+  LOCATION=$(cat /tmp/location_backup.json)
+fi
+
 CITY=$(echo "$LOCATION" | jq -r ".city")
 LAT=$(echo "$LOCATION" | jq -r ".lat")
 LONG=$(echo "$LOCATION" | jq -r ".long")
-API_KEY=$(echo $LOCATION | jq -r ".api_key")
+API_KEY=$(echo $API_KEY | jq -r ".api_key")
 
 # first comment is description, second is icon number
 weather_icons_day=(

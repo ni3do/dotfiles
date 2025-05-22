@@ -2,7 +2,7 @@
 
 export PLUGIN_DIR="$CONFIG_DIR/plugins"
 export ITEM_DIR="$CONFIG_DIR/items"
-export FONT="JetBrainsMono Nerd Font"
+export FONT="JetBrainsMono Nerd Font Propo"
 
 source "$CONFIG_DIR/colors.sh"
 
