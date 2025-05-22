@@ -6,6 +6,7 @@ return {
 			"Kaiser-Yang/blink-cmp-avante",
 			"rafamadriz/friendly-snippets",
 			"moyiz/blink-emoji.nvim",
+			"giuxtaposition/blink-cmp-copilot",
 		},
 
 		-- use a release tag to download pre-built binaries
@@ -48,8 +49,14 @@ return {
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { "avante", "lsp", "path", "snippets", "buffer", "emoji" },
+				default = { "copilot", "avante", "lsp", "path", "snippets", "buffer", "emoji" },
 				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-cmp-copilot",
+						score_offset = 100,
+						async = true,
+					},
 					avante = {
 						module = "blink-cmp-avante",
 						name = "Avante",

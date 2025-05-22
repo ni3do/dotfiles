@@ -12,9 +12,6 @@ return {
 			max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
 			--reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
 		},
-		behaviour = {
-			auto_suggestions = true,
-		},
 	},
 	-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
 	build = "make",
@@ -28,21 +25,7 @@ return {
 		"hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
 		"ibhagwan/fzf-lua", -- for file_selector provider fzf
 		"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-		{
-			"zbirenbaum/copilot.lua", -- for providers='copilot'
-			opts = {
-				suggestion = {
-					keymap = {
-						accept = "<C-j>",
-						accept_word = false,
-						accept_line = false,
-						next = "<C-l>",
-						prev = "<C-h>",
-						dismiss = "<M-]>",
-					},
-				},
-			},
-		},
+		"zbirenbaum/copilot.lua", -- for providers='copilot'
 		{
 			-- support for image pasting
 			"HakonHarnes/img-clip.nvim",
