@@ -1,3 +1,5 @@
 .DS_Store
 tmux/plugins/
 debug.log
+zsh/.zcompdump*
+zsh/antigen.zsh.zwc
