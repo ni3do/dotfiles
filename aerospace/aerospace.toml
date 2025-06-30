@@ -138,7 +138,7 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 alt-t = 'exec-and-forget open -a /Applications/Ghostty.app'
-alt-b = 'exec-and-forget open -a /Applications/Safari.app'
+alt-b = 'exec-and-forget open -a /Applications/Firefox.app'
 alt-m = 'exec-and-forget open -a /Applications/Spotify.app'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
@@ -147,7 +147,7 @@ alt-shift-semicolon = 'mode service'
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
+esc = ['reload-config', 'mode main', 'exec-and-forget sketchybar', 'exec-and-forget ~/.config/borders/bordersrc']
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 backspace = ['close-all-windows-but-current', 'mode main']
@@ -168,8 +168,12 @@ backspace = ['close-all-windows-but-current', 'mode main']
 # run = ['layout floating', 'move-node-to-workspace S']  # The callback itself
 
 # default workspace assignment
+# [[on-window-detected]]
+# if.app-name-regex-substring = 'safari'
+# run = 'move-node-to-workspace 1'
+
 [[on-window-detected]]
-if.app-name-regex-substring = 'safari'
+if.app-name-regex-substring = 'firefox'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
@@ -198,9 +202,9 @@ run = 'layout floating'
 if.app-name-regex-substring = 'camera'
 run = 'layout floating'
 
-[[on-window-detected]]
-if.app-name-regex-substring = 'mail'
-run = 'layout floating'
+# [[on-window-detected]]
+# if.app-name-regex-substring = 'mail'
+# run = 'layout floating'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'nordvpn'
