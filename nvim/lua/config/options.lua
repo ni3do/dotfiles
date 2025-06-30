@@ -1,3 +1,5 @@
+vim.api.nvim_set_hl(0, "TaskHighlight", { bg = "#44475a", bold = true })
+
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.shiftwidth = 4 -- Amount to indent with << and >>
 vim.opt.tabstop = 4 -- How many spaces are shown per Tab

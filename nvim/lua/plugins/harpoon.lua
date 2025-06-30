@@ -14,10 +14,10 @@ return {
 			local file_paths = {}
 			for _, item in ipairs(harpoon:list().items) do
 				table.insert(file_paths, {
-					item.value,
+					text = item.value,
+					file = item.value,
 				})
 			end
-			Snacks.debug.log(file_paths)
 			return file_paths
 		end
 		--------------------------------
