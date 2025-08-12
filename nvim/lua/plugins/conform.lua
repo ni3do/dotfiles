@@ -6,6 +6,7 @@ return {
 			python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 			nix = { "nil_ls" },
 			tex = { "tex-fmt" },
+			markdown = { "prettier" },
 		},
 		formatters = {
 			["tex-fmt"] = { -- Use brackets here

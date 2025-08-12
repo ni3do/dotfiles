@@ -7,4 +7,11 @@ return {
 		render_modes = { "n", "c", "t" },
 	},
 	completions = { blink = { enabled = true } },
+
+	latex = {
+		-- Turn on / off latex rendering.
+		enabled = true,
+		-- Executable used to convert latex formula to rendered unicode.
+		converter = "python3 -m pylatexenc.latex2text",
+	},
 }
