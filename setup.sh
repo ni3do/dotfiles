@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+stow --dotfiles -t ~ .
+
 # Check if the directory is nonexistent or empty, then create it and download antigen
 if [ ! -r "$HOME/.config/antigen/antigen.zsh" ]; then
   mkdir -p ~/.config/antigen
@@ -10,7 +12,3 @@ fi
 if [ ! -d "$HOME/.tmux/plugins/tpm" ] || [ -z "$(ls -A $HOME/.tmux/plugins/tpm)" ]; then
   git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
-
-cp zshenv ~/.zshenv
-
-stow .
