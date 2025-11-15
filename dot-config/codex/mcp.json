@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "portfolio-db": {
+      "command": "uv",
+      "args": [
+        "run",
+        "portfolio-mcp"
+      ],
+      "env": {
+        "PORTFOLIO_DB_HOST": "localhost",
+        "PORTFOLIO_DB_PORT": "5432",
+        "PORTFOLIO_DB_NAME": "portfolio",
+        "PORTFOLIO_DB_USER_FILE": "/Users/simon/repo/portfolio-visualizer/secrets/postgres_app_user",
+        "PORTFOLIO_DB_PASSWORD_FILE": "/Users/simon/repo/portfolio-visualizer/secrets/postgres_app_password"
+      }
+    }
+  }
+}

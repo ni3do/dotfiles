@@ -15,6 +15,7 @@ export KEYTIMEOUT=1
 
 source ~/.config/zsh/alias.zsh
 source ~/.config/zsh/antigen.zsh
+source ~/.config/zsh/tmux.zsh
 
 # Fix for starship error when entering vi normal mode with escape
 if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
@@ -33,4 +34,3 @@ zstyle :compinstall filename '~/.config/zsh/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-

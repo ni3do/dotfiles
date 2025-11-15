@@ -1,0 +1,735 @@
+{
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Caps Lock → Escape (tap)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to_if_alone": [{ "key_code": "escape" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Home-row mod-taps with double-tap repeat",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "kl_layer_left",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "kl_layer_right",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "a",
+                                        "modifiers": ["right_shift", "right_option"]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "a_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "a_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "a" },
+                                    {
+                                        "set_variable": {
+                                            "name": "a_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "a" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "a_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "a_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "a" },
+                                    {
+                                        "set_variable": {
+                                            "name": "a_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "left_gui" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "kl_layer_left",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "kl_layer_right",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "s",
+                                        "modifiers": ["right_shift", "right_option"]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "s_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "s_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "s" },
+                                    {
+                                        "set_variable": {
+                                            "name": "s_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "s" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "s_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "s_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "s" },
+                                    {
+                                        "set_variable": {
+                                            "name": "s_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "left_option" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "kl_layer_left",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "kl_layer_right",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d",
+                                        "modifiers": ["right_shift", "right_option"]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "d_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "d_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "d" },
+                                    {
+                                        "set_variable": {
+                                            "name": "d_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "d" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "d_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "d_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "d" },
+                                    {
+                                        "set_variable": {
+                                            "name": "d_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "left_shift" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "kl_layer_left",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "kl_layer_right",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f",
+                                        "modifiers": ["right_shift", "right_option"]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "f_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "f_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "f" },
+                                    {
+                                        "set_variable": {
+                                            "name": "f_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "f" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "f_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "f_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "f" },
+                                    {
+                                        "set_variable": {
+                                            "name": "f_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "left_control" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "kl_layer_left",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "kl_layer_right",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "g",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "g",
+                                        "modifiers": ["right_shift", "right_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "j_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "j" },
+                                    {
+                                        "set_variable": {
+                                            "name": "j_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "j" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "j_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "j_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "j" },
+                                    {
+                                        "set_variable": {
+                                            "name": "j_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "right_control" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "k_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "k" },
+                                    {
+                                        "set_variable": {
+                                            "name": "k_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "k" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kl_layer_left",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "k_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "k_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "k" },
+                                    {
+                                        "set_variable": {
+                                            "name": "k_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kl_layer_left",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "key_code": "right_shift" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "l_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "l" },
+                                    {
+                                        "set_variable": {
+                                            "name": "l_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "l" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kl_layer_right",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "l_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "l_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "l" },
+                                    {
+                                        "set_variable": {
+                                            "name": "l_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kl_layer_right",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "key_code": "right_option" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "semicolon_pending",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "semicolon" },
+                                    {
+                                        "set_variable": {
+                                            "name": "semicolon_pending",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "semicolon" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 300,
+                                    "basic.to_if_alone_timeout_milliseconds": 300,
+                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "semicolon_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "semicolon_pending",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "semicolon" },
+                                    {
+                                        "set_variable": {
+                                            "name": "semicolon_pending",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [{ "key_code": "right_gui" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 834,
+                        "vendor_id": 1452
+                    },
+                    "ignore": true
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+        }
+    ]
+}

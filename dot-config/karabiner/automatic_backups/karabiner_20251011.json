@@ -1,0 +1,322 @@
+{
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "Caps Lock → Escape (tap)",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": { "key_code": "caps_lock", "modifiers": { "optional": ["any"] } },
+                "to_if_alone": [{ "key_code": "escape" }]
+              }
+            ]
+          },
+          {
+            "description": "Home-row mod-taps with double-tap repeat",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": { "key_code": "a", "modifiers": { "optional": ["any"] } },
+                "conditions": [
+                  { "type": "variable_if", "name": "kl_layer_left", "value": 1 },
+                  { "type": "variable_if", "name": "kl_layer_right", "value": 1 }
+                ],
+                "to": [
+                  { "key_code": "a", "modifiers": ["right_shift", "right_option"] },
+                  { "set_variable": { "name": "a_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "a", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "a_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "a" },
+                  { "set_variable": { "name": "a_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "a", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "a" },
+                  { "set_variable": { "name": "a_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "left_gui" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "a_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "a_pending", "value": 0 } }]
+                }
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+                "conditions": [
+                  { "type": "variable_if", "name": "kl_layer_left", "value": 1 },
+                  { "type": "variable_if", "name": "kl_layer_right", "value": 1 }
+                ],
+                "to": [
+                  { "key_code": "s", "modifiers": ["right_shift", "right_option"] },
+                  { "set_variable": { "name": "s_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "s_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "s" },
+                  { "set_variable": { "name": "s_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "s" },
+                  { "set_variable": { "name": "s_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "left_option" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "s_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "s_pending", "value": 0 } }]
+                }
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "d", "modifiers": { "optional": ["any"] } },
+                "conditions": [
+                  { "type": "variable_if", "name": "kl_layer_left", "value": 1 },
+                  { "type": "variable_if", "name": "kl_layer_right", "value": 1 }
+                ],
+                "to": [
+                  { "key_code": "d", "modifiers": ["right_shift", "right_option"] },
+                  { "set_variable": { "name": "d_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "d", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "d_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "d" },
+                  { "set_variable": { "name": "d_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "d", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "d" },
+                  { "set_variable": { "name": "d_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "left_shift" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "d_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "d_pending", "value": 0 } }]
+                }
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+                "conditions": [
+                  { "type": "variable_if", "name": "kl_layer_left", "value": 1 },
+                  { "type": "variable_if", "name": "kl_layer_right", "value": 1 }
+                ],
+                "to": [
+                  { "key_code": "f", "modifiers": ["right_shift", "right_option"] },
+                  { "set_variable": { "name": "f_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "f_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "f" },
+                  { "set_variable": { "name": "f_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "f" },
+                  { "set_variable": { "name": "f_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "left_control" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "f_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "f_pending", "value": 0 } }]
+                }
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "g", "modifiers": { "optional": ["any"] } },
+                "conditions": [
+                  { "type": "variable_if", "name": "kl_layer_left", "value": 1 },
+                  { "type": "variable_if", "name": "kl_layer_right", "value": 1 }
+                ],
+                "to": [
+                  { "key_code": "g", "modifiers": ["right_shift", "right_option"] }
+                ]
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "j_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "j" },
+                  { "set_variable": { "name": "j_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "j" },
+                  { "set_variable": { "name": "j_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "right_control" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "j_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "j_pending", "value": 0 } }]
+                }
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "k_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "k" },
+                  { "set_variable": { "name": "k_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "k" },
+                  { "set_variable": { "name": "k_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [
+                  { "set_variable": { "name": "kl_layer_left", "value": 1 } },
+                  { "key_code": "right_shift" }
+                ],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "k_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "k_pending", "value": 0 } }]
+                },
+                "to_after_key_up": [
+                  { "set_variable": { "name": "kl_layer_left", "value": 0 } }
+                ]
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "l_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "l" },
+                  { "set_variable": { "name": "l_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "l" },
+                  { "set_variable": { "name": "l_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [
+                  { "set_variable": { "name": "kl_layer_right", "value": 1 } },
+                  { "key_code": "right_option" }
+                ],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "l_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "l_pending", "value": 0 } }]
+                },
+                "to_after_key_up": [
+                  { "set_variable": { "name": "kl_layer_right", "value": 0 } }
+                ]
+              },
+
+              {
+                "type": "basic",
+                "from": { "key_code": "semicolon", "modifiers": { "optional": ["any"] } },
+                "conditions": [{ "type": "variable_if", "name": "semicolon_pending", "value": 1 }],
+                "to": [
+                  { "key_code": "semicolon" },
+                  { "set_variable": { "name": "semicolon_pending", "value": 0 } }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "semicolon", "modifiers": { "optional": ["any"] } },
+                "parameters": {
+                  "basic.to_if_alone_timeout_milliseconds": 300,
+                  "basic.to_if_held_down_threshold_milliseconds": 200,
+                  "basic.to_delayed_action_delay_milliseconds": 300
+                },
+                "to_if_alone": [
+                  { "key_code": "semicolon" },
+                  { "set_variable": { "name": "semicolon_pending", "value": 1 } }
+                ],
+                "to_if_held_down": [{ "key_code": "right_gui" }],
+                "to_delayed_action": {
+                  "to_if_invoked": [{ "set_variable": { "name": "semicolon_pending", "value": 0 } }],
+                  "to_if_canceled": [{ "set_variable": { "name": "semicolon_pending", "value": 0 } }]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Default profile",
+      "selected": true,
+      "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+    }
+  ]
+}

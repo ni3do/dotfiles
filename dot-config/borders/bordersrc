@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Define base colors
+base_active_color="#c6a0f6"
+base_inactive_color="#24273a"
+# base_background_color="#181926"
+
+# Define opacity values
+opacity_active="ff"
+opacity_inactive="ff"
+# opacity_background="00"
+
+# Combine base colors with opacity
+active_color="0x${opacity_active}${base_active_color:1}"
+inactive_color="0x${opacity_inactive}${base_inactive_color:1}"
+# background_color="0x${opacity_background}${base_background_color:1}"
+
+# Define other options
+options=(
+  style=round
+  width=8.0
+  hidpi=on
+  active_color=$active_color
+  inactive_color=$inactive_color
+  # background_color=$background_color
+)
+
+# Invoke the borders command
+borders "${options[@]}"
