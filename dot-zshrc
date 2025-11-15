@@ -1,0 +1,118 @@
+# If available, source the system-wide bashrc
+if [ -f /etc/zshrc ]; then
+  . /etc/zshrc
+fi
+
+# History options should be set in .zshrc and after oh-my-zsh sourcing.
+# See https://github.com/nix-community/home-manager/issues/177.
+HISTSIZE="10000"
+SAVEHIST="10000"
+
+HISTFILE="$HOME/.zsh_history"
+mkdir -p "$(dirname "$HISTFILE")"
+
+bindkey -v
+export KEYTIMEOUT=1
+
+# Only changing the escape key to jk in insert mode, we still
+# keep using the default keybindings ^[ in other modes
+# ZVM_VI_ESCAPE_BINDKEY=jk
+
+##### Zshenv #####
+# use vim as the editor
+export EDITOR=nvim
+
+export PATH="$HOME/repo/simonwachter-dotfiles/bin:$PATH"
+
+# Starship
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
+# FZF
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+##### Aliases #####
+# Git
+alias gc="git commit -m"
+alias gca="git commit --all -m 'auto-commit'"
+alias gp="git push"
+alias gpu="git pull"
+alias gs="git status"
+alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
+alias gdiff="git diff"
+alias gco="git checkout"
+alias gb='git branch'
+alias gba='git branch -a'
+alias gadd='git add'
+alias ga='git add -p'
+alias gcoall='git checkout -- .'
+alias gr='git remote'
+alias gre='git reset'
+
+# Nvim
+alias vi=nvim
+
+# Eza
+alias l="eza -l --icons --git -a"
+alias lt="eza --tree --level=2 --long --icons --git"
+alias ltree="eza --tree --level=2  --icons --git"
+
+# bat
+alias cat="bat --paging=never"
+alias ocat="/bin/cat"
+
+# Yazi wrapper
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+bless() {
+  # Use bat for color + syntax; page with less
+  bat --color=always --style=plain --paging=never "$@" | less -R
+}
+
+llog() {
+  local log_dir="./logs"
+  if [ ! -d "$log_dir" ]; then
+    echo "logs directory not found: $log_dir" >&2
+    return 1
+  fi
+
+  local newest_log
+  newest_log=$(find "$log_dir" -type f -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | cut -d' ' -f2-)
+
+  if [ -z "$newest_log" ]; then
+    echo "no log files in $log_dir" >&2
+    return 1
+  fi
+
+  bless "$newest_log"
+}
+
+##### Zshrc #####
+
+# Fix for starship error when entering vi normal mode with escape
+if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
+      "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
+    zle -N zle-keymap-select "";
+fi
+
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+##### Antigen #####
+source ~/.config/antigen/antigen.zsh
+
+export ANTIGEN_CACHE=false
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle jeffreytse/zsh-vi-mode
+antigen bundle "MichaelAquilina/zsh-you-should-use"
+antigen bundle Aloxaf/fzf-tab
+
+antigen apply
