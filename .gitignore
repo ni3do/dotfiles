@@ -1,5 +1,5 @@
 .DS_Store
-tmux/plugins/
+dot-config/tmux/plugins/
 debug.log
-zsh/.zcompdump*
-zsh/antigen.zsh.zwc
+*.zwc
+false

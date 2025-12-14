@@ -11,6 +11,13 @@ SAVEHIST="10000"
 HISTFILE="$HOME/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
+# Fix terminal line discipline issues when connecting via SSH
+# This prevents duplicate keystrokes on remote connections
+if [[ -t 0 && -n "$SSH_CONNECTION" ]]; then
+  stty sane 2>/dev/null || true
+  stty -ixon -ixoff 2>/dev/null || true
+fi
+
 bindkey -v
 export KEYTIMEOUT=1
 
@@ -107,7 +114,11 @@ eval "$(zoxide init zsh)"
 ##### Antigen #####
 source ~/.config/antigen/antigen.zsh
 
-export ANTIGEN_CACHE=false
+# Keep antigen/zcache artifacts in XDG cache (not the repo root).
+_antigen_cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/antigen"
+mkdir -p "$_antigen_cache_root"
+export ANTIGEN_CACHE="$_antigen_cache_root/.antigen.zsh"
+export ZCACHEFILE="$_antigen_cache_root/zcache.zsh"
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
@@ -116,3 +127,4 @@ antigen bundle "MichaelAquilina/zsh-you-should-use"
 antigen bundle Aloxaf/fzf-tab
 
 antigen apply
+export PATH="$HOME/.local/bin:$PATH"

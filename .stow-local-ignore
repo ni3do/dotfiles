@@ -5,3 +5,8 @@
 ^/README.*
 
 scripts
+
+# Antigen cache files
+^false$
+^false\.zwc$
+^.*\.zwc$
