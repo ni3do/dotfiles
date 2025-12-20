@@ -6,6 +6,9 @@ mouse-hide-while-typing = true
 window-decoration = auto
 macos-titlebar-style = hidden
 macos-option-as-alt = true
+
+# Use xterm-256color for better compatibility with remote systems
+term = xterm-256color
 # background-opacity = 0.7
 # background-blur-radius = 20 
 keybind = shift+enter=text:\x1b\r
