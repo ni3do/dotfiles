@@ -59,6 +59,9 @@ alias gre='git reset'
 # Nvim
 alias vi=nvim
 
+# Claude Code
+alias c=claude
+
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"

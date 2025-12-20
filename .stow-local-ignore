@@ -10,3 +10,5 @@ scripts
 ^false$
 ^false\.zwc$
 ^.*\.zwc$
+
+.claude
