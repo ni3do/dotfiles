@@ -11,19 +11,31 @@ SAVEHIST="10000"
 HISTFILE="$HOME/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
-# Fix terminal line discipline issues when connecting via SSH
-# This prevents duplicate keystrokes on remote connections
-if [[ -t 0 && -n "$SSH_CONNECTION" ]]; then
-  stty sane 2>/dev/null || true
-  stty -ixon -ixoff 2>/dev/null || true
-fi
+## Open buffer line in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
 
-bindkey -v
-export KEYTIMEOUT=1
+# Expands history expressions like !! or !$ when you press space
+bindkey ' ' magic-space
 
-# Only changing the escape key to jk in insert mode, we still
-# keep using the default keybindings ^[ in other modes
-# ZVM_VI_ESCAPE_BINDKEY=jk
+# Enable zmv
+autoload -Uz zmv
+
+# Usage examples:
+# zmv '(*).log' '$1.txt'           # Rename .log to .txt
+# zmv -w '*.log' '*.txt'           # Same thing, simpler syntax
+# zmv -n '(*).log' '$1.txt'        # Dry run (preview changes)
+# zmv -i '(*).log' '$1.txt'        # Interactive mode (confirm each)
+
+# Copy current command buffer to clipboard (macOS)
+function copy-buffer-to-clipboard() {
+  echo -n "$BUFFER" | pbcopy
+  zle -M "Copied to clipboard"
+}
+zle -N copy-buffer-to-clipboard
+bindkey '^X^C' copy-buffer-to-clipboard
+
 
 ##### Zshenv #####
 # use vim as the editor
@@ -80,37 +92,7 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-bless() {
-  # Use bat for color + syntax; page with less
-  bat --color=always --style=plain --paging=never "$@" | less -R
-}
-
-llog() {
-  local log_dir="./logs"
-  if [ ! -d "$log_dir" ]; then
-    echo "logs directory not found: $log_dir" >&2
-    return 1
-  fi
-
-  local newest_log
-  newest_log=$(find "$log_dir" -type f -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | cut -d' ' -f2-)
-
-  if [ -z "$newest_log" ]; then
-    echo "no log files in $log_dir" >&2
-    return 1
-  fi
-
-  bless "$newest_log"
-}
-
 ##### Zshrc #####
-
-# Fix for starship error when entering vi normal mode with escape
-if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
-      "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
-    zle -N zle-keymap-select "";
-fi
-
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
@@ -125,7 +107,6 @@ export ZCACHEFILE="$_antigen_cache_root/zcache.zsh"
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle jeffreytse/zsh-vi-mode
 antigen bundle "MichaelAquilina/zsh-you-should-use"
 antigen bundle Aloxaf/fzf-tab
 
