@@ -83,11 +83,11 @@ This repository uses GNU Stow's `--dotfiles` feature to manage symlinks. Files/d
 
 Antigen cache and artifacts are stored in `${XDG_CACHE_HOME:-$HOME/.cache}/antigen`, not in the repo root. This prevents cache pollution in version control.
 
-Active plugins (from `zsh/antigen.zsh`):
+Active plugins (from `dot-zshrc`):
 - `zsh-users/zsh-syntax-highlighting`
 - `zsh-users/zsh-autosuggestions`
-- `jeffreytse/zsh-vi-mode`
 - `MichaelAquilina/zsh-you-should-use`
+- `Aloxaf/fzf-tab`
 
 ### Tmux Configuration
 
@@ -127,4 +127,4 @@ Common scopes: `nvim`, `zsh`, `tmux`, `ghostty`, `setup`
 - **Cache Files**: Files matching `*.zwc` are zsh compiled files and should remain gitignored
 - **Secrets**: Never commit machine-specific secrets; use `~/.localrc` or similar untracked files
 - **Ghostty Terminal Fix**: The zsh configuration includes special terminal line discipline fixes for Ghostty duplicate keystroke issues
-- **Starship Integration**: There's a workaround for starship errors when entering vi normal mode (see `zsh/zshrc:44-47`)
+- **Emacs Mode**: Zsh is configured to use emacs keybindings (not vi mode) with `bindkey -e`

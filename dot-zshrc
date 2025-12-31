@@ -93,6 +93,9 @@ function y() {
 }
 
 ##### Zshrc #####
+# Force emacs mode (disable vi mode)
+bindkey -e
+
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
