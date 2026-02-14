@@ -1,15 +1,11 @@
-# If available, source the system-wide bashrc
+# If available, source the system-wide zshrc
 if [ -f /etc/zshrc ]; then
   . /etc/zshrc
 fi
 
-# History options should be set in .zshrc and after oh-my-zsh sourcing.
-# See https://github.com/nix-community/home-manager/issues/177.
 HISTSIZE="10000"
 SAVEHIST="10000"
-
 HISTFILE="$HOME/.zsh_history"
-mkdir -p "$(dirname "$HISTFILE")"
 
 ## Open buffer line in editor
 autoload -Uz edit-command-line
@@ -37,11 +33,7 @@ zle -N copy-buffer-to-clipboard
 bindkey '^X^C' copy-buffer-to-clipboard
 
 
-##### Zshenv #####
-# use vim as the editor
 export EDITOR=nvim
-
-export PATH="$HOME/repo/simonwachter-dotfiles/bin:$PATH"
 
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -50,34 +42,17 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-##### Aliases #####
-# Git
-alias gc="git commit -m"
-alias gca="git commit --all -m 'auto-commit'"
-alias gp="git push"
-alias gpu="git pull"
-alias gs="git status"
-alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
-alias gdiff="git diff"
-alias gco="git checkout"
-alias gb='git branch'
-alias gba='git branch -a'
-alias gadd='git add'
-alias ga='git add -p'
-alias gcoall='git checkout -- .'
-alias gr='git remote'
-alias gre='git reset'
-
 # Nvim
 alias vi=nvim
 
 # Claude Code
-alias c=claude
+alias c="claude --dangerously-skip-permissions"
+alias csafe=claude
 
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
-alias ltree="eza --tree --level=2  --icons --git"
+alias ltree="eza --tree --level=2 --icons --git"
 
 # bat
 alias cat="bat --paging=never"
@@ -92,14 +67,11 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-##### Zshrc #####
-# Force emacs mode (disable vi mode)
 bindkey -e
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-##### Antigen #####
 source ~/.config/antigen/antigen.zsh
 
 # Keep antigen/zcache artifacts in XDG cache (not the repo root).
@@ -108,10 +80,15 @@ mkdir -p "$_antigen_cache_root"
 export ANTIGEN_CACHE="$_antigen_cache_root/.antigen.zsh"
 export ZCACHEFILE="$_antigen_cache_root/zcache.zsh"
 
+antigen bundle git
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle "MichaelAquilina/zsh-you-should-use"
 antigen bundle Aloxaf/fzf-tab
 
 antigen apply
+
+# Git overrides (after antigen to take precedence)
+alias gc="git commit -m"
+
 export PATH="$HOME/.local/bin:$PATH"
