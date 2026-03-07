@@ -4,6 +4,26 @@
 
 SELF="$(realpath "$0")"
 
+case "${1:-}" in
+  --list)
+    # Output: session_name\tdisplay_line
+    tmux list-sessions -F '#{session_name}	#{session_windows}w  #{?session_attached,attached,detached}  #{session_path}' 2>/dev/null
+    exit 0
+    ;;
+  --preview)
+    session="$2"
+    echo "Session: $session"
+    echo ""
+    tmux list-windows -t "=$session" -F '  #I: #W #{?window_active,(active),}' 2>/dev/null
+    exit 0
+    ;;
+  --kill)
+    session="$2"
+    tmux kill-session -t "=$session" 2>/dev/null
+    exit 0
+    ;;
+esac
+
 # Verify tmux server is running
 tmux ls &>/dev/null || { echo "No tmux sessions." >&2; exit 1; }
 
@@ -11,15 +31,11 @@ tmux ls &>/dev/null || { echo "No tmux sessions." >&2; exit 1; }
 if [[ -n "${1:-}" ]]; then
   session_name="$1"
   if ! tmux has-session -t "=${session_name}" 2>/dev/null; then
-    # Fuzzy match: find best matching session name
     all_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null)
-    # Try prefix match first
     match=$(echo "$all_sessions" | grep -i "^${session_name}" | head -1)
-    # Then substring match
     if [[ -z "$match" ]]; then
-      match=$(echo "$all_sessions" | grep -i "${session_name}" | head -1)
+      match=$(echo "$all_sessions" | grep -i -- "${session_name}" | head -1)
     fi
-    # Then approximate match via fzf --filter (leverages fzf's own fuzzy algo)
     if [[ -z "$match" ]]; then
       match=$(echo "$all_sessions" | fzf --filter="${session_name}" 2>/dev/null | head -1)
     fi
@@ -39,9 +55,8 @@ if [[ -n "${1:-}" ]]; then
   exit 0
 fi
 
-header=$(printf '     \033[1m%-32s  %s\033[0m' 'REPO' 'BRANCH')
+header=$(printf '  \033[1m%-21s %s\033[0m' 'SESSION' 'INFO')
 
-# When outside tmux, use --height so fzf stays inline in the terminal
 fzf_layout=()
 if [[ -z "${TMUX:-}" ]]; then
   fzf_layout=(--height=80%)
@@ -51,8 +66,8 @@ selected=$("$SELF" --list | \
   fzf --ansi \
       "${fzf_layout[@]}" \
       --delimiter=$'\t' \
-      --with-nth=2.. \
-      --tabstop=2 \
+      --with-nth=1.. \
+      --tabstop=22 \
       --header="$header" \
       --preview="\"$SELF\" --preview {1}" \
       --preview-window='right:50%:wrap' \
@@ -66,8 +81,7 @@ selected=$("$SELF" --list | \
       --padding=0 \
 ) || exit 0
 
-# Extract session name (first field before tab)
-session_name="${selected%%$'\t'*}"
+session_name="$(printf '%s' "$selected" | cut -f1)"
 
 if [[ -n "${TMUX:-}" ]]; then
   tmux switch-client -t "=${session_name}"

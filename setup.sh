@@ -3,29 +3,43 @@ set -euo pipefail
 
 echo "Linking dotfiles..."
 
-# Workaround for stow 2.3.1 bug with --dotfiles when ~/.config exists
-# Temporarily move ~/.config if it exists, stow, then restore non-conflicting items
-if [ -d "$HOME/.config" ] && [ ! -L "$HOME/.config" ]; then
-  echo "Found existing ~/.config directory, handling merge..."
-  mv "$HOME/.config" "$HOME/.config.pre-stow"
-  stow --dotfiles -t ~ .
+# If ~/.config is a symlink pointing into the stow tree, remove it so stow can manage it properly
+if [ -L "$HOME/.config" ]; then
+  echo "Removing old ~/.config symlink..."
+  rm "$HOME/.config"
+fi
 
-  # Restore non-conflicting items from old .config
-  if [ -d "$HOME/.config.pre-stow" ]; then
-    for item in "$HOME/.config.pre-stow"/*; do
-      if [ -e "$item" ]; then
-        itemname=$(basename "$item")
-        if [ ! -e "$HOME/.config/$itemname" ]; then
-          echo "Restoring $itemname to ~/.config/"
-          mv "$item" "$HOME/.config/"
-        fi
+# Helper: temporarily move a dir, stow, then restore non-conflicting items
+merge_dir() {
+  local dir="$1"
+  if [ -d "$dir" ] && [ ! -L "$dir" ]; then
+    echo "Found existing $dir, handling merge..."
+    mv "$dir" "${dir}.pre-stow"
+  fi
+}
+
+restore_dir() {
+  local dir="$1"
+  if [ -d "${dir}.pre-stow" ]; then
+    for item in "${dir}.pre-stow"/*; do
+      [ -e "$item" ] || continue
+      itemname=$(basename "$item")
+      if [ ! -e "$dir/$itemname" ]; then
+        echo "Restoring $itemname to $dir/"
+        mv "$item" "$dir/"
       fi
     done
-    rmdir "$HOME/.config.pre-stow" 2>/dev/null || rm -rf "$HOME/.config.pre-stow"
+    rmdir "${dir}.pre-stow" 2>/dev/null || rm -rf "${dir}.pre-stow"
   fi
-else
-  stow --dotfiles -t ~ .
-fi
+}
+
+merge_dir "$HOME/.config"
+merge_dir "$HOME/.local"
+
+stow --dotfiles -t ~ .
+
+restore_dir "$HOME/.config"
+restore_dir "$HOME/.local"
 
 # Check if the directory is nonexistent or empty, then create it and download antigen
 if [ ! -r "$HOME/.config/antigen/antigen.zsh" ]; then
