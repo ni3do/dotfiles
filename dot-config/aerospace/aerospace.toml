@@ -207,3 +207,7 @@ run = 'layout floating'
 if.app-name-regex-substring = 'nordvpn'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-name-regex-substring = 'superwhisper'
+run = 'layout floating'
+
