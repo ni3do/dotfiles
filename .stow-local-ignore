@@ -11,4 +11,9 @@ scripts
 ^false\.zwc$
 ^.*\.zwc$
 
+# Machine-specific configs
+^/dot-config/gh$
+^/dot-config/git$
+^/dot-config/antigen$
+
 .claude

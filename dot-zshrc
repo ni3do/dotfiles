@@ -49,12 +49,16 @@ alias vi=nvim
 alias c="claude --dangerously-skip-permissions"
 alias csafe=claude
 
+# Tmux session picker
+alias t=ts
+
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
 alias ltree="eza --tree --level=2 --icons --git"
 
 # bat
+alias bat="batcat"
 alias cat="bat --paging=never"
 alias ocat="/bin/cat"
 
@@ -88,7 +92,26 @@ antigen bundle Aloxaf/fzf-tab
 
 antigen apply
 
+# Fix zsh-vi-mode paste uppercase bug
+# Disable bracketed paste mode to prevent ~ at end of paste triggering swap-case
+# Must be set AFTER antigen apply
+typeset -g -A zle_bracketed_paste
+
 # Git overrides (after antigen to take precedence)
 alias gc="git commit -m"
 
 export PATH="$HOME/.local/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/home/simon/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+export AWS_PROFILE=infomaniak
