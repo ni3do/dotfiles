@@ -178,10 +178,6 @@ if.app-name-regex-substring = 'firefox'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'ghostty'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
 if.app-name-regex-substring = 'spotify'
 run = 'move-node-to-workspace 5'
 

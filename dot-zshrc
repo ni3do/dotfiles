@@ -1,35 +1,39 @@
-# If available, source the system-wide bashrc
+# If available, source the system-wide zshrc
 if [ -f /etc/zshrc ]; then
   . /etc/zshrc
 fi
 
-# History options should be set in .zshrc and after oh-my-zsh sourcing.
-# See https://github.com/nix-community/home-manager/issues/177.
 HISTSIZE="10000"
 SAVEHIST="10000"
-
 HISTFILE="$HOME/.zsh_history"
-mkdir -p "$(dirname "$HISTFILE")"
 
-# Fix terminal line discipline issues when connecting via SSH
-# This prevents duplicate keystrokes on remote connections
-if [[ -t 0 && -n "$SSH_CONNECTION" ]]; then
-  stty sane 2>/dev/null || true
-  stty -ixon -ixoff 2>/dev/null || true
-fi
+## Open buffer line in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
 
-bindkey -v
-export KEYTIMEOUT=1
+# Expands history expressions like !! or !$ when you press space
+bindkey ' ' magic-space
 
-# Only changing the escape key to jk in insert mode, we still
-# keep using the default keybindings ^[ in other modes
-# ZVM_VI_ESCAPE_BINDKEY=jk
+# Enable zmv
+autoload -Uz zmv
 
-##### Zshenv #####
-# use vim as the editor
+# Usage examples:
+# zmv '(*).log' '$1.txt'           # Rename .log to .txt
+# zmv -w '*.log' '*.txt'           # Same thing, simpler syntax
+# zmv -n '(*).log' '$1.txt'        # Dry run (preview changes)
+# zmv -i '(*).log' '$1.txt'        # Interactive mode (confirm each)
+
+# Copy current command buffer to clipboard (macOS)
+function copy-buffer-to-clipboard() {
+  echo -n "$BUFFER" | pbcopy
+  zle -M "Copied to clipboard"
+}
+zle -N copy-buffer-to-clipboard
+bindkey '^X^C' copy-buffer-to-clipboard
+
+
 export EDITOR=nvim
-
-export PATH="$HOME/repo/simonwachter-dotfiles/bin:$PATH"
 
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -38,29 +42,12 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-##### Aliases #####
-# Git
-alias gc="git commit -m"
-alias gca="git commit --all -m 'auto-commit'"
-alias gp="git push"
-alias gpu="git pull"
-alias gs="git status"
-alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
-alias gdiff="git diff"
-alias gco="git checkout"
-alias gb='git branch'
-alias gba='git branch -a'
-alias gadd='git add'
-alias ga='git add -p'
-alias gcoall='git checkout -- .'
-alias gr='git remote'
-alias gre='git reset'
-
 # Nvim
 alias vi=nvim
 
 # Claude Code
 alias c="claude --dangerously-skip-permissions"
+alias csafe=claude
 
 # Tmux session picker
 alias t=ts
@@ -68,7 +55,7 @@ alias t=ts
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
-alias ltree="eza --tree --level=2  --icons --git"
+alias ltree="eza --tree --level=2 --icons --git"
 
 # bat
 alias bat="batcat"
@@ -84,41 +71,11 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-bless() {
-  # Use bat for color + syntax; page with less
-  bat --color=always --style=plain --paging=never "$@" | less -R
-}
-
-llog() {
-  local log_dir="./logs"
-  if [ ! -d "$log_dir" ]; then
-    echo "logs directory not found: $log_dir" >&2
-    return 1
-  fi
-
-  local newest_log
-  newest_log=$(find "$log_dir" -type f -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | cut -d' ' -f2-)
-
-  if [ -z "$newest_log" ]; then
-    echo "no log files in $log_dir" >&2
-    return 1
-  fi
-
-  bless "$newest_log"
-}
-
-##### Zshrc #####
-
-# Fix for starship error when entering vi normal mode with escape
-if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
-      "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
-    zle -N zle-keymap-select "";
-fi
+bindkey -e
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-##### Antigen #####
 source ~/.config/antigen/antigen.zsh
 
 # Keep antigen/zcache artifacts in XDG cache (not the repo root).
@@ -127,9 +84,9 @@ mkdir -p "$_antigen_cache_root"
 export ANTIGEN_CACHE="$_antigen_cache_root/.antigen.zsh"
 export ZCACHEFILE="$_antigen_cache_root/zcache.zsh"
 
+antigen bundle git
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle jeffreytse/zsh-vi-mode
 antigen bundle "MichaelAquilina/zsh-you-should-use"
 antigen bundle Aloxaf/fzf-tab
 
@@ -139,6 +96,9 @@ antigen apply
 # Disable bracketed paste mode to prevent ~ at end of paste triggering swap-case
 # Must be set AFTER antigen apply
 typeset -g -A zle_bracketed_paste
+
+# Git overrides (after antigen to take precedence)
+alias gc="git commit -m"
 
 export PATH="$HOME/.local/bin:$PATH"
 
