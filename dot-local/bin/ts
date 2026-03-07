@@ -1,0 +1,76 @@
+#!/bin/bash
+# Interactive tmux session picker — works both inside and outside tmux.
+# Inside tmux: switch-client. Outside: attach.
+
+SELF="$(realpath "$0")"
+
+# Verify tmux server is running
+tmux ls &>/dev/null || { echo "No tmux sessions." >&2; exit 1; }
+
+# Direct attach by name (skip fzf)
+if [[ -n "${1:-}" ]]; then
+  session_name="$1"
+  if ! tmux has-session -t "=${session_name}" 2>/dev/null; then
+    # Fuzzy match: find best matching session name
+    all_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null)
+    # Try prefix match first
+    match=$(echo "$all_sessions" | grep -i "^${session_name}" | head -1)
+    # Then substring match
+    if [[ -z "$match" ]]; then
+      match=$(echo "$all_sessions" | grep -i "${session_name}" | head -1)
+    fi
+    # Then approximate match via fzf --filter (leverages fzf's own fuzzy algo)
+    if [[ -z "$match" ]]; then
+      match=$(echo "$all_sessions" | fzf --filter="${session_name}" 2>/dev/null | head -1)
+    fi
+    if [[ -z "$match" ]]; then
+      echo "No session matching: ${session_name}" >&2
+      echo "Available sessions:" >&2
+      echo "$all_sessions" | sed 's/^/  /' >&2
+      exit 1
+    fi
+    session_name="$match"
+  fi
+  if [[ -n "${TMUX:-}" ]]; then
+    tmux switch-client -t "=${session_name}"
+  else
+    tmux attach -t "=${session_name}"
+  fi
+  exit 0
+fi
+
+header=$(printf '     \033[1m%-32s  %s\033[0m' 'REPO' 'BRANCH')
+
+# When outside tmux, use --height so fzf stays inline in the terminal
+fzf_layout=()
+if [[ -z "${TMUX:-}" ]]; then
+  fzf_layout=(--height=80%)
+fi
+
+selected=$("$SELF" --list | \
+  fzf --ansi \
+      "${fzf_layout[@]}" \
+      --delimiter=$'\t' \
+      --with-nth=2.. \
+      --tabstop=2 \
+      --header="$header" \
+      --preview="\"$SELF\" --preview {1}" \
+      --preview-window='right:50%:wrap' \
+      --bind="ctrl-x:execute-silent(\"$SELF\" --kill {1})+reload(\"$SELF\" --list)" \
+      --prompt='session › ' \
+      --no-sort \
+      --reverse \
+      --border=rounded \
+      --border-label=' Sessions ' \
+      --margin=0 \
+      --padding=0 \
+) || exit 0
+
+# Extract session name (first field before tab)
+session_name="${selected%%$'\t'*}"
+
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "=${session_name}"
+else
+  tmux attach -t "=${session_name}"
+fi
