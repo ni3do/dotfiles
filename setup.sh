@@ -1,6 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "=== Dotfiles Setup ==="
+
+# Check for Homebrew
+if ! command -v brew &> /dev/null; then
+  echo "Homebrew not found. Please install it first: https://brew.sh"
+  exit 1
+fi
+
+echo "Installing dependencies..."
+brew install stow jq curl
+
+echo "Installing fonts..."
+brew install --cask font-jetbrains-mono-nerd-font
+
+# Install sketchybar-app-font
+if [ ! -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ]; then
+  echo "Installing sketchybar-app-font..."
+  curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v2.0.28/sketchybar-app-font.ttf -o "$HOME/Library/Fonts/sketchybar-app-font.ttf"
+fi
+
+# Install SF Pro font (for SF Symbols in sketchybar)
+if ! fc-list | grep -q "SF Pro"; then
+  echo "Installing SF Pro font..."
+  curl -L -o /tmp/SF-Pro.dmg "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg"
+  hdiutil attach /tmp/SF-Pro.dmg -nobrowse -quiet
+  pkgutil --expand "/Volumes/SFProFonts/SF Pro Fonts.pkg" /tmp/sf-pro-expanded
+  cd /tmp/sf-pro-expanded/SFProFonts.pkg && cat Payload | gunzip -dc | cpio -i 2>/dev/null
+  cp /tmp/sf-pro-expanded/SFProFonts.pkg/Library/Fonts/SF-Pro*.ttf /tmp/sf-pro-expanded/SFProFonts.pkg/Library/Fonts/SF-Pro*.otf "$HOME/Library/Fonts/" 2>/dev/null || true
+  hdiutil detach /Volumes/SFProFonts -quiet 2>/dev/null || true
+  rm -rf /tmp/sf-pro-expanded /tmp/SF-Pro.dmg
+  cd - > /dev/null
+fi
+
 echo "Linking dotfiles..."
 
 # If ~/.config is a symlink pointing into the stow tree, remove it so stow can manage it properly
