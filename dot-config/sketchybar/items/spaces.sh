@@ -19,28 +19,30 @@ for sid in $(aerospace list-workspaces --all); do
     --subscribe space."$sid" aerospace_workspace_change display_change system_woke mouse.entered mouse.exited \
     --set space."$sid" \
     display="$monitor" \
-    padding_right=0 \
+    padding_right=2 \
+    padding_left=2 \
     icon="$sid" \
-    label.padding_right=7 \
-    icon.padding_left=7 \
+    label.padding_right=8 \
+    icon.padding_left=8 \
     icon.padding_right=4 \
     background.drawing=on \
     label.font="sketchybar-app-font:Regular:16.0" \
-    background.color="$ACCENT_COLOR" \
-    icon.color="$BACKGROUND" \
-    label.color="$BACKGROUND" \
-    background.corner_radius=5 \
-    background.height=25 \
+    background.color="$SURFACE1" \
+    icon.color="$TEXT" \
+    label.color="$TEXT" \
+    background.corner_radius=8 \
+    background.height=28 \
     label.drawing=on \
     click_script="aerospace workspace $sid" \
     script="$CONFIG_DIR/plugins/aerospace.sh $sid"
 done
 
 sketchybar --add item space_separator left \
-  --set space_separator icon="|" \
-  icon.color="$ACCENT_COLOR" \
-  icon.padding_left=4 \
-  icon.padding_right=7 \
+  --set space_separator icon="􀆊" \
+  icon.font=".SF Symbols Fallback:Regular:12.0" \
+  icon.color="$SUBTEXT" \
+  icon.padding_left=8 \
+  icon.padding_right=8 \
   label.drawing=off \
   background.drawing=off
 

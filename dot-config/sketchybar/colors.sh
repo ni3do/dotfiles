@@ -1,14 +1,30 @@
 #!/bin/bash
 
 export WHITE=0xffffffff
+export BLACK=0xff181926
 
 export TRANSPARENT=0x00000000
 
-# -- Catppuccin Mocchia --
-export BAR_COLOR=0x70363a4f # #363a4f
-export ITEM_BG_COLOR=0xffeff1f5 # #eff1f5
-export ACCENT_COLOR=0xffc6a0f6 # #c6a0f6
-export BACKGROUND=0xff4c4f69 # #4c4f69
+# -- Catppuccin Mocha --
+export BAR_COLOR=0xd924273a # Base with transparency
+export ITEM_BG_COLOR=0xff313244 # Surface0
+export ACCENT_COLOR=0xffcba6f7 # Mauve
+export BACKGROUND=0xff1e1e2e # Base
+
+# Additional Catppuccin colors for variety
+export RED=0xfff38ba8
+export GREEN=0xffa6e3a1
+export YELLOW=0xfff9e2af
+export BLUE=0xff89b4fa
+export MAGENTA=0xfff5c2e7
+export CYAN=0xff94e2d5
+export ORANGE=0xfffab387
+export PINK=0xfff5c2e7
+export LAVENDER=0xffb4befe
+export TEXT=0xffcdd6f4
+export SUBTEXT=0xffa6adc8
+export SURFACE1=0xff45475a
+export SURFACE2=0xff585b70
 
 # -- Gruv Box --
 # export BAR_COLOR=0x70282828
