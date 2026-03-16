@@ -2,17 +2,17 @@
 
 bar=(
   position=top
-  height=40
+  height=32
   margin=8
   y_offset=4
-  corner_radius=12
+  corner_radius=10
   blur_radius=30
   color="$BAR_COLOR"
   border_width=0
   shadow=on
   sticky=on
-  padding_left=12
-  padding_right=12
+  padding_left=10
+  padding_right=10
 )
 
 sketchybar --bar "${bar[@]}"
