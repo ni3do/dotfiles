@@ -10,7 +10,8 @@
     "gpt-5.4"
   ],
   "packages": [
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:pi-ask-user"
   ],
   "theme": "catppuccin"
 }
