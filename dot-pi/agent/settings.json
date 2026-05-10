@@ -1,0 +1,16 @@
+{
+  "lastChangelogVersion": "0.70.2",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
+  "enabledModels": [
+    "claude-opus-4-7",
+    "claude-sonnet-4-6",
+    "gpt-5.5",
+    "gpt-5.4"
+  ],
+  "packages": [
+    "npm:pi-web-access"
+  ],
+  "theme": "catppuccin"
+}
