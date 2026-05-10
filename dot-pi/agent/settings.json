@@ -11,7 +11,8 @@
   ],
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-ask-user"
+    "npm:pi-ask-user",
+    "npm:pi-notify"
   ],
   "theme": "catppuccin"
 }
