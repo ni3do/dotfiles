@@ -27,6 +27,42 @@ esac
 # Verify tmux server is running
 tmux ls &>/dev/null || { echo "No tmux sessions." >&2; exit 1; }
 
+# --- Subcommands used by fzf ---
+
+if [[ "${1:-}" == "--list" ]]; then
+  tmux list-sessions -F '#{session_name}|#{pane_current_path}' 2>/dev/null | while IFS='|' read -r name pane_path; do
+    dir=$(basename "${pane_path:--}" 2>/dev/null)
+    branch=""
+    if [[ -n "$pane_path" ]] && git -C "$pane_path" rev-parse --git-dir &>/dev/null; then
+      branch=$(git -C "$pane_path" branch --show-current 2>/dev/null)
+    fi
+    printf '%s\t  %-32s  %s\n' "$name" "$dir" "$branch"
+  done
+  exit 0
+fi
+
+if [[ "${1:-}" == "--preview" ]]; then
+  session="${2:-}"
+  [[ -z "$session" ]] && exit 0
+  pane_path=$(tmux list-sessions -F '#{session_name}|#{pane_current_path}' 2>/dev/null | grep "^${session}|" | head -1 | cut -d'|' -f2)
+  echo "Session: $session"
+  echo "Path:    ${pane_path:-(none)}"
+  if [[ -n "$pane_path" ]] && git -C "$pane_path" rev-parse --git-dir &>/dev/null; then
+    echo "Branch:  $(git -C "$pane_path" branch --show-current 2>/dev/null)"
+    echo ""
+    git -C "$pane_path" log --oneline -5 2>/dev/null
+  fi
+  echo ""
+  tmux list-windows -t "=${session}" -F '  #{window_index}: #{window_name} #{?window_active,(active),}' 2>/dev/null
+  exit 0
+fi
+
+if [[ "${1:-}" == "--kill" ]]; then
+  session="${2:-}"
+  [[ -n "$session" ]] && tmux kill-session -t "=${session}" 2>/dev/null
+  exit 0
+fi
+
 # Direct attach by name (skip fzf)
 if [[ -n "${1:-}" ]]; then
   session_name="$1"
