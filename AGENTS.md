@@ -39,6 +39,72 @@ desktop, links everything with stow, downloads antigen to
 `~/.config/antigen/antigen.zsh`, and clones tpm to `~/.tmux/plugins/tpm`.
 Non-macOS hosts are switched to headless automatically.
 
+## Setting Up a New Machine
+
+Runbook for an agent provisioning this config from scratch.
+
+**1. Prerequisites.** Install Homebrew (<https://brew.sh>) and the Xcode command
+line tools (`xcode-select --install`). The repository is private, so git needs a
+working SSH key or `gh auth login` first.
+
+**2. Clone to exactly `~/repo/dotfiles`.**
+
+```bash
+git clone git@github.com:ni3do/dotfiles.git ~/repo/dotfiles
+```
+
+The path is not arbitrary. Stow writes links *relative* to `$HOME`
+(`~/.zshrc -> repo/dotfiles/dot-zshrc`), so cloning anywhere else produces links
+that resolve differently or break. If the repo must live elsewhere, re-run stow
+from that location rather than moving a stowed tree.
+
+**3. Run the installer.**
+
+```bash
+cd ~/repo/dotfiles
+./setup.sh                    # macOS desktop
+./setup.sh --mode headless    # server / Linux
+```
+
+It is idempotent — safe to re-run. If it prints a `kept …pre-stow` warning, a
+pre-existing file collides with a repo-managed name; inspect and merge those
+files by hand, then delete the `.pre-stow` directory. Never delete it unread.
+
+**4. Steps the installer cannot perform.** These need a GUI, a login, or
+secrets, so an agent should carry them out interactively or hand them to the
+user:
+
+- **macOS permissions.** AeroSpace and Kanata need Accessibility and Input
+  Monitoring under System Settings → Privacy & Security. Kanata additionally
+  requires the Karabiner VirtualHIDDevice driver.
+- **tmux plugins.** Start tmux and press `Ctrl-Space` then `I` to have tpm
+  install the plugins listed in `tmux.conf`.
+- **Neovim.** The first `nvim` launch bootstraps LazyVim and installs plugins
+  from `lazy-lock.json`; let it finish before judging health output.
+- **pi.** Run `pi` once to authenticate. This writes `~/.pi/agent/auth.json`,
+  which is deliberately untracked — never commit or copy it into the repo. Then
+  install the packages named in `settings.json`: `pi-web-access`, `pi-ask-user`,
+  `pi-notify`.
+- **AWS.** `dot-zshrc` exports `AWS_PROFILE=infomaniak`; the matching
+  credentials in `~/.aws` are not in this repo.
+- **Optional toolchains.** nvm, pnpm and grok are sourced only if present — the
+  shell starts fine without them, so install only what is needed.
+- **Fonts.** Restart the terminal after setup so the Nerd Font is picked up.
+
+**5. Verify.**
+
+```bash
+stow --dotfiles -t ~ --simulate .   # must exit 0
+zsh -lic 'echo shell ok'            # login shell starts without errors
+ls -l ~/.zshrc ~/.config/nvim       # symlinks into the repo, not copies
+ls -l ~/.pi/agent                   # settings/themes linked; auth.json a real file
+git -C ~/repo/dotfiles status       # clean
+```
+
+A non-symlink where a symlink is expected means stow was bypassed; a dirty git
+status straight after install means something wrote into the repo — investigate
+before committing, it is usually the tree-folding trap below.
+
 ## Stow Behaviour — Read Before Touching setup.sh
 
 These are non-obvious and have each caused a real bug:
