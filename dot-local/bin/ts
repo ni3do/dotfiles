@@ -4,26 +4,6 @@
 
 SELF="$(realpath "$0")"
 
-case "${1:-}" in
-  --list)
-    # Output: session_name\tdisplay_line
-    tmux list-sessions -F '#{session_name}	#{session_windows}w  #{?session_attached,attached,detached}  #{session_path}' 2>/dev/null
-    exit 0
-    ;;
-  --preview)
-    session="$2"
-    echo "Session: $session"
-    echo ""
-    tmux list-windows -t "=$session" -F '  #I: #W #{?window_active,(active),}' 2>/dev/null
-    exit 0
-    ;;
-  --kill)
-    session="$2"
-    tmux kill-session -t "=$session" 2>/dev/null
-    exit 0
-    ;;
-esac
-
 # Verify tmux server is running
 tmux ls &>/dev/null || { echo "No tmux sessions." >&2; exit 1; }
 

@@ -53,6 +53,9 @@ alias csafe=claude
 alias pig="pi --model openai-codex/gpt-5.5"
 alias pic="pi --model anthropic/claude-opus-4-7"
 
+# Tmux session picker
+alias t=ts
+
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
