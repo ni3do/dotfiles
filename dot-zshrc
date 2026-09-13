@@ -49,18 +49,15 @@ alias vi=nvim
 alias c="claude --dangerously-skip-permissions"
 alias csafe=claude
 
-# Tmux session picker
-alias t=ts
+# pi shortcuts
+alias pig="pi --model openai-codex/gpt-5.5"
+alias pic="pi --model anthropic/claude-opus-4-7"
 
 # Eza
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
 alias ltree="eza --tree --level=2 --icons --git"
 
-# bat
-alias bat="batcat"
-alias cat="bat --paging=never"
-alias ocat="/bin/cat"
 
 # Yazi wrapper
 function y() {
@@ -84,6 +81,7 @@ mkdir -p "$_antigen_cache_root"
 export ANTIGEN_CACHE="$_antigen_cache_root/.antigen.zsh"
 export ZCACHEFILE="$_antigen_cache_root/zcache.zsh"
 
+antigen use oh-my-zsh
 antigen bundle git
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
@@ -103,7 +101,7 @@ alias gc="git commit -m"
 export PATH="$HOME/.local/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/home/simon/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -113,5 +111,15 @@ esac
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+fi
 export AWS_PROFILE=infomaniak
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
