@@ -2,4 +2,15 @@
 dot-config/tmux/plugins/
 debug.log
 *.zwc
-false
+
+# Installer backups: ~/.zshrc is a symlink into this repo, so naive
+# installers (grok, nvm, ...) drop their backups here rather than in $HOME.
+*.bak
+*.bak.*
+*.bak-*
+
+# Pi runtime state. Belt-and-braces: setup.sh pre-creates ~/.pi/agent so stow
+# cannot fold it into the repo, but never risk committing credentials.
+dot-pi/agent/auth.json
+dot-pi/agent/sessions/
+dot-pi/agent/.update-check

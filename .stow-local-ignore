@@ -3,12 +3,11 @@
 \.gitmodules
 
 ^/README.*
+^/setup\.sh$
 
 scripts
 
 # Antigen cache files
-^false$
-^false\.zwc$
 ^.*\.zwc$
 
 # Machine-specific configs
