@@ -44,13 +44,13 @@ Non-macOS hosts are switched to headless automatically.
 Runbook for an agent provisioning this config from scratch.
 
 **1. Prerequisites.** Install Homebrew (<https://brew.sh>) and the Xcode command
-line tools (`xcode-select --install`). The repository is private, so git needs a
-working SSH key or `gh auth login` first.
+line tools (`xcode-select --install`). The repository is public, so no
+authentication is needed to clone; pushing needs an SSH key.
 
 **2. Clone to exactly `~/repo/dotfiles`.**
 
 ```bash
-git clone git@github.com:ni3do/dotfiles.git ~/repo/dotfiles
+git clone https://github.com/ni3do/dotfiles.git ~/repo/dotfiles
 ```
 
 The path is not arbitrary. Stow writes links *relative* to `$HOME`
@@ -69,6 +69,11 @@ cd ~/repo/dotfiles
 It is idempotent — safe to re-run. If it prints a `kept …pre-stow` warning, a
 pre-existing file collides with a repo-managed name; inspect and merge those
 files by hand, then delete the `.pre-stow` directory. Never delete it unread.
+
+On a machine that already has a `~/.zshrc`, stow reports a conflict and exits 1
+without linking anything — the existing file is not touched. Top-level targets
+(`~/.zshrc`, `~/.luarc.json`, `~/CLAUDE.md`, `~/AGENTS.md`) are not covered by
+the `.pre-stow` merge, so move them aside first and re-run.
 
 **4. Steps the installer cannot perform.** These need a GUI, a login, or
 secrets, so an agent should carry them out interactively or hand them to the
