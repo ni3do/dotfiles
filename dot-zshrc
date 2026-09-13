@@ -119,7 +119,6 @@ if [ -x /opt/homebrew/bin/brew ]; then
 elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 fi
-export AWS_PROFILE=infomaniak
 
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"

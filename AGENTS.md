@@ -90,8 +90,6 @@ user:
   which is deliberately untracked — never commit or copy it into the repo. Then
   install the packages named in `settings.json`: `pi-web-access`, `pi-ask-user`,
   `pi-notify`.
-- **AWS.** `dot-zshrc` exports `AWS_PROFILE=infomaniak`; the matching
-  credentials in `~/.aws` are not in this repo.
 - **Optional toolchains.** nvm, pnpm and grok are sourced only if present — the
   shell starts fine without them, so install only what is needed.
 - **Fonts.** Restart the terminal after setup so the Nerd Font is picked up.
@@ -249,7 +247,7 @@ Scopes in use: `nvim`, `zsh`, `tmux`, `ghostty`, `sketchybar`, `aerospace`,
 ## Important Notes
 
 - **Cache files:** `*.zwc` are compiled zsh files; keep them gitignored.
-- **Secrets:** never commit machine-specific secrets; use `~/.localrc` or
-  another untracked file. `AWS_PROFILE` is set in `dot-zshrc`; credentials are
-  not.
+- **Secrets:** never commit machine-specific secrets, and keep per-machine
+  identifiers such as cloud profile names out of `dot-zshrc` — it is shared.
+  Put them in `~/.localrc` or another untracked file.
 - **Emacs mode:** zsh uses emacs keybindings (`bindkey -e`), not vi mode.
