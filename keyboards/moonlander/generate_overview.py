@@ -27,7 +27,7 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": None,
+    "flashed": "18 Nov 2026, 11:17 CET",
 }
 
 LAYER_COLORS = {
