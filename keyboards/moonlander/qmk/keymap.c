@@ -131,7 +131,11 @@ static uint8_t scale_val(uint8_t v, uint8_t max) {
 }
 
 static void set_led_hsv(uint8_t led, uint8_t h, uint8_t s, uint8_t v) {
-    HSV hsv = {h, s, scale_val(v, rgb_matrix_config.hsv.v)};
+    uint8_t bright = rgb_matrix_config.hsv.v;
+    if (bright < 120) {
+        bright = 180;
+    }
+    HSV hsv = {h, s, scale_val(v, bright)};
     RGB rgb = hsv_to_rgb(hsv);
     rgb_matrix_set_color(led, rgb.r, rgb.g, rgb.b);
 }
@@ -229,9 +233,16 @@ static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
 }
 
 void keyboard_post_init_user(void) {
-    rgb_matrix_enable();
+    /* Do not set hsv.v to 0: indicator colours are scaled by this value. */
+    rgb_matrix_enable_noeeprom();
+    rgb_matrix_set_flags(LED_FLAG_ALL);
+    keyboard_config.rgb_matrix_enable = true;
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_sethsv_noeeprom(188, 255, 0);
+    uint8_t v = rgb_matrix_config.hsv.v;
+    if (v < 120) {
+        v = 180;
+    }
+    rgb_matrix_sethsv_noeeprom(rgb_matrix_config.hsv.h, rgb_matrix_config.hsv.s, v);
 }
 
 bool rgb_matrix_indicators_user(void) {
@@ -252,9 +263,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
         return true;
     }
-    if (keyboard_config.disable_layer_led) {
-        return true;
-    }
+    /* Paint layer colours even if Oryx "disable layer LED" is set, so the
+     * base/layer map cannot disappear while the matrix is enabled. */
 
     const uint8_t layer = get_highest_layer(layer_state);
     const HSV     theme = layer_theme_hsv(layer);
