@@ -4,7 +4,18 @@ Snapshot of the [Oryx](https://configure.zsa.io/moonlander/layouts/Emvlv/latest/
 
 **The QMK source in `qmk/` is the master copy.** Oryx revision **3vpmow** (17 Nov 2026, 20:07 CET, QMK **25.0**) is the last imported snapshot and is behind as of the 18 Nov 2026 local changes below. Do not run `fetch.sh` unless you intend to overwrite those edits with a fresh Oryx export.
 
-Open `index.html` in a browser for a self-contained overview of all five layers (works offline, no external assets).
+Open `index.html` in a browser for a self-contained overview of all five layers (works offline, no external assets, follows the OS light/dark setting).
+
+## Published overview
+
+The live page is **[Moonlander layout · grokout](https://app.artifactpublisher.com/artifact/hxa7Lg-YbA2_YV3DPgCKt8oq)** (Artifact Publisher, public unlisted link). The id and current version live in `artifact.json`.
+
+After every layout change, keep the published page in sync:
+
+1. Update `qmk/` (the master copy) and keep `oryx-layout.json` in sync with it.
+2. If the board has been flashed, set `FIRMWARE["flashed"]` in `generate_overview.py` (or a top-level `"firmware"` object in the JSON) so the status line flips off “flash pending”.
+3. `python3 generate_overview.py`
+4. Publish the new `index.html` to the same artifact with the Artifact Publisher MCP tool `update_artifact`. Pass `artifact_id` and `expected_version` from `artifact.json`. The share link stays the same. Then write the new version back into `artifact.json`.
 
 ## What's in here
 
@@ -12,7 +23,8 @@ Open `index.html` in a browser for a self-contained overview of all five layers 
 | --- | --- |
 | `oryx-layout.json` | Layout JSON used to render the overview (updated to match `qmk/` when we edit in code) |
 | `index.html` | Visual overview of the 3×5+3 layout |
-| `generate_overview.py` | Rebuilds `index.html` from the JSON |
+| `generate_overview.py` | Rebuilds `index.html` from the JSON. `FIRMWARE` at the top of the file drives the “built / flash pending” status line. |
+| `artifact.json` | Artifact Publisher id, share URL, and current version |
 | `fetch.sh` | Re-downloads the latest Oryx revision and official QMK source (overwrites local edits) |
 | `qmk/` | QMK source (`keymap.c`, `config.h`, `rules.mk`, `keymap.json`) — source of truth |
 

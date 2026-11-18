@@ -124,3 +124,6 @@ PY
 echo "Regenerating index.html..."
 python3 ./generate_overview.py oryx-layout.json index.html
 echo "Done."
+if [[ -f artifact.json ]]; then
+  echo "Reminder: publish the new index.html with update_artifact (see README) so the Artifact Publisher link stays in sync."
+fi

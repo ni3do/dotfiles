@@ -3,413 +3,727 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moonlander · grokout · 3vpmow</title>
+<title>Moonlander layout · grokout</title>
+<script>
+(function () {
+  try {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+})();
+</script>
 <style>
   :root {
-    --bg: #101216;
-    --bg-elev: #171a20;
-    --bg-key: #22262f;
-    --bg-empty: #181b21;
-    --line: #2a2f3a;
-    --text: #e8eaef;
-    --muted: #8b909c;
-    --soft: #c5c8d0;
-    --base: #6100FF;
-    --sym: #00C070;
-    --num: #00C8FF;
-    --nav: #FF9000;
-    --fn: #FF3040;
+    --bg: #efe8dc;
+    --bg-glow: #e6dfd2;
+    --ink: #1b2430;
+    --ink-soft: #3d4754;
+    --muted: #6d746c;
+    --line: #d5cec2;
+    --surface: #f7f3eb;
+    --plate: #dcd6cb;
+    --plate-hi: #e6e0d5;
+    --plate-edge: #c6bfb3;
+    --cap: #f3efe6;
+    --cap-top: #fbf8f2;
+    --cap-edge: #cfc8bb;
+    --cap-shadow: #b7b0a3;
+    --cap-ink: #1b2430;
+    --cap-empty: #e5dfd3;
+    --cap-empty-ink: #a8a196;
+    --cap-sheen: rgba(255,255,255,.62);
+    --cap-inset: rgba(28,36,48,.05);
+    --shadow: rgba(28,36,48,.10);
+    --cluster-rim: #7a3e3e;
+    --status-pending: #8a5a20;
+    --mauve: #5f4e86;
+    --sym: #1c7a58;
+    --num: #1a7894;
+    --nav: #b36e12;
+    --fn: #b43e47;
+    --mauve-dot: #6100FF;
+    --sym-dot: #00C070;
+    --num-dot: #00C8FF;
+    --nav-dot: #FF9000;
+    --fn-dot: #FF3040;
+    --key: 54px;
+    --gap: 7px;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]),
+    html[data-theme="dark"] {
+      --bg: #12151b;
+      --bg-glow: #1a1e28;
+      --ink: #eee8dc;
+      --ink-soft: #c7c1b6;
+      --muted: #8d928a;
+      --line: #2c323c;
+      --surface: #1a1e26;
+      --plate: #161a21;
+      --plate-hi: #1c2129;
+      --plate-edge: #262c36;
+      --cap: #2b313b;
+      --cap-top: #353c47;
+      --cap-edge: #1a1e24;
+      --cap-shadow: #0a0c10;
+      --cap-ink: #f2ece0;
+      --cap-empty: #1d222a;
+      --cap-empty-ink: #5c6370;
+      --cap-sheen: rgba(255,255,255,.07);
+      --cap-inset: rgba(0,0,0,.22);
+      --shadow: rgba(0,0,0,.35);
+      --cluster-rim: #a35656;
+      --status-pending: #e0b060;
+      --mauve: #b9a8db;
+      --sym: #4ecf96;
+      --num: #5ec8e0;
+      --nav: #f0a84a;
+      --fn: #f07178;
+    }
+  }
+  html[data-theme="dark"] {
+    --bg: #12151b;
+    --bg-glow: #1a1e28;
+    --ink: #eee8dc;
+    --ink-soft: #c7c1b6;
+    --muted: #8d928a;
+    --line: #2c323c;
+    --surface: #1a1e26;
+    --plate: #161a21;
+    --plate-hi: #1c2129;
+    --plate-edge: #262c36;
+    --cap: #2b313b;
+    --cap-top: #353c47;
+    --cap-edge: #1a1e24;
+    --cap-shadow: #0a0c10;
+    --cap-ink: #f2ece0;
+    --cap-empty: #1d222a;
+    --cap-empty-ink: #5c6370;
+    --cap-sheen: rgba(255,255,255,.07);
+    --cap-inset: rgba(0,0,0,.22);
+    --shadow: rgba(0,0,0,.35);
+    --cluster-rim: #a35656;
+    --status-pending: #e0b060;
+    --mauve: #b9a8db;
+    --sym: #4ecf96;
+    --num: #5ec8e0;
+    --nav: #f0a84a;
+    --fn: #f07178;
+    color-scheme: dark;
+  }
+  html[data-theme="light"] { color-scheme: light; }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  html { color-scheme: light dark; }
+  html, body { margin: 0; padding: 0; }
   body {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(900px 420px at 50% -8%, var(--bg-glow), transparent 70%),
+      var(--bg);
     line-height: 1.45;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
-  a { color: #9cbcff; text-decoration: none; }
+  a { color: var(--mauve); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .wrap { max-width: 980px; margin: 0 auto; padding: 36px 20px 64px; }
-  header h1 {
-    font-size: 1.55rem;
-    font-weight: 650;
-    letter-spacing: -0.02em;
-    margin: 0 0 6px;
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
   }
-  header .sub {
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px 40px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    margin: 0 0 4px;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
     color: var(--muted);
-    font-size: 0.95rem;
-    margin: 0 0 16px;
   }
-  header .sub code, .mono {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.9em;
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 2.35rem;
+    letter-spacing: -.03em;
+    line-height: 1.05;
+    color: var(--ink);
   }
-  .settings {
+  .mast-meta { text-align: right; }
+  .status {
+    margin: 0 0 4px;
+    font-size: .84rem;
+    font-weight: 550;
+    color: var(--status-pending);
+    letter-spacing: .01em;
+  }
+  .status[data-pending="false"] { color: var(--muted); font-weight: 500; }
+  .rev {
+    margin: 0;
+    color: var(--muted);
+    font-size: .8rem;
+  }
+  .rev .sep { margin: 0 .45em; opacity: .55; }
+  .settings-card {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 0 18px;
-  }
-  .pill {
-    background: var(--bg-elev);
+    gap: 6px 28px;
+    padding: 14px 18px;
+    background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 5px 11px;
-    font-size: 0.8rem;
-    color: var(--soft);
+    border-radius: 14px;
+    margin: 0 0 22px;
+  }
+  .setting { display: flex; flex-direction: column; gap: 1px; min-width: 160px; }
+  .sk {
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sv { font-size: .9rem; color: var(--ink-soft); }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 0 16px;
+    padding: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .tabs button {
+    appearance: none;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 0;
+    border-radius: 8px;
+    padding: 7px 13px;
+    font: inherit;
+    font-size: .86rem;
+    font-weight: 550;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s ease, color .15s ease;
+  }
+  .tabs button:hover { color: var(--ink); background: color-mix(in srgb, var(--bg) 65%, transparent); }
+  .tabs button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .tabs button[aria-selected="true"] {
+    background: var(--bg);
+    color: var(--ink);
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+  .tabs button .dot {
+    display: inline-block;
+    width: .48em;
+    height: .48em;
+    border-radius: 50%;
+    margin-right: .4em;
+    vertical-align: 1px;
+    background: var(--tab-dot, var(--muted));
+  }
+  .tabs button[data-layer="base"] { --tab-dot: var(--mauve-dot); --tab-accent: var(--mauve); }
+  .tabs button[data-layer="sym"] { --tab-dot: var(--sym-dot); --tab-accent: var(--sym); }
+  .tabs button[data-layer="num"] { --tab-dot: var(--num-dot); --tab-accent: var(--num); }
+  .tabs button[data-layer="nav"] { --tab-dot: var(--nav-dot); --tab-accent: var(--nav); }
+  .tabs button[data-layer="fn"] { --tab-dot: var(--fn-dot); --tab-accent: var(--fn); }
+  body[data-hover-layer] .tabs button[data-layer] {
+    opacity: .55;
+  }
+  body[data-hover-layer] .tabs button[aria-selected="true"],
+  body[data-hover-layer="sym"] .tabs button[data-layer="sym"],
+  body[data-hover-layer="num"] .tabs button[data-layer="num"],
+  body[data-hover-layer="nav"] .tabs button[data-layer="nav"],
+  body[data-hover-layer="fn"] .tabs button[data-layer="fn"],
+  body[data-hover-layer="base"] .tabs button[data-layer="base"] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--tab-accent, var(--ink));
   }
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 16px;
+    gap: 8px 18px;
     margin: 0 0 22px;
-    padding: 14px 16px;
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    font-size: 0.88rem;
+    font-size: .82rem;
+    color: var(--ink-soft);
   }
-  .legend strong { font-weight: 600; }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-keys { font-weight: 550; color: var(--ink); }
+  .legend-arrow { color: var(--muted); font-size: .75rem; }
+  .legend-layer { font-weight: 550; }
   .swatch {
     display: inline-block;
-    width: 0.7em;
-    height: 0.7em;
-    border-radius: 3px;
-    margin-right: 6px;
-    vertical-align: -1px;
+    width: .55em;
+    height: .55em;
+    border-radius: 50%;
+    flex: none;
   }
-  .legend-sep { color: #4a5160; margin: 0 2px; }
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 0 0 22px;
+  body.single .layer { display: none; }
+  body.single .layer.is-active { display: block; }
+  body.view-all .layers { display: flex; flex-direction: column; gap: 18px; }
+  body[data-hover-layer] .view-all .layer { opacity: .55; transition: opacity .15s ease; }
+  body.view-all[data-hover-layer="base"] .layer[data-layer="base"],
+  body.view-all[data-hover-layer="sym"] .layer[data-layer="sym"],
+  body.view-all[data-hover-layer="num"] .layer[data-layer="num"],
+  body.view-all[data-hover-layer="nav"] .layer[data-layer="nav"],
+  body.view-all[data-hover-layer="fn"] .layer[data-layer="fn"] {
+    opacity: 1;
   }
-  .tabs button {
-    appearance: none;
-    background: var(--bg-elev);
-    color: var(--soft);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 7px 13px;
-    font: inherit;
-    font-size: 0.88rem;
-    cursor: pointer;
-  }
-  .tabs button:hover { border-color: #4a5160; }
-  .tabs button[aria-selected="true"] {
-    color: #fff;
-    border-color: transparent;
-    background: #2c3140;
-  }
-  .tabs button[data-layer="all"][aria-selected="true"] { background: #2c3140; }
-  .tabs button[data-layer="0"][aria-selected="true"] { background: var(--base); }
-  .tabs button[data-layer="1"][aria-selected="true"] { background: var(--sym); color: #062015; }
-  .tabs button[data-layer="2"][aria-selected="true"] { background: var(--num); color: #062018; }
-  .tabs button[data-layer="3"][aria-selected="true"] { background: var(--nav); color: #2a1500; }
-  .tabs button[data-layer="4"][aria-selected="true"] { background: var(--fn); }
   .layer {
-    background: var(--bg-elev);
+    background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 20px 18px 22px;
-    margin: 0 0 18px;
+    border-radius: 20px;
+    padding: 18px 16px 8px;
+    --layer-pretty: var(--mauve);
   }
+  .layer[data-layer="sym"] { --layer-pretty: var(--sym); }
+  .layer[data-layer="num"] { --layer-pretty: var(--num); }
+  .layer[data-layer="nav"] { --layer-pretty: var(--nav); }
+  .layer[data-layer="fn"] { --layer-pretty: var(--fn); }
   .layer h2 {
-    margin: 0 0 16px;
-    font-size: 1.05rem;
-    font-weight: 650;
+    margin: 0 0 6px;
+    padding: 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 8px;
+    letter-spacing: -.01em;
   }
-  .layer h2 .hint {
+  .layer-dot {
+    width: .5em;
+    height: .5em;
+    border-radius: 50%;
+    background: var(--layer-accent);
+    flex: none;
+    transform: translateY(-1px);
+  }
+  .layer-name { color: var(--ink); }
+  .hint {
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: .8rem;
     font-weight: 500;
+    letter-spacing: 0;
   }
   .board {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 52px;
-    flex-wrap: wrap;
+    gap: 44px;
+    padding: 24px 8px 28px;
+    overflow: visible;
   }
-  .half {
+  .half { flex: none; }
+  .half.left { transform: rotate(6.5deg); transform-origin: 70% 55%; }
+  .half.right { transform: rotate(-6.5deg); transform-origin: 30% 55%; }
+  .case {
+    background: linear-gradient(180deg, var(--plate-hi), var(--plate) 45%, var(--plate-edge));
+    border-radius: 26px 26px 34px 34px;
+    padding: 22px 20px 48px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.28),
+      inset 0 -1px 0 rgba(0,0,0,.06),
+      0 14px 32px var(--shadow);
+  }
+  .well {
+    display: flex;
+    gap: var(--gap);
+    align-items: flex-start;
+  }
+  .col {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: var(--gap);
+    transform: translateY(calc(var(--stagger) * var(--key)));
   }
-  .row, .thumbs {
-    display: flex;
-    gap: 7px;
-  }
-  .half.left .thumbs { justify-content: flex-end; }
-  .half.right .thumbs { justify-content: flex-start; flex-direction: row-reverse; }
-  .half.right .thumb-row { flex-direction: row; }
-  .thumb-row {
-    display: flex;
-    gap: 7px;
-  }
-  .cluster {
+  .thumb-cluster {
     display: flex;
     align-items: flex-end;
-    margin: 0 4px 34px 4px;
+    justify-content: flex-end;
+    margin-top: 18px;
+    min-height: calc(var(--key) * 1.7);
   }
-  .thumbs {
-    margin-top: 14px;
-    align-items: flex-end;
+  .half.right .thumb-cluster { justify-content: flex-start; }
+  .thumb-keys {
+    display: flex;
+    gap: var(--gap);
+    transform: rotate(-24deg);
+    transform-origin: 80% 20%;
   }
+  .half.right .thumb-keys {
+    transform: rotate(24deg);
+    transform-origin: 20% 20%;
+  }
+  .cluster-slot {
+    margin: 0 2px 28px 8px;
+  }
+  .half.left .cluster-slot { margin: 0 8px 28px 2px; }
   .key {
-    width: 62px;
-    height: 62px;
-    border-radius: 11px;
+    width: var(--key);
+    height: var(--key);
+    border-radius: 9px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     position: relative;
-    border: 1px solid transparent;
     user-select: none;
     padding: 4px 3px 5px;
-  }
-  .key.empty {
-    background: #1c2028;
-    border: 1px solid #323846;
-  }
-  .key.trans {
-    background: #1c2028;
-    border: 1px dashed #5a6272;
-    color: #8b909c;
-  }
-  .key.cluster {
-    width: 58px;
-    height: 58px;
+    flex: none;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
   .key.used {
-    background: var(--key-color);
-    color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 14px rgba(0,0,0,0.22);
+    background: linear-gradient(180deg, var(--cap-top) 0%, var(--cap) 42%, var(--cap) 100%);
+    color: var(--cap-ink);
+    border: 1px solid var(--cap-edge);
+    box-shadow:
+      inset 0 1px 0 var(--cap-sheen),
+      inset 0 -2px 3px var(--cap-inset),
+      0 3px 0 var(--cap-shadow),
+      0 7px 14px var(--shadow);
   }
-  .key .tap {
-    font-weight: 650;
-    font-size: 0.92rem;
-    letter-spacing: -0.01em;
+  .key.empty {
+    background: var(--cap-empty);
+    border: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 1px 0 var(--plate-edge);
+  }
+  .key.trans {
+    background: var(--cap-empty);
+    border: 1px dashed var(--cap-edge);
+    color: var(--cap-empty-ink);
+    box-shadow: none;
+  }
+  .key.cluster {
+    width: calc(var(--key) - 4px);
+    height: calc(var(--key) - 4px);
+    border-radius: 46%;
+  }
+  .key.cluster.used {
+    box-shadow:
+      inset 0 1px 0 var(--cap-sheen),
+      inset 0 -2px 3px var(--cap-inset),
+      0 0 0 2px var(--cluster-rim),
+      0 3px 0 var(--cap-shadow),
+      0 7px 14px var(--shadow);
+  }
+  .key.activator, .key.activator-empty {
+    box-shadow:
+      inset 0 1px 0 var(--cap-sheen),
+      0 0 0 2px var(--layer-pretty),
+      0 3px 0 var(--cap-shadow);
+  }
+  .key.activator-empty {
+    background: color-mix(in srgb, var(--layer-pretty) 14%, var(--cap-empty));
+    border: 1px solid transparent;
+    color: var(--layer-pretty);
+  }
+  .key.has-hold, .key[data-opens] { cursor: pointer; }
+  .key.used:hover, .key[data-opens]:hover {
+    transform: translateY(-1px);
+  }
+  body[data-hover-layer="sym"] .key[data-opens="sym"],
+  body[data-hover-layer="num"] .key[data-opens="num"],
+  body[data-hover-layer="nav"] .key[data-opens="nav"],
+  body[data-hover-layer="fn"] .key[data-opens="fn"] {
+    box-shadow:
+      inset 0 1px 0 var(--cap-sheen),
+      0 0 0 2px var(--tab-accent, var(--layer-pretty)),
+      0 4px 0 var(--cap-shadow),
+      0 10px 18px var(--shadow);
+  }
+  .tap {
+    font-weight: 600;
+    font-size: .92rem;
+    letter-spacing: -.01em;
     line-height: 1.15;
     white-space: pre-line;
   }
-  .key .tap.long { font-size: 0.68rem; font-weight: 650; }
-  .key .tap.trans-mark { font-weight: 400; font-size: 0.85rem; white-space: nowrap; }
-  .key.has-hold .tap { margin-top: -2px; }
-  .key .hold {
+  .tap.long { font-size: .68rem; font-weight: 600; letter-spacing: 0; }
+  .tap.trans-mark { font-weight: 400; font-size: .9rem; }
+  .key.has-hold .tap { margin-top: -1px; }
+  .hold {
     margin-top: 3px;
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: .58rem;
+    font-weight: 650;
+    letter-spacing: .06em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.82);
     line-height: 1;
+    color: var(--muted);
   }
-  .hold-layer-sym { color: #9ff3c8 !important; }
-  .hold-layer-num { color: #b9f0ff !important; }
-  .hold-layer-nav { color: #ffd399 !important; }
-  .hold-layer-fn { color: #ffc1c6 !important; }
-  .key .term {
-    position: absolute;
-    top: 3px;
-    right: 4px;
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 0;
-    color: #fff;
-    text-transform: none;
-    background: rgba(0,0,0,0.28);
-    border-radius: 4px;
-    padding: 0 3px;
-    line-height: 1.3;
-  }
-  .note {
+  .hold-layer-sym { color: var(--sym); }
+  .hold-layer-num { color: var(--num); }
+  .hold-layer-nav { color: var(--nav); }
+  .hold-layer-fn { color: var(--fn); }
+  .hold-layer-base { color: var(--mauve); }
+  .note, footer {
     margin: 8px 0 0;
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: .78rem;
     text-align: center;
   }
-  footer {
-    margin-top: 10px;
-    color: var(--muted);
-    font-size: 0.8rem;
+  footer { margin-top: 14px; }
+  footer .mono { font-family: var(--mono); font-size: .92em; white-space: nowrap; }
+  @media (max-width: 860px) {
+    :root { --key: 46px; --gap: 6px; }
+    .board { gap: 28px; padding: 22px 0 36px; }
+    h1 { font-size: 1.9rem; }
+    .mast-meta { text-align: left; }
   }
-  body.single .layer { display: none; }
-  body.single .layer.is-active { display: block; }
-  @media (max-width: 760px) {
-    .board { gap: 22px; }
-    .key { width: 52px; height: 52px; border-radius: 9px; }
-    .key .tap { font-size: 0.8rem; }
+  @media (max-width: 620px) {
+    :root { --key: 44px; }
+    .board {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 20px;
+    }
+    .half.left, .half.right { transform: none; }
+    .wrap { padding: 32px 16px 88px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
   }
   @media print {
     body { background: #fff; color: #111; }
     .tabs { display: none; }
-    .layer { break-inside: avoid; border-color: #ccc; background: #fff; }
-    .key.empty { background: #f3f3f3; }
+    body.single .layer { display: block !important; }
+    .layer { break-inside: avoid; border-color: #ccc; background: #fff; box-shadow: none; }
+    .wrap { padding-bottom: 24px; }
   }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <h1>ZSA Moonlander · grokout</h1>
-      <p class="sub">
-        Revision <code>3vpmow</code>
-        · 17 Nov 2026, 20:07 CET
-        · QMK 25.0
-        · <a href="https://configure.zsa.io/moonlander/layouts/Emvlv/latest/0">Open in Oryx</a>
-        <br><span>QMK source in qmk/ is the master copy as of 18 Nov 2026. These JSON edits mirror that source; Oryx revision 3vpmow is behind.</span>
-      </p>
-      <div class="settings">
-        <span class="pill">Tapping term 190 ms</span><span class="pill">Per-key: D 160 ms, F 160 ms</span><span class="pill">Permissive hold</span><span class="pill">Chordal hold (thumbs excluded)</span><span class="pill">RGB timeout 15 min</span>
+    <header class="masthead">
+      <div class="brand">
+        <p class="eyebrow">ZSA Moonlander</p>
+        <h1>grokout</h1>
+      </div>
+      <div class="mast-meta">
+        <p class="status" data-pending="true">Firmware built 18 Nov · flash pending</p>
+        <p class="rev">QMK 25.0<span class="sep">·</span>17 Nov 2026, 20:07 CET<span class="sep">·</span>rev <span class="mono">3vpmow</span></p>
       </div>
     </header>
-    <div class="legend" aria-label="Thumb layer holds">
-      <span><strong>Tab</strong> hold <span class="swatch" style="background:#00C070"></span><strong>Sym</strong></span><span class="legend-sep">·</span><span><strong>Bksp</strong> hold <span class="swatch" style="background:#00C8FF"></span><strong>Num</strong></span><span class="legend-sep">·</span><span><strong>Esc</strong> hold <span class="swatch" style="background:#FF9000"></span><strong>Nav</strong></span><span class="legend-sep">·</span><span><strong>Del</strong> hold <span class="swatch" style="background:#FF9000"></span><strong>Nav</strong></span><span class="legend-sep">·</span><span><strong>Enter</strong> hold <span class="swatch" style="background:#FF3040"></span><strong>Fn</strong></span><span class="legend-sep">·</span><span><strong>Space</strong> hold <span class="swatch" style="background:#00C070"></span><strong>Sym</strong></span>
-    </div>
+    <aside class="settings-card"><div class="setting"><span class="sk">Tapping term</span><span class="sv">190 ms · D and F at 160 ms</span></div><div class="setting"><span class="sk">Holds</span><span class="sv">Permissive hold · Chordal hold, thumbs excluded</span></div><div class="setting"><span class="sk">RGB timeout</span><span class="sv">15 min</span></div></aside>
     <div class="tabs" role="tablist" aria-label="Layers">
-      <button type="button" role="tab" data-layer="all" aria-selected="true">Show all</button>
-      <button type="button" role="tab" data-layer="0" aria-selected="false">Base</button><button type="button" role="tab" data-layer="1" aria-selected="false">Sym</button><button type="button" role="tab" data-layer="2" aria-selected="false">Num</button><button type="button" role="tab" data-layer="3" aria-selected="false">Nav</button><button type="button" role="tab" data-layer="4" aria-selected="false">Fn</button>
+      <button type="button" role="tab" data-layer="all" aria-selected="false">Show all</button>
+      <button type="button" role="tab" data-layer="base" aria-selected="false"><span class="dot"></span>Base</button><button type="button" role="tab" data-layer="sym" aria-selected="false"><span class="dot"></span>Sym</button><button type="button" role="tab" data-layer="num" aria-selected="false"><span class="dot"></span>Num</button><button type="button" role="tab" data-layer="nav" aria-selected="false"><span class="dot"></span>Nav</button><button type="button" role="tab" data-layer="fn" aria-selected="false"><span class="dot"></span>Fn</button>
     </div>
-    
-    <section class="layer" data-layer="0" data-title="Base">
-      <h2 style="color:#6100FF">Base <span class="hint">home-row mods on A S D F and J K L ;</span></h2>
+    <div class="legend" aria-label="Thumb layer holds">
+      <span class="legend-item" data-opens="sym"><span class="swatch" style="background:#00C070"></span><span class="legend-keys">Tab / Space</span><span class="legend-arrow">→</span><span class="legend-layer">Sym</span></span><span class="legend-item" data-opens="num"><span class="swatch" style="background:#00C8FF"></span><span class="legend-keys">Bksp</span><span class="legend-arrow">→</span><span class="legend-layer">Num</span></span><span class="legend-item" data-opens="nav"><span class="swatch" style="background:#FF9000"></span><span class="legend-keys">Esc / Del</span><span class="legend-arrow">→</span><span class="legend-layer">Nav</span></span><span class="legend-item" data-opens="fn"><span class="swatch" style="background:#FF3040"></span><span class="legend-keys">Enter</span><span class="legend-arrow">→</span><span class="legend-layer">Fn</span></span>
+    </div>
+    <div class="layers">
+      
+    <section class="layer" data-layer="base" data-index="0" data-title="Base" style="--layer-accent:#6100FF">
+      <h2><span class="layer-dot"></span><span class="layer-name">Base</span> <span class="hint">Home-row mods on A S D F and J K L ;</span></h2>
       <div class="board">
         <div class="half left">
-          <div class="row"><div class="key used" style="--key-color:#6100FF" title="Q"><span class="tap">Q</span></div><div class="key used" style="--key-color:#6100FF" title="W"><span class="tap">W</span></div><div class="key used" style="--key-color:#6100FF" title="E"><span class="tap">E</span></div><div class="key used" style="--key-color:#6100FF" title="R"><span class="tap">R</span></div><div class="key used" style="--key-color:#6100FF" title="T"><span class="tap">T</span></div></div><div class="row"><div class="key used has-hold" style="--key-color:#6100FF" title="A · hold Win"><span class="tap">A</span><span class="hold">Win</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="S · hold Alt"><span class="tap">S</span><span class="hold">Alt</span></div><div class="key used has-hold has-term" style="--key-color:#6100FF" title="D · hold Shift · tapping term 160 ms"><span class="tap">D</span><span class="hold">Shift</span><span class="term">160</span></div><div class="key used has-hold has-term" style="--key-color:#6100FF" title="F · hold Ctrl · tapping term 160 ms"><span class="tap">F</span><span class="hold">Ctrl</span><span class="term">160</span></div><div class="key used" style="--key-color:#6100FF" title="G"><span class="tap">G</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="Z"><span class="tap">Z</span></div><div class="key used" style="--key-color:#6100FF" title="X"><span class="tap">X</span></div><div class="key used" style="--key-color:#6100FF" title="C"><span class="tap">C</span></div><div class="key used" style="--key-color:#6100FF" title="V"><span class="tap">V</span></div><div class="key used" style="--key-color:#6100FF" title="B"><span class="tap">B</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used has-hold" style="--key-color:#6100FF" title="Tab · hold Momentary layer: Sym"><span class="tap">Tab</span><span class="hold hold-layer-sym">Sym</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Bksp · hold Momentary layer: Num"><span class="tap">Bksp</span><span class="hold hold-layer-num">Num</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Esc · hold Momentary layer: Nav"><span class="tap">Esc</span><span class="hold hold-layer-nav">Nav</span></div></div>
-            <div class="cluster"><div class="key used cluster" style="--key-color:#6100FF" title="Ctrl+Alt+Shift+Space"><span class="tap">Hyper</span></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="Q"><span class="tap">Q</span></div><div class="key used has-hold" title="A · hold Win"><span class="tap">A</span><span class="hold">Win</span></div><div class="key used" title="Z"><span class="tap">Z</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="W"><span class="tap">W</span></div><div class="key used has-hold" title="S · hold Alt"><span class="tap">S</span><span class="hold">Alt</span></div><div class="key used" title="X"><span class="tap">X</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="E"><span class="tap">E</span></div><div class="key used has-hold" title="D · hold Shift · tapping term 160 ms"><span class="tap">D</span><span class="hold">Shift</span></div><div class="key used" title="C"><span class="tap">C</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="R"><span class="tap">R</span></div><div class="key used has-hold" title="F · hold Ctrl · tapping term 160 ms"><span class="tap">F</span><span class="hold">Ctrl</span></div><div class="key used" title="V"><span class="tap">V</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="T"><span class="tap">T</span></div><div class="key used" title="G"><span class="tap">G</span></div><div class="key used" title="B"><span class="tap">B</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="thumb-keys"><div class="key used has-hold" data-opens="sym" title="Tab · hold Momentary layer: Sym"><span class="tap">Tab</span><span class="hold hold-layer-sym">Sym</span></div><div class="key used has-hold" data-opens="num" title="Bksp · hold Momentary layer: Num"><span class="tap">Bksp</span><span class="hold hold-layer-num">Num</span></div><div class="key used has-hold" data-opens="nav" title="Esc · hold Momentary layer: Nav"><span class="tap">Esc</span><span class="hold hold-layer-nav">Nav</span></div></div>
+              <div class="cluster-slot"><div class="key cluster used" title="Ctrl+Alt+Shift+Space"><span class="tap">Hyper</span></div></div>
+            </div>
           </div>
         </div>
         <div class="half right">
-          <div class="row"><div class="key used" style="--key-color:#6100FF" title="Y"><span class="tap">Y</span></div><div class="key used" style="--key-color:#6100FF" title="U"><span class="tap">U</span></div><div class="key used" style="--key-color:#6100FF" title="I"><span class="tap">I</span></div><div class="key used" style="--key-color:#6100FF" title="O"><span class="tap">O</span></div><div class="key used" style="--key-color:#6100FF" title="P"><span class="tap">P</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="H"><span class="tap">H</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="J · hold Ctrl"><span class="tap">J</span><span class="hold">Ctrl</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="K · hold Shift"><span class="tap">K</span><span class="hold">Shift</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="L · hold Alt"><span class="tap">L</span><span class="hold">Alt</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="; · hold Win"><span class="tap">;</span><span class="hold">Win</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="N"><span class="tap">N</span></div><div class="key used" style="--key-color:#6100FF" title="M"><span class="tap">M</span></div><div class="key used" style="--key-color:#6100FF" title=","><span class="tap">,</span></div><div class="key used" style="--key-color:#6100FF" title="."><span class="tap">.</span></div><div class="key used" style="--key-color:#6100FF" title="/"><span class="tap">/</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used has-hold" style="--key-color:#6100FF" title="Del · hold Momentary layer: Nav"><span class="tap">Del</span><span class="hold hold-layer-nav">Nav</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Enter · hold Momentary layer: Fn"><span class="tap">Enter</span><span class="hold hold-layer-fn">Fn</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Space · hold Momentary layer: Sym"><span class="tap">Space</span><span class="hold hold-layer-sym">Sym</span></div></div>
-            <div class="cluster"><div class="key used cluster" style="--key-color:#6100FF" title="Ctrl+Space"><span class="tap long">Ctrl+
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="Y"><span class="tap">Y</span></div><div class="key used" title="H"><span class="tap">H</span></div><div class="key used" title="N"><span class="tap">N</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="U"><span class="tap">U</span></div><div class="key used has-hold" title="J · hold Ctrl"><span class="tap">J</span><span class="hold">Ctrl</span></div><div class="key used" title="M"><span class="tap">M</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="I"><span class="tap">I</span></div><div class="key used has-hold" title="K · hold Shift"><span class="tap">K</span><span class="hold">Shift</span></div><div class="key used" title=","><span class="tap">,</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="O"><span class="tap">O</span></div><div class="key used has-hold" title="L · hold Alt"><span class="tap">L</span><span class="hold">Alt</span></div><div class="key used" title="."><span class="tap">.</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="P"><span class="tap">P</span></div><div class="key used has-hold" title="; · hold Win"><span class="tap">;</span><span class="hold">Win</span></div><div class="key used" title="/"><span class="tap">/</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="cluster-slot"><div class="key cluster used" title="Ctrl+Space"><span class="tap long">Ctrl+
 Space</span></div></div>
+              <div class="thumb-keys"><div class="key used has-hold" data-opens="nav" title="Del · hold Momentary layer: Nav"><span class="tap">Del</span><span class="hold hold-layer-nav">Nav</span></div><div class="key used has-hold" data-opens="fn" title="Enter · hold Momentary layer: Fn"><span class="tap">Enter</span><span class="hold hold-layer-fn">Fn</span></div><div class="key used has-hold" data-opens="sym" title="Space · hold Momentary layer: Sym"><span class="tap">Space</span><span class="hold hold-layer-sym">Sym</span></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
     
-    <section class="layer" data-layer="1" data-title="Sym">
-      <h2 style="color:#00C070">Sym <span class="hint">hold Tab or Space</span></h2>
+    <section class="layer" data-layer="sym" data-index="1" data-title="Sym" style="--layer-accent:#00C070">
+      <h2><span class="layer-dot"></span><span class="layer-name">Sym</span> <span class="hint">Hold Tab or Space</span></h2>
       <div class="board">
         <div class="half left">
-          <div class="row"><div class="key used" style="--key-color:#00C070" title="`"><span class="tap">`</span></div><div class="key used" style="--key-color:#00C070" title="["><span class="tap">[</span></div><div class="key used" style="--key-color:#00C070" title="]"><span class="tap">]</span></div><div class="key used" style="--key-color:#00C070" title="-"><span class="tap">-</span></div><div class="key used" style="--key-color:#00C070" title="="><span class="tap">=</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="~"><span class="tap">~</span></div><div class="key used" style="--key-color:#00C070" title="{"><span class="tap">{</span></div><div class="key used" style="--key-color:#00C070" title="}"><span class="tap">}</span></div><div class="key used" style="--key-color:#00C070" title="_"><span class="tap">_</span></div><div class="key used" style="--key-color:#00C070" title="+"><span class="tap">+</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="!"><span class="tap">!</span></div><div class="key used" style="--key-color:#00C070" title="@"><span class="tap">@</span></div><div class="key used" style="--key-color:#00C070" title="#"><span class="tap">#</span></div><div class="key used" style="--key-color:#00C070" title="$"><span class="tap">$</span></div><div class="key used" style="--key-color:#00C070" title="%"><span class="tap">%</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key used" style="--key-color:#00C070" title="."><span class="tap">.</span></div><div class="key empty" aria-hidden="true"></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="`"><span class="tap">`</span></div><div class="key used" title="~"><span class="tap">~</span></div><div class="key used" title="!"><span class="tap">!</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="["><span class="tap">[</span></div><div class="key used" title="{"><span class="tap">{</span></div><div class="key used" title="@"><span class="tap">@</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="]"><span class="tap">]</span></div><div class="key used" title="}"><span class="tap">}</span></div><div class="key used" title="#"><span class="tap">#</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="-"><span class="tap">-</span></div><div class="key used" title="_"><span class="tap">_</span></div><div class="key used" title="$"><span class="tap">$</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="="><span class="tap">=</span></div><div class="key used" title="+"><span class="tap">+</span></div><div class="key used" title="%"><span class="tap">%</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="thumb-keys"><div class="key activator empty activator-empty" data-opens="sym" title="Hold for Sym"><span class="hold hold-layer-sym">Sym</span></div><div class="key used" title="."><span class="tap">.</span></div><div class="key empty" aria-hidden="true"></div></div>
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+            </div>
           </div>
         </div>
         <div class="half right">
-          <div class="row"><div class="key used" style="--key-color:#00C070" title="\"><span class="tap">\</span></div><div class="key used" style="--key-color:#00C070" title="'"><span class="tap">'</span></div><div class="key used" style="--key-color:#00C070" title=";"><span class="tap">;</span></div><div class="key used" style="--key-color:#00C070" title="&lt;"><span class="tap">&lt;</span></div><div class="key used" style="--key-color:#00C070" title="&gt;"><span class="tap">&gt;</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="|"><span class="tap">|</span></div><div class="key used" style="--key-color:#00C070" title="&quot;"><span class="tap">&quot;</span></div><div class="key used" style="--key-color:#00C070" title=":"><span class="tap">:</span></div><div class="key used" style="--key-color:#00C070" title="/"><span class="tap">/</span></div><div class="key used" style="--key-color:#00C070" title="?"><span class="tap">?</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="^"><span class="tap">^</span></div><div class="key used" style="--key-color:#00C070" title="&amp;"><span class="tap">&amp;</span></div><div class="key used" style="--key-color:#00C070" title="*"><span class="tap">*</span></div><div class="key used" style="--key-color:#00C070" title="("><span class="tap">(</span></div><div class="key used" style="--key-color:#00C070" title=")"><span class="tap">)</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="\"><span class="tap">\</span></div><div class="key used" title="|"><span class="tap">|</span></div><div class="key used" title="^"><span class="tap">^</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="'"><span class="tap">'</span></div><div class="key used" title="&quot;"><span class="tap">&quot;</span></div><div class="key used" title="&amp;"><span class="tap">&amp;</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title=";"><span class="tap">;</span></div><div class="key used" title=":"><span class="tap">:</span></div><div class="key used" title="*"><span class="tap">*</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="&lt;"><span class="tap">&lt;</span></div><div class="key used" title="/"><span class="tap">/</span></div><div class="key used" title="("><span class="tap">(</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="&gt;"><span class="tap">&gt;</span></div><div class="key used" title="?"><span class="tap">?</span></div><div class="key used" title=")"><span class="tap">)</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+              <div class="thumb-keys"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key activator empty activator-empty" data-opens="sym" title="Hold for Sym"><span class="hold hold-layer-sym">Sym</span></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
     
-    <section class="layer" data-layer="2" data-title="Num">
-      <h2 style="color:#00C8FF">Num <span class="hint">hold Bksp</span></h2>
+    <section class="layer" data-layer="num" data-index="2" data-title="Num" style="--layer-accent:#00C8FF">
+      <h2><span class="layer-dot"></span><span class="layer-name">Num</span> <span class="hint">Hold Bksp</span></h2>
       <div class="board">
         <div class="half left">
-          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="Win"><span class="tap">Win</span></div><div class="key used" style="--key-color:#00C8FF" title="Alt"><span class="tap">Alt</span></div><div class="key used" style="--key-color:#00C8FF" title="Shift"><span class="tap">Shift</span></div><div class="key used" style="--key-color:#00C8FF" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key trans" title="Transparent (falls through)"><span class="tap trans-mark">▽</span></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Win"><span class="tap">Win</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.15"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Alt"><span class="tap">Alt</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.0"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Shift"><span class="tap">Shift</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.18"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.4"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div></div>
+            <div class="thumb-cluster">
+              <div class="thumb-keys"><div class="key trans" title="Transparent (falls through)"><span class="tap trans-mark">▽</span></div><div class="key activator empty activator-empty" data-opens="num" title="Hold for Num"><span class="hold hold-layer-num">Num</span></div><div class="key empty" aria-hidden="true"></div></div>
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+            </div>
           </div>
         </div>
         <div class="half right">
-          <div class="row"><div class="key used" style="--key-color:#00C8FF" title="*"><span class="tap">*</span></div><div class="key used" style="--key-color:#00C8FF" title="7"><span class="tap">7</span></div><div class="key used" style="--key-color:#00C8FF" title="8"><span class="tap">8</span></div><div class="key used" style="--key-color:#00C8FF" title="9"><span class="tap">9</span></div><div class="key used" style="--key-color:#00C8FF" title="/"><span class="tap">/</span></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="-"><span class="tap">-</span></div><div class="key used" style="--key-color:#00C8FF" title="4"><span class="tap">4</span></div><div class="key used" style="--key-color:#00C8FF" title="5"><span class="tap">5</span></div><div class="key used" style="--key-color:#00C8FF" title="6"><span class="tap">6</span></div><div class="key used" style="--key-color:#00C8FF" title="+"><span class="tap">+</span></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="="><span class="tap">=</span></div><div class="key used" style="--key-color:#00C8FF" title="1"><span class="tap">1</span></div><div class="key used" style="--key-color:#00C8FF" title="2"><span class="tap">2</span></div><div class="key used" style="--key-color:#00C8FF" title="3"><span class="tap">3</span></div><div class="key used" style="--key-color:#00C8FF" title="."><span class="tap">.</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used" style="--key-color:#00C8FF" title=","><span class="tap">,</span></div><div class="key used" style="--key-color:#00C8FF" title="Enter"><span class="tap">Enter</span></div><div class="key used" style="--key-color:#00C8FF" title="0"><span class="tap">0</span></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="*"><span class="tap">*</span></div><div class="key used" title="-"><span class="tap">-</span></div><div class="key used" title="="><span class="tap">=</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="7"><span class="tap">7</span></div><div class="key used" title="4"><span class="tap">4</span></div><div class="key used" title="1"><span class="tap">1</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="8"><span class="tap">8</span></div><div class="key used" title="5"><span class="tap">5</span></div><div class="key used" title="2"><span class="tap">2</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="9"><span class="tap">9</span></div><div class="key used" title="6"><span class="tap">6</span></div><div class="key used" title="3"><span class="tap">3</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="/"><span class="tap">/</span></div><div class="key used" title="+"><span class="tap">+</span></div><div class="key used" title="."><span class="tap">.</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+              <div class="thumb-keys"><div class="key used" title=","><span class="tap">,</span></div><div class="key used" title="Enter"><span class="tap">Enter</span></div><div class="key used" title="0"><span class="tap">0</span></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
     
-    <section class="layer" data-layer="3" data-title="Nav">
-      <h2 style="color:#FF9000">Nav <span class="hint">hold Esc or Del</span></h2>
+    <section class="layer" data-layer="nav" data-index="3" data-title="Nav" style="--layer-accent:#FF9000">
+      <h2><span class="layer-dot"></span><span class="layer-name">Nav</span> <span class="hint">Hold Esc or Del</span></h2>
       <div class="board">
         <div class="half left">
-          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Win"><span class="tap">Win</span></div><div class="key used" style="--key-color:#FF9000" title="Alt"><span class="tap">Alt</span></div><div class="key used" style="--key-color:#FF9000" title="Shift"><span class="tap">Shift</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used" style="--key-color:#FF9000" title="Win+Up"><span class="tap">Win+↑</span></div><div class="key used" style="--key-color:#FF9000" title="Win+Down"><span class="tap">Win+↓</span></div><div class="key empty" aria-hidden="true"></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Win"><span class="tap">Win</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.15"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Alt"><span class="tap">Alt</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.0"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Shift"><span class="tap">Shift</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.18"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="col" style="--stagger:0.4"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div></div>
+            <div class="thumb-cluster">
+              <div class="thumb-keys"><div class="key used" title="Win+Up"><span class="tap long">Win
+Up</span></div><div class="key used" title="Win+Down"><span class="tap long">Win
+Down</span></div><div class="key activator empty activator-empty" data-opens="nav" title="Hold for Nav"><span class="hold hold-layer-nav">Nav</span></div></div>
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+            </div>
           </div>
         </div>
         <div class="half right">
-          <div class="row"><div class="key used" style="--key-color:#FF9000" title="Home"><span class="tap">Home</span></div><div class="key used" style="--key-color:#FF9000" title="PgDn"><span class="tap">PgDn</span></div><div class="key used" style="--key-color:#FF9000" title="PgUp"><span class="tap">PgUp</span></div><div class="key used" style="--key-color:#FF9000" title="End"><span class="tap">End</span></div><div class="key used" style="--key-color:#FF9000" title="Del"><span class="tap">Del</span></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Left"><span class="tap">Left</span></div><div class="key used" style="--key-color:#FF9000" title="Down"><span class="tap">Down</span></div><div class="key used" style="--key-color:#FF9000" title="Up"><span class="tap">Up</span></div><div class="key used" style="--key-color:#FF9000" title="Right"><span class="tap">Right</span></div><div class="key used" style="--key-color:#FF9000" title="Caps Word"><span class="tap long">Caps
-Word</span></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Ctrl+Z"><span class="tap">Undo</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+X"><span class="tap">Cut</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+C"><span class="tap">Copy</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+V"><span class="tap">Paste</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+Y"><span class="tap">Redo</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used" style="--key-color:#FF9000" title="Win+Left"><span class="tap">Win+←</span></div><div class="key used" style="--key-color:#FF9000" title="Win+Right"><span class="tap">Win+→</span></div><div class="key used" style="--key-color:#FF9000" title="Win+Shift+S"><span class="tap">Snip</span></div></div>
-            <div class="cluster"><div class="key used cluster" style="--key-color:#FF9000" title="PrtSc"><span class="tap">PrtSc</span></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="Home"><span class="tap">Home</span></div><div class="key used" title="Left"><span class="tap">Left</span></div><div class="key used" title="Ctrl+Z"><span class="tap">Undo</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="PgDn"><span class="tap">PgDn</span></div><div class="key used" title="Down"><span class="tap">Down</span></div><div class="key used" title="Ctrl+X"><span class="tap">Cut</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="PgUp"><span class="tap">PgUp</span></div><div class="key used" title="Up"><span class="tap">Up</span></div><div class="key used" title="Ctrl+C"><span class="tap">Copy</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="End"><span class="tap">End</span></div><div class="key used" title="Right"><span class="tap">Right</span></div><div class="key used" title="Ctrl+V"><span class="tap">Paste</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="Del"><span class="tap">Del</span></div><div class="key used" title="Caps Word"><span class="tap long">Caps
+Word</span></div><div class="key used" title="Ctrl+Y"><span class="tap">Redo</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="cluster-slot"><div class="key cluster used" title="PrtSc"><span class="tap">PrtSc</span></div></div>
+              <div class="thumb-keys"><div class="key activator used" data-opens="nav" title="Win+Left" title="Win+Left"><span class="tap long">Win
+Left</span></div><div class="key used" title="Win+Right"><span class="tap long">Win
+Right</span></div><div class="key used" title="Win+Shift+S"><span class="tap">Snip</span></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
     
-    <section class="layer" data-layer="4" data-title="Fn">
-      <h2 style="color:#FF3040">Fn <span class="hint">hold Enter</span></h2>
+    <section class="layer" data-layer="fn" data-index="4" data-title="Fn" style="--layer-accent:#FF3040">
+      <h2><span class="layer-dot"></span><span class="layer-name">Fn</span> <span class="hint">Hold Enter</span></h2>
       <div class="board">
         <div class="half left">
-          <div class="row"><div class="key used" style="--key-color:#FF3040" title="F12"><span class="tap">F12</span></div><div class="key used" style="--key-color:#FF3040" title="F7"><span class="tap">F7</span></div><div class="key used" style="--key-color:#FF3040" title="F8"><span class="tap">F8</span></div><div class="key used" style="--key-color:#FF3040" title="F9"><span class="tap">F9</span></div><div class="key used" style="--key-color:#FF3040" title="Vol+"><span class="tap">Vol+</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="F11"><span class="tap">F11</span></div><div class="key used" style="--key-color:#FF3040" title="F4"><span class="tap">F4</span></div><div class="key used" style="--key-color:#FF3040" title="F5"><span class="tap">F5</span></div><div class="key used" style="--key-color:#FF3040" title="F6"><span class="tap">F6</span></div><div class="key used" style="--key-color:#FF3040" title="Vol−"><span class="tap">Vol−</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="F10"><span class="tap">F10</span></div><div class="key used" style="--key-color:#FF3040" title="F1"><span class="tap">F1</span></div><div class="key used" style="--key-color:#FF3040" title="F2"><span class="tap">F2</span></div><div class="key used" style="--key-color:#FF3040" title="F3"><span class="tap">F3</span></div><div class="key used" style="--key-color:#FF3040" title="Mute"><span class="tap">Mute</span></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key used" style="--key-color:#FF3040" title="Prev"><span class="tap">Prev</span></div><div class="key used" style="--key-color:#FF3040" title="Play"><span class="tap">Play</span></div><div class="key used" style="--key-color:#FF3040" title="Next"><span class="tap">Next</span></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key used" title="F12"><span class="tap">F12</span></div><div class="key used" title="F11"><span class="tap">F11</span></div><div class="key used" title="F10"><span class="tap">F10</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="F7"><span class="tap">F7</span></div><div class="key used" title="F4"><span class="tap">F4</span></div><div class="key used" title="F1"><span class="tap">F1</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="F8"><span class="tap">F8</span></div><div class="key used" title="F5"><span class="tap">F5</span></div><div class="key used" title="F2"><span class="tap">F2</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="F9"><span class="tap">F9</span></div><div class="key used" title="F6"><span class="tap">F6</span></div><div class="key used" title="F3"><span class="tap">F3</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="Vol+"><span class="tap">Vol+</span></div><div class="key used" title="Vol−"><span class="tap">Vol−</span></div><div class="key used" title="Mute"><span class="tap">Mute</span></div></div></div>
+            <div class="thumb-cluster">
+              <div class="thumb-keys"><div class="key used" title="Prev"><span class="tap">Prev</span></div><div class="key used" title="Play"><span class="tap">Play</span></div><div class="key used" title="Next"><span class="tap">Next</span></div></div>
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+            </div>
           </div>
         </div>
         <div class="half right">
-          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key used" style="--key-color:#FF3040" title="Click 1"><span class="tap long">Click
-1</span></div><div class="key used" style="--key-color:#FF3040" title="Click 3"><span class="tap long">Click
-3</span></div><div class="key used" style="--key-color:#FF3040" title="Click 2"><span class="tap long">Click
-2</span></div><div class="key used" style="--key-color:#FF3040" title="Boot"><span class="tap">Boot</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="Ms Left"><span class="tap long">Ms
-Left</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Down"><span class="tap long">Ms
-Down</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Up"><span class="tap long">Ms
-Up</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Right"><span class="tap long">Ms
-Right</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="Wh Left"><span class="tap long">Wh
-Left</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Down"><span class="tap long">Wh
-Down</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Up"><span class="tap long">Wh
-Up</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Right"><span class="tap long">Wh
-Right</span></div><div class="key empty" aria-hidden="true"></div></div>
-          <div class="thumbs">
-            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
-            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          <div class="case">
+            <div class="well"><div class="col" style="--stagger:0.42"><div class="key empty" aria-hidden="true"></div><div class="key used" title="Ms ←"><span class="tap long">Ms
+Left</span></div><div class="key used" title="Wh ←"><span class="tap long">Wh
+Left</span></div></div><div class="col" style="--stagger:0.15"><div class="key used" title="LMB"><span class="tap">LMB</span></div><div class="key used" title="Ms ↓"><span class="tap long">Ms
+Down</span></div><div class="key used" title="Wh ↓"><span class="tap long">Wh
+Down</span></div></div><div class="col" style="--stagger:0.0"><div class="key used" title="MMB"><span class="tap">MMB</span></div><div class="key used" title="Ms ↑"><span class="tap long">Ms
+Up</span></div><div class="key used" title="Wh ↑"><span class="tap long">Wh
+Up</span></div></div><div class="col" style="--stagger:0.18"><div class="key used" title="RMB"><span class="tap">RMB</span></div><div class="key used" title="Ms →"><span class="tap long">Ms
+Right</span></div><div class="key used" title="Wh →"><span class="tap long">Wh
+Right</span></div></div><div class="col" style="--stagger:0.4"><div class="key used" title="Boot"><span class="tap">Boot</span></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div></div>
+            <div class="thumb-cluster">
+              <div class="cluster-slot"><div class="key cluster empty" aria-hidden="true"></div></div>
+              <div class="thumb-keys"><div class="key empty" aria-hidden="true"></div><div class="key activator empty activator-empty" data-opens="fn" title="Hold for Fn"><span class="hold hold-layer-fn">Fn</span></div><div class="key empty" aria-hidden="true"></div></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
     
-    <p class="note">3×5+3 layout; unused outer columns are omitted. The raised inner keys are the Moonlander cluster keys.</p>
-    <footer>Generated from <span class="mono">oryx-layout.json</span> (kept in sync with the QMK source in <span class="mono">qmk/</span>, which is the master copy). Base Oryx snapshot is <span class="mono">Emvlv</span> / revision <span class="mono">3vpmow</span>.</footer>
+    </div>
+    <p class="note">3×5+3 layout · unused outer columns omitted · inner round keys are the cluster keys</p>
+    <footer>
+      Master copy is <span class="mono">qmk/keymap.c</span>. Includes local edits not yet in Oryx.
+    </footer>
   </div>
 <script>
 (function () {
   const buttons = Array.from(document.querySelectorAll(".tabs button"));
   const layers = Array.from(document.querySelectorAll(".layer"));
+  const names = buttons.map((b) => b.dataset.layer);
+
   function show(id, updateHash) {
-    const valid = buttons.some((btn) => btn.dataset.layer === id) ? id : "all";
+    const valid = names.includes(id) ? id : "base";
     document.body.classList.toggle("single", valid !== "all");
+    document.body.classList.toggle("view-all", valid === "all");
     layers.forEach((el) => el.classList.toggle("is-active", el.dataset.layer === valid));
-    buttons.forEach((btn) => btn.setAttribute("aria-selected", String(btn.dataset.layer === valid)));
+    buttons.forEach((btn) => {
+      const on = btn.dataset.layer === valid;
+      btn.setAttribute("aria-selected", String(on));
+      btn.tabIndex = on ? 0 : -1;
+    });
     if (updateHash) {
-      history.replaceState(null, "", valid === "all" ? location.pathname + location.search : "#" + valid);
+      history.replaceState(null, "", valid === "base" ? location.pathname + location.search : "#" + valid);
     }
   }
-  buttons.forEach((btn) => btn.addEventListener("click", () => show(btn.dataset.layer, true)));
-  show((location.hash || "#all").slice(1), false);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => show(btn.dataset.layer, true));
+  });
+
+  document.querySelector(".tabs").addEventListener("keydown", (e) => {
+    const i = buttons.indexOf(document.activeElement);
+    if (i < 0) return;
+    let next = -1;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % buttons.length;
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + buttons.length) % buttons.length;
+    if (e.key === "Home") next = 0;
+    if (e.key === "End") next = buttons.length - 1;
+    if (next >= 0) {
+      e.preventDefault();
+      buttons[next].focus();
+      show(buttons[next].dataset.layer, true);
+    }
+  });
+
+  document.querySelectorAll("[data-opens]").forEach((el) => {
+    el.addEventListener("pointerenter", () => {
+      document.body.dataset.hoverLayer = el.dataset.opens;
+    });
+    el.addEventListener("pointerleave", () => {
+      delete document.body.dataset.hoverLayer;
+    });
+    el.addEventListener("click", () => show(el.dataset.opens, true));
+  });
+
+  const raw = (location.hash || "#base").slice(1);
+  show(raw || "base", false);
 })();
 </script>
 </body>
