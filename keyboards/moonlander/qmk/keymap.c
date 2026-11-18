@@ -79,16 +79,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 extern rgb_config_t rgb_matrix_config;
 
-RGB hsv_to_rgb_with_value(HSV hsv) {
-  RGB rgb = hsv_to_rgb( hsv );
-  float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-  return (RGB){ f * rgb.r, f * rgb.g, f * rgb.b };
-}
-
-void keyboard_post_init_user(void) {
-  rgb_matrix_enable();
-}
-
+/* Oryx layer paint table. Kept so Oryx/keycolors still have a symbol; hues
+ * are also the source for the custom lighting below (LED 1 is a used key on
+ * every layer in this map). */
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [0] = { {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {0,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {0,255,255}, {0,255,255}, {0,255,255}, {188,255,255}, {188,255,255}, {188,255,255}, {188,255,255} },
 
@@ -102,61 +95,223 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 };
 
-void set_layer_color(int layer) {
-  for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-    HSV hsv = {
-      .h = pgm_read_byte(&ledmap[layer][i][0]),
-      .s = pgm_read_byte(&ledmap[layer][i][1]),
-      .v = pgm_read_byte(&ledmap[layer][i][2]),
-    };
-    if (!hsv.h && !hsv.s && !hsv.v) {
-        rgb_matrix_set_color( i, 0, 0, 0 );
-    } else {
-        RGB rgb = hsv_to_rgb_with_value(hsv);
-        rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+enum {
+    RIPPLE_COUNT  = 8,
+    RIPPLE_MS     = 450,
+    RIPPLE_MIN_R  = 10,
+    RIPPLE_MAX_R  = 56,
+    BASE_BG_VAL   = 72,
+    LAYER_BG_VAL  = 168,
+};
+
+typedef struct {
+    uint8_t  x;
+    uint8_t  y;
+    uint8_t  hue;
+    uint8_t  sat;
+    uint16_t start;
+    bool     active;
+} ripple_t;
+
+static ripple_t ripples[RIPPLE_COUNT];
+
+static HSV layer_theme_hsv(uint8_t layer) {
+    if (layer > 4) {
+        layer = 0;
     }
-  }
+    return (HSV){
+        pgm_read_byte(&ledmap[layer][1][0]),
+        pgm_read_byte(&ledmap[layer][1][1]),
+        pgm_read_byte(&ledmap[layer][1][2]),
+    };
+}
+
+static uint8_t scale_val(uint8_t v, uint8_t max) {
+    return (uint8_t)((uint16_t)v * max / 255);
+}
+
+static void set_led_hsv(uint8_t led, uint8_t h, uint8_t s, uint8_t v) {
+    HSV hsv = {h, s, scale_val(v, rgb_matrix_config.hsv.v)};
+    RGB rgb = hsv_to_rgb(hsv);
+    rgb_matrix_set_color(led, rgb.r, rgb.g, rgb.b);
+}
+
+static uint16_t tap_keycode(uint16_t kc) {
+    if (IS_QK_MOD_TAP(kc)) {
+        return QK_MOD_TAP_GET_TAP_KEYCODE(kc);
+    }
+    if (IS_QK_LAYER_TAP(kc)) {
+        return QK_LAYER_TAP_GET_TAP_KEYCODE(kc);
+    }
+    return kc;
+}
+
+static bool key_is_assigned(uint16_t kc) {
+    return kc != KC_NO && kc != KC_TRANSPARENT;
+}
+
+static bool home_row_mod_held(uint16_t base_kc, uint8_t mods8) {
+    if (!IS_QK_MOD_TAP(base_kc)) {
+        return false;
+    }
+    uint8_t kind = QK_MOD_TAP_GET_MODS(base_kc) & 0x0F;
+    return (((kind & MOD_LCTL) && (mods8 & MOD_MASK_CTRL)) ||
+            ((kind & MOD_LSFT) && (mods8 & MOD_MASK_SHIFT)) ||
+            ((kind & MOD_LALT) && (mods8 & MOD_MASK_ALT)) ||
+            ((kind & MOD_LGUI) && (mods8 & MOD_MASK_GUI)));
+}
+
+static void start_ripple(keypos_t pos, uint8_t layer) {
+    uint8_t led = g_led_config.matrix_co[pos.row][pos.col];
+    if (led == NO_LED) {
+        return;
+    }
+    int8_t   slot   = -1;
+    uint16_t oldest = 0;
+    for (uint8_t i = 0; i < RIPPLE_COUNT; i++) {
+        if (!ripples[i].active) {
+            slot = i;
+            break;
+        }
+        uint16_t age = timer_elapsed(ripples[i].start);
+        if (slot < 0 || age > oldest) {
+            oldest = age;
+            slot   = i;
+        }
+    }
+    if (slot < 0) {
+        return;
+    }
+    HSV theme          = layer_theme_hsv(layer);
+    ripples[slot].x    = g_led_config.point[led].x;
+    ripples[slot].y    = g_led_config.point[led].y;
+    ripples[slot].hue  = theme.h;
+    ripples[slot].sat  = theme.s;
+    ripples[slot].start  = timer_read();
+    ripples[slot].active = true;
+}
+
+static void expire_ripples(void) {
+    for (uint8_t i = 0; i < RIPPLE_COUNT; i++) {
+        if (ripples[i].active && timer_elapsed(ripples[i].start) > RIPPLE_MS) {
+            ripples[i].active = false;
+        }
+    }
+}
+
+static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
+    uint8_t px = g_led_config.point[led].x;
+    uint8_t py = g_led_config.point[led].y;
+    for (uint8_t i = 0; i < RIPPLE_COUNT; i++) {
+        if (!ripples[i].active) {
+            continue;
+        }
+        uint16_t elapsed = timer_elapsed(ripples[i].start);
+        if (elapsed > RIPPLE_MS) {
+            continue;
+        }
+        uint8_t  fade   = 255 - (uint8_t)((uint32_t)elapsed * 255 / RIPPLE_MS);
+        uint16_t radius = RIPPLE_MIN_R + (uint16_t)((uint32_t)elapsed * (RIPPLE_MAX_R - RIPPLE_MIN_R) / RIPPLE_MS);
+        int16_t  dx     = (int16_t)px - ripples[i].x;
+        int16_t  dy     = (int16_t)py - ripples[i].y;
+        uint32_t dist2  = (uint32_t)(dx * dx) + (uint32_t)(dy * dy);
+        uint32_t r2     = (uint32_t)radius * radius;
+        if (dist2 >= r2) {
+            continue;
+        }
+        uint8_t val = (uint8_t)((r2 - dist2) * fade / r2);
+        if (val > *v) {
+            *h = ripples[i].hue;
+            *s = ripples[i].sat;
+            *v = val;
+        }
+    }
+}
+
+void keyboard_post_init_user(void) {
+    rgb_matrix_enable();
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(188, 255, 0);
 }
 
 bool rgb_matrix_indicators_user(void) {
-  if (rawhid_state.rgb_control) {
-      return false;
-  }
-  if (!keyboard_config.disable_layer_led) { 
-    switch (biton32(layer_state)) {
-      case 0:
-        set_layer_color(0);
-        break;
-      case 1:
-        set_layer_color(1);
-        break;
-      case 2:
-        set_layer_color(2);
-        break;
-      case 3:
-        set_layer_color(3);
-        break;
-      case 4:
-        set_layer_color(4);
-        break;
-     default:
-        if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-          rgb_matrix_set_color_all(0, 0, 0);
+    if (rawhid_state.rgb_control) {
+        return false;
+    }
+    expire_ripples();
+    return true;
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (rawhid_state.rgb_control) {
+        return false;
+    }
+    if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+        for (uint8_t led = led_min; led < led_max; led++) {
+            rgb_matrix_set_color(led, 0, 0, 0);
+        }
+        return true;
+    }
+    if (keyboard_config.disable_layer_led) {
+        return true;
+    }
+
+    const uint8_t layer = get_highest_layer(layer_state);
+    const HSV     theme = layer_theme_hsv(layer);
+    const uint8_t bg_v  = (layer == 0) ? BASE_BG_VAL : LAYER_BG_VAL;
+    const uint8_t mods  = get_mods() | get_oneshot_mods() | get_weak_mods();
+    const bool    caps  = is_caps_word_on();
+    uint8_t       cap_t  = (uint8_t)(timer_read() >> 2);
+    uint8_t       cap_tri = (cap_t < 128) ? (uint8_t)(cap_t * 2) : (uint8_t)((255 - cap_t) * 2);
+    const uint8_t caps_v = 150 + scale_val(cap_tri, 105);
+
+    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+        for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+            uint8_t led = g_led_config.matrix_co[row][col];
+            if (led == NO_LED || led < led_min || led >= led_max) {
+                continue;
+            }
+            keypos_t pos     = {.row = row, .col = col};
+            uint16_t kc      = keymap_key_to_keycode(layer, pos);
+            uint16_t base_kc = keymap_key_to_keycode(0, pos);
+
+            uint8_t h = 0, s = 0, v = 0;
+            if (key_is_assigned(kc)) {
+                h = theme.h;
+                s = theme.s;
+                v = bg_v;
+            }
+            apply_ripple(led, &h, &s, &v);
+
+            uint16_t tap     = tap_keycode(base_kc);
+            bool     is_alpha = (tap >= KC_A && tap <= KC_Z);
+            bool     is_cw    = keymap_key_to_keycode(3, pos) == CW_TOGG;
+            if (caps && (is_alpha || is_cw)) {
+                h = 30;
+                s = 70;
+                v = caps_v;
+            }
+            if (home_row_mod_held(base_kc, mods)) {
+                h = 28;
+                s = 25;
+                v = 255;
+            }
+
+            if (v == 0) {
+                rgb_matrix_set_color(led, 0, 0, 0);
+            } else {
+                set_led_hsv(led, h, s, v);
+            }
         }
     }
-  } else {
-    if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-      rgb_matrix_set_color_all(0, 0, 0);
-    }
-  }
-
-  return true;
+    return true;
 }
 
 
-
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed && !rawhid_state.rgb_control) {
+    start_ripple(record->event.key, get_highest_layer(layer_state));
+  }
   switch (keycode) {
   case QK_MODS ... QK_MODS_MAX:
     // Mouse and consumer keys (volume, media) with modifiers work inconsistently across operating systems,

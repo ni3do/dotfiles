@@ -27,7 +27,7 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": "18 Nov 2026, 10:52 CET",
+    "flashed": None,
 }
 
 LAYER_COLORS = {
@@ -419,6 +419,35 @@ def settings_card(config: dict, layers: list[dict]) -> str:
     return '<aside class="settings-card">' + "".join(items) + "</aside>"
 
 
+def lighting_card() -> str:
+    items = [
+        (
+            "Ripple",
+            "Each keypress sends a soft splash in the active layer colour that radiates out and fades back.",
+        ),
+        (
+            "Mods & Caps Word",
+            "A held home-row mod lights that key and its mirror in cream. Caps Word pulses the letter keys in pale gold.",
+        ),
+        (
+            "Active keys",
+            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 dim mauve.",
+        ),
+    ]
+    rows = []
+    for label, text in items:
+        rows.append(
+            f'<div class="setting"><span class="sk">{esc(label)}</span>'
+            f'<span class="sv">{esc(text)}</span></div>'
+        )
+    return (
+        '<aside class="settings-card lighting-card" aria-label="Lighting">'
+        '<p class="card-title">Lighting</p>'
+        + "".join(rows)
+        + "</aside>"
+    )
+
+
 def legend_html(layer_names: dict[int, str], layers: list[dict]) -> str:
     base = (layers[0].get("keys") if layers else []) or []
     groups: dict[str, list[str]] = {}
@@ -736,8 +765,20 @@ TEMPLATE = r"""<!DOCTYPE html>
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 14px;
-    margin: 0 0 22px;
+    margin: 0 0 14px;
   }
+  .lighting-card { gap: 12px 24px; margin: 0 0 22px; }
+  .card-title {
+    flex: 1 0 100%;
+    margin: 0 0 2px;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lighting-card .setting { min-width: 200px; flex: 1 1 220px; }
+  .lighting-card .sv { font-size: .84rem; }
   .setting { display: flex; flex-direction: column; gap: 1px; min-width: 160px; }
   .sk {
     font-size: .65rem;
@@ -1076,6 +1117,7 @@ TEMPLATE = r"""<!DOCTYPE html>
       </div>
     </header>
     [[settings]]
+    [[lighting]]
     <div class="tabs" role="tablist" aria-label="Layers">
       <button type="button" role="tab" data-layer="all" aria-selected="false">Show all</button>
       [[tab_buttons]]
@@ -1191,6 +1233,7 @@ def main() -> int:
         qmk_version=esc(str(qmk_version)),
         local_note=(" " + esc(local_note)) if local_note else "",
         settings=settings_card(config, layers),
+        lighting=lighting_card(),
         legend=legend_html(layer_names, layers),
         tab_buttons="".join(tab_buttons),
         layers="".join(sections),
