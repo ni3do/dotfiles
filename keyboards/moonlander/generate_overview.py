@@ -889,7 +889,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .case {
     background: linear-gradient(180deg, var(--plate-hi), var(--plate) 45%, var(--plate-edge));
     border-radius: 26px 26px 34px 34px;
-    padding: 22px 20px 48px;
+    padding: 22px 20px 62px;
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.28),
       inset 0 -1px 0 rgba(0,0,0,.06),
@@ -910,24 +910,24 @@ TEMPLATE = r"""<!DOCTYPE html>
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
-    margin-top: 18px;
+    margin-top: 44px;
     min-height: calc(var(--key) * 1.7);
   }
   .half.right .thumb-cluster { justify-content: flex-start; }
   .thumb-keys {
     display: flex;
     gap: var(--gap);
-    transform: rotate(-24deg);
+    transform: rotate(24deg);
     transform-origin: 80% 20%;
   }
   .half.right .thumb-keys {
-    transform: rotate(24deg);
+    transform: rotate(-24deg);
     transform-origin: 20% 20%;
   }
   .cluster-slot {
-    margin: 0 2px 28px 8px;
+    margin: 0 2px 40px 8px;
   }
-  .half.left .cluster-slot { margin: 0 8px 28px 2px; }
+  .half.left .cluster-slot { margin: 0 8px 40px 2px; }
   .key {
     width: var(--key);
     height: var(--key);
