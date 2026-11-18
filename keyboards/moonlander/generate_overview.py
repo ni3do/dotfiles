@@ -27,7 +27,7 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": "18 Nov 2026, 11:31 CET",
+    "flashed": None,
 }
 
 LAYER_COLORS = {
@@ -423,7 +423,7 @@ def lighting_card() -> str:
     items = [
         (
             "Ripple",
-            "Each keypress sends a soft splash in the active layer colour that radiates out and fades back.",
+            "Each keypress sends a brighter, whiter splash of the layer colour that radiates out and fades back.",
         ),
         (
             "Mods & Caps Word",
@@ -431,11 +431,11 @@ def lighting_card() -> str:
         ),
         (
             "Active keys",
-            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 as a dim dark mauve.",
+            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour at full brightness; unused keys stay off. Base lights the 3×5+3 at the same maximum (the board's 175 cap).",
         ),
         (
             "Status LEDs",
-            "The three lights above each half: off on Base; outer pair = Sym, middle pair = Num, inner pair = Nav; all six = Fn. Caps Word or Caps Lock also lights the inner pair.",
+            "Left: LED 1 Sym, LED 2 Num, LED 3 Nav (exactly one for the active layer). Right: LED 4 Fn, LED 5 Caps Word or Caps Lock, LED 6 any held modifier (including home-row mods and one-shots). All off on Base with nothing active.",
         ),
     ]
     rows = []

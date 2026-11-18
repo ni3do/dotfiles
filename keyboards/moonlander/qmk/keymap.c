@@ -111,10 +111,12 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 enum {
     RIPPLE_COUNT = 8,
     RIPPLE_MS    = 450,
-    RIPPLE_MIN_R = 10,
-    RIPPLE_MAX_R = 56,
-    BASE_BG_VAL  = 120,
-    LAYER_BG_VAL = 255,
+    RIPPLE_MIN_R     = 10,
+    RIPPLE_MAX_R     = 56,
+    RIPPLE_WHITE_SAT = 48,
+    /* Full hardware cap — do not scale these down again in set_led_hsv. */
+    BASE_BG_VAL  = RGB_MATRIX_MAXIMUM_BRIGHTNESS,
+    LAYER_BG_VAL = RGB_MATRIX_MAXIMUM_BRIGHTNESS,
 };
 
 typedef struct {
@@ -167,11 +169,14 @@ static uint8_t scale_val(uint8_t v, uint8_t max) {
 }
 
 static void set_led_hsv(uint8_t led, uint8_t h, uint8_t s, uint8_t v) {
-    uint8_t bright = rgb_matrix_config.hsv.v;
-    if (bright < 80) {
-        bright = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
+    /* Cap at 175 and convert once. Do not also scale by hsv.v — that is
+     * what made Base look dim (120 * 175 / 255 = 82). hsv_to_rgb applies
+     * the standard CIE curve only; we do not use hsv_to_rgb_with_value /
+     * keycolors' extra hsv.v/255 multiply. */
+    if (v > RGB_MATRIX_MAXIMUM_BRIGHTNESS) {
+        v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
     }
-    HSV hsv = {h, s, scale_val(v, bright)};
+    HSV hsv = {h, s, v};
     RGB rgb = hsv_to_rgb(hsv);
     rgb_matrix_set_color(led, rgb.r, rgb.g, rgb.b);
 }
@@ -192,36 +197,24 @@ static void update_status_leds(void) {
         return;
     }
     uint8_t layer = active_rgb_layer();
+    uint8_t mods  = get_mods() | get_oneshot_mods() | get_oneshot_locked_mods() | get_weak_mods();
     bool    caps  = is_caps_word_on() || host_keyboard_led_state().caps_lock;
-    bool    led1  = false;
-    bool    led2  = false;
-    bool    led3  = false;
-    switch (layer) {
-        case 1:
-            led1 = true;
-            break;
-        case 2:
-            led2 = true;
-            break;
-        case 3:
-            led3 = true;
-            break;
-        case 4:
-            led1 = led2 = led3 = true;
-            break;
-        default:
-            break;
-    }
-    if (caps) {
-        led3 = true;
-    }
-    /* Left half = LED 1..3, right half = LED 4..6. Same pattern both sides. */
+    /* Left: exactly one of LED1–3 for Sym/Num/Nav. Right: LED4 Fn,
+     * LED5 Caps Word/Caps Lock, LED6 any held modifier. Base + idle = all off. */
+    /* STATUS_LED_* casts the argument to bool without parentheses, so
+     * pass named bools — (bool)layer == 2 would always be false. */
+    bool led1 = (layer == 1);
+    bool led2 = (layer == 2);
+    bool led3 = (layer == 3);
+    bool led4 = (layer == 4);
+    bool led5 = caps;
+    bool led6 = (mods != 0);
     STATUS_LED_1(led1);
     STATUS_LED_2(led2);
     STATUS_LED_3(led3);
-    STATUS_LED_4(led1);
-    STATUS_LED_5(led2);
-    STATUS_LED_6(led3);
+    STATUS_LED_4(led4);
+    STATUS_LED_5(led5);
+    STATUS_LED_6(led6);
 }
 
 static uint16_t tap_keycode(uint16_t kc) {
@@ -288,8 +281,9 @@ static void expire_ripples(void) {
 }
 
 static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
-    uint8_t px = g_led_config.point[led].x;
-    uint8_t py = g_led_config.point[led].y;
+    uint8_t px   = g_led_config.point[led].x;
+    uint8_t py   = g_led_config.point[led].y;
+    uint8_t best = 0;
     for (uint8_t i = 0; i < RIPPLE_COUNT; i++) {
         if (!ripples[i].active) {
             continue;
@@ -307,12 +301,20 @@ static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
         if (dist2 >= r2) {
             continue;
         }
-        uint8_t val = (uint8_t)((r2 - dist2) * fade / r2);
-        if (val > *v) {
-            *h = ripples[i].hue;
-            *s = ripples[i].sat;
-            *v = val;
+        uint8_t strength = (uint8_t)((r2 - dist2) * fade / r2);
+        if (strength <= best) {
+            continue;
         }
+        best = strength;
+        /* Background is already at the 175 cap, so contrast comes from a
+         * whiter tint of the same hue, not from raising V further. */
+        uint8_t sat = ripples[i].sat;
+        if (sat > RIPPLE_WHITE_SAT) {
+            sat = (uint8_t)(sat - (uint16_t)(sat - RIPPLE_WHITE_SAT) * strength / 255);
+        }
+        *h = ripples[i].hue;
+        *s = sat;
+        *v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
     }
 }
 
@@ -384,7 +386,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     const bool    caps  = is_caps_word_on();
     uint8_t       cap_t = (uint8_t)(timer_read() >> 2);
     uint8_t       cap_tri = (cap_t < 128) ? (uint8_t)(cap_t * 2) : (uint8_t)((255 - cap_t) * 2);
-    const uint8_t caps_v  = 150 + scale_val(cap_tri, 105);
+    const uint8_t caps_v  = 90 + scale_val(cap_tri, RGB_MATRIX_MAXIMUM_BRIGHTNESS - 90);
 
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
         for (uint8_t col = 0; col < MATRIX_COLS; col++) {
@@ -415,7 +417,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             if (home_row_mod_held(base_kc, mods)) {
                 h = 7;
                 s = 50;
-                v = 255;
+                v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
             }
 
             if (v == 0) {
