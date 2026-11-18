@@ -27,7 +27,7 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": "18 Nov 2026, 11:50 CET",
+    "flashed": None,
 }
 
 LAYER_COLORS = {
@@ -435,7 +435,7 @@ def lighting_card() -> str:
         ),
         (
             "Status LEDs",
-            "Both halves match by colour: red = Nav (LED 1 and 4), green = Sym (LED 2 and 5), blue = Num (LED 3 and 6). All six light on Fn. All off on Base. Caps Word stays on the key LEDs only.",
+            "Both halves match by colour: blue = Num (LED 1 and 4), green = Sym (LED 2 and 5), red = Nav (LED 3 and 6). All six light on Fn. All off on Base. Caps Word stays on the key LEDs only.",
         ),
     ]
     rows = []

@@ -201,28 +201,25 @@ static void update_status_leds(void) {
         return;
     }
     uint8_t layer = active_rgb_layer();
-    /* Physical colours, from ZSA source:
-     * Right half nets in zsa/qmk_firmware firmware20
-     * keyboards/moonlander/config.h ("PCB default pin-out"):
-     *   MCP23_LED_R GPB7, MCP23_LED_G GPB6, MCP23_LED_B GPA7.
-     * matrix.c writes those bits from mcp23018_leds[0..2], which
-     * moonlander.h aliases as STATUS_LED_4/5/6, so:
-     *   LED 4 = red, LED 5 = green, LED 6 = blue.
-     * Left half (moonlander.h): LED 1/2/3 = B5/B4/B3. Stock
-     * layer_state_set_kb in moonlander.c pairs 1↔4, 2↔5, 3↔6
-     * so both hands show the same colour for layers 1–3.
-     *   LED 1 = red, LED 2 = green, LED 3 = blue.
+    /* Physical colours verified on Simon's rev A board (flash
+     * 664c187a, 18 Nov 2026). ZSA firmware20 config.h net names
+     * MCP23_LED_R/G/B (GPB7/GPB6/GPA7 → STATUS_LED_4/5/6) swap
+     * red and blue vs the LEDs; green matches. Left half follows
+     * the stock 1↔4, 2↔5, 3↔6 pairing in moonlander.c:
+     *   LED 1 and 4 = blue
+     *   LED 2 and 5 = green
+     *   LED 3 and 6 = red
      * STATUS_LED_* casts the argument to bool without parentheses,
      * so pass named bools. */
-    bool red   = (layer == 3) || (layer == 4); /* Nav, or all on Fn */
-    bool green = (layer == 1) || (layer == 4); /* Sym, or all on Fn */
     bool blue  = (layer == 2) || (layer == 4); /* Num, or all on Fn */
-    bool led1 = red;
+    bool green = (layer == 1) || (layer == 4); /* Sym, or all on Fn */
+    bool red   = (layer == 3) || (layer == 4); /* Nav, or all on Fn */
+    bool led1 = blue;
     bool led2 = green;
-    bool led3 = blue;
-    bool led4 = red;
+    bool led3 = red;
+    bool led4 = blue;
     bool led5 = green;
-    bool led6 = blue;
+    bool led6 = red;
     STATUS_LED_1(led1);
     STATUS_LED_2(led2);
     STATUS_LED_3(led3);
