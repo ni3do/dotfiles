@@ -103,17 +103,21 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
  *   Base  #8839EF  H=188 S=220
  *   Sym   #A6E3A1  H= 82 S=220
  *   Num   #74C7EC  H=141 S=220
- *   Nav   #FAB387  H= 16 S=220
- *   Fn    #F38BA8  H=243 S=220
+ *   Nav   #F38BA8  H=243 S=220  (Mocha Red / pink)
+ *   Fn    #D20F39  H=246 S=255  (Latte Red, true red)
  *   Mods  #F5E0DC  rosewater cream  H=7 S=50
  *   Caps  #F9E2AF  yellow           H=29 S=180
+ *   Ripple #F5E0DC rosewater crest, with a dim trough behind the front
  */
 enum {
     RIPPLE_COUNT = 8,
     RIPPLE_MS    = 450,
-    RIPPLE_MIN_R     = 10,
-    RIPPLE_MAX_R     = 56,
-    RIPPLE_WHITE_SAT = 48,
+    RIPPLE_MIN_R = 10,
+    RIPPLE_MAX_R = 56,
+    RIPPLE_BAND  = 12,
+    /* Rosewater #F5E0DC — contrasts on mauve, green, sapphire, pink and red. */
+    RIPPLE_HUE   = 7,
+    RIPPLE_SAT   = 70,
     /* Full hardware cap — do not scale these down again in set_led_hsv. */
     BASE_BG_VAL  = RGB_MATRIX_MAXIMUM_BRIGHTNESS,
     LAYER_BG_VAL = RGB_MATRIX_MAXIMUM_BRIGHTNESS,
@@ -138,8 +142,8 @@ static HSV layer_theme_hsv(uint8_t layer) {
         {188, 220, 255}, /* Base, darker mauve */
         {82,  220, 255}, /* Sym,  green        */
         {141, 220, 255}, /* Num,  sapphire     */
-        {16,  220, 255}, /* Nav,  peach        */
-        {243, 220, 255}, /* Fn,   red          */
+        {243, 220, 255}, /* Nav,  mocha pink   */
+        {246, 255, 255}, /* Fn,   latte red    */
     };
     if (layer > 4) {
         layer = 0;
@@ -281,9 +285,11 @@ static void expire_ripples(void) {
 }
 
 static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
-    uint8_t px   = g_led_config.point[led].x;
-    uint8_t py   = g_led_config.point[led].y;
-    uint8_t best = 0;
+    uint8_t px        = g_led_config.point[led].x;
+    uint8_t py        = g_led_config.point[led].y;
+    bool    on_crest  = false;
+    uint8_t dim_keep  = 255; /* 255 = no dim */
+    uint8_t crest_fade = 0;
     for (uint8_t i = 0; i < RIPPLE_COUNT; i++) {
         if (!ripples[i].active) {
             continue;
@@ -301,20 +307,33 @@ static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
         if (dist2 >= r2) {
             continue;
         }
-        uint8_t strength = (uint8_t)((r2 - dist2) * fade / r2);
-        if (strength <= best) {
-            continue;
+        uint16_t inner_r = (radius > RIPPLE_BAND) ? (uint16_t)(radius - RIPPLE_BAND) : 0;
+        uint32_t inner2  = (uint32_t)inner_r * inner_r;
+        if (dist2 >= inner2) {
+            /* Leading band: Rosewater cream at the cap, so the ring
+             * contrasts on every fully-lit layer. */
+            on_crest = true;
+            if (fade > crest_fade) {
+                crest_fade = fade;
+            }
+        } else if (*v > 0) {
+            /* Trough behind the front: dim the layer colour so the
+             * cream ring reads even when the background is already at 175. */
+            uint8_t keep = 255 - scale_val(fade, 165);
+            if (keep < dim_keep) {
+                dim_keep = keep;
+            }
         }
-        best = strength;
-        /* Background is already at the 175 cap, so contrast comes from a
-         * whiter tint of the same hue, not from raising V further. */
-        uint8_t sat = ripples[i].sat;
-        if (sat > RIPPLE_WHITE_SAT) {
-            sat = (uint8_t)(sat - (uint16_t)(sat - RIPPLE_WHITE_SAT) * strength / 255);
+    }
+    if (on_crest) {
+        *h = RIPPLE_HUE;
+        *s = RIPPLE_SAT;
+        *v = 64 + scale_val(crest_fade, RGB_MATRIX_MAXIMUM_BRIGHTNESS - 64);
+        if (*v > RGB_MATRIX_MAXIMUM_BRIGHTNESS) {
+            *v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
         }
-        *h = ripples[i].hue;
-        *s = sat;
-        *v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
+    } else if (dim_keep < 255 && *v > 0) {
+        *v = scale_val(*v, dim_keep);
     }
 }
 

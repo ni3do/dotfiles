@@ -27,15 +27,15 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": "18 Nov 2026, 11:38 CET",
+    "flashed": None,
 }
 
 LAYER_COLORS = {
     0: "#8839EF",  # Catppuccin Latte Mauve — darker Base
     1: "#A6E3A1",  # Mocha Green
     2: "#74C7EC",  # Mocha Sapphire
-    3: "#FAB387",  # Mocha Peach
-    4: "#F38BA8",  # Mocha Red
+    3: "#F38BA8",  # Mocha Red (pink)
+    4: "#D20F39",  # Latte Red (true red)
 }
 
 LEFT_ROWS = [
@@ -423,7 +423,7 @@ def lighting_card() -> str:
     items = [
         (
             "Ripple",
-            "Each keypress sends a brighter, whiter splash of the layer colour that radiates out and fades back.",
+            "Each keypress sends a Rosewater cream wave. Keys just behind the front dim briefly so the ripple reads even when the layer is already at full brightness.",
         ),
         (
             "Mods & Caps Word",
@@ -625,13 +625,13 @@ TEMPLATE = r"""<!DOCTYPE html>
     --mauve: #8839EF;
     --sym: #40A02B;
     --num: #209FB5;
-    --nav: #FE640B;
+    --nav: #C4476A;
     --fn: #D20F39;
     --mauve-dot: #8839EF;
     --sym-dot: #A6E3A1;
     --num-dot: #74C7EC;
-    --nav-dot: #FAB387;
-    --fn-dot: #F38BA8;
+    --nav-dot: #F38BA8;
+    --fn-dot: #D20F39;
     --key: 54px;
     --gap: 7px;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
@@ -666,8 +666,8 @@ TEMPLATE = r"""<!DOCTYPE html>
       --mauve: #CBA6F7;
       --sym: #A6E3A1;
       --num: #74C7EC;
-      --nav: #FAB387;
-      --fn: #F38BA8;
+      --nav: #F38BA8;
+      --fn: #D20F39;
     }
   }
   html[data-theme="dark"] {
@@ -696,8 +696,8 @@ TEMPLATE = r"""<!DOCTYPE html>
     --mauve: #CBA6F7;
     --sym: #A6E3A1;
     --num: #74C7EC;
-    --nav: #FAB387;
-    --fn: #F38BA8;
+    --nav: #F38BA8;
+    --fn: #D20F39;
     color-scheme: dark;
   }
   html[data-theme="light"] { color-scheme: light; }

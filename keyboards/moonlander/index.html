@@ -39,13 +39,13 @@
     --mauve: #8839EF;
     --sym: #40A02B;
     --num: #209FB5;
-    --nav: #FE640B;
+    --nav: #C4476A;
     --fn: #D20F39;
     --mauve-dot: #8839EF;
     --sym-dot: #A6E3A1;
     --num-dot: #74C7EC;
-    --nav-dot: #FAB387;
-    --fn-dot: #F38BA8;
+    --nav-dot: #F38BA8;
+    --fn-dot: #D20F39;
     --key: 54px;
     --gap: 7px;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
@@ -80,8 +80,8 @@
       --mauve: #CBA6F7;
       --sym: #A6E3A1;
       --num: #74C7EC;
-      --nav: #FAB387;
-      --fn: #F38BA8;
+      --nav: #F38BA8;
+      --fn: #D20F39;
     }
   }
   html[data-theme="dark"] {
@@ -110,8 +110,8 @@
     --mauve: #CBA6F7;
     --sym: #A6E3A1;
     --num: #74C7EC;
-    --nav: #FAB387;
-    --fn: #F38BA8;
+    --nav: #F38BA8;
+    --fn: #D20F39;
     color-scheme: dark;
   }
   html[data-theme="light"] { color-scheme: light; }
@@ -530,22 +530,22 @@
         <h1>grokout</h1>
       </div>
       <div class="mast-meta">
-        <p class="status" data-pending="false">Flashed 18 Nov 2026, 11:38 CET</p>
+        <p class="status" data-pending="true">Firmware built 18 Nov · flash pending</p>
         <p class="rev">QMK 25.0<span class="sep">·</span>17 Nov 2026, 20:07 CET<span class="sep">·</span>rev <span class="mono">3vpmow</span></p>
       </div>
     </header>
     <aside class="settings-card"><div class="setting"><span class="sk">Tapping term</span><span class="sv">190 ms · D and F at 160 ms</span></div><div class="setting"><span class="sk">Holds</span><span class="sv">Permissive hold · Chordal hold, thumbs excluded</span></div><div class="setting"><span class="sk">RGB timeout</span><span class="sv">15 min</span></div></aside>
-    <aside class="settings-card lighting-card" aria-label="Lighting"><p class="card-title">Lighting</p><div class="setting"><span class="sk">Ripple</span><span class="sv">Each keypress sends a brighter, whiter splash of the layer colour that radiates out and fades back.</span></div><div class="setting"><span class="sk">Mods &amp; Caps Word</span><span class="sv">A held home-row mod lights that key and its mirror in rosewater cream. Caps Word pulses the letter keys in Mocha Yellow.</span></div><div class="setting"><span class="sk">Active keys</span><span class="sv">On Sym, Num, Nav and Fn only assigned keys glow in the layer colour at full brightness; unused keys stay off. Base lights the 3×5+3 at the same maximum (the board's 175 cap).</span></div><div class="setting"><span class="sk">Status LEDs</span><span class="sv">Left: LED 1 Sym, LED 2 Num, LED 3 Nav (exactly one for the active layer). Right: LED 4 Fn, LED 5 Caps Word or Caps Lock, LED 6 any held modifier (including home-row mods and one-shots). All off on Base with nothing active.</span></div></aside>
+    <aside class="settings-card lighting-card" aria-label="Lighting"><p class="card-title">Lighting</p><div class="setting"><span class="sk">Ripple</span><span class="sv">Each keypress sends a Rosewater cream wave. Keys just behind the front dim briefly so the ripple reads even when the layer is already at full brightness.</span></div><div class="setting"><span class="sk">Mods &amp; Caps Word</span><span class="sv">A held home-row mod lights that key and its mirror in rosewater cream. Caps Word pulses the letter keys in Mocha Yellow.</span></div><div class="setting"><span class="sk">Active keys</span><span class="sv">On Sym, Num, Nav and Fn only assigned keys glow in the layer colour at full brightness; unused keys stay off. Base lights the 3×5+3 at the same maximum (the board's 175 cap).</span></div><div class="setting"><span class="sk">Status LEDs</span><span class="sv">Left: LED 1 Sym, LED 2 Num, LED 3 Nav (exactly one for the active layer). Right: LED 4 Fn, LED 5 Caps Word or Caps Lock, LED 6 any held modifier (including home-row mods and one-shots). All off on Base with nothing active.</span></div></aside>
     <div class="tabs" role="tablist" aria-label="Layers">
       <button type="button" role="tab" data-layer="all" aria-selected="false">Show all</button>
       <button type="button" role="tab" data-layer="base" aria-selected="false"><span class="dot"></span>Base</button><button type="button" role="tab" data-layer="sym" aria-selected="false"><span class="dot"></span>Sym</button><button type="button" role="tab" data-layer="num" aria-selected="false"><span class="dot"></span>Num</button><button type="button" role="tab" data-layer="nav" aria-selected="false"><span class="dot"></span>Nav</button><button type="button" role="tab" data-layer="fn" aria-selected="false"><span class="dot"></span>Fn</button>
     </div>
     <div class="legend" aria-label="Thumb layer holds">
-      <span class="legend-item" data-opens="sym"><span class="swatch" style="background:#A6E3A1"></span><span class="legend-keys">Tab / Space</span><span class="legend-arrow">→</span><span class="legend-layer">Sym</span></span><span class="legend-item" data-opens="num"><span class="swatch" style="background:#74C7EC"></span><span class="legend-keys">Bksp</span><span class="legend-arrow">→</span><span class="legend-layer">Num</span></span><span class="legend-item" data-opens="nav"><span class="swatch" style="background:#FAB387"></span><span class="legend-keys">Esc / Del</span><span class="legend-arrow">→</span><span class="legend-layer">Nav</span></span><span class="legend-item" data-opens="fn"><span class="swatch" style="background:#F38BA8"></span><span class="legend-keys">Enter</span><span class="legend-arrow">→</span><span class="legend-layer">Fn</span></span>
+      <span class="legend-item" data-opens="sym"><span class="swatch" style="background:#A6E3A1"></span><span class="legend-keys">Tab / Space</span><span class="legend-arrow">→</span><span class="legend-layer">Sym</span></span><span class="legend-item" data-opens="num"><span class="swatch" style="background:#74C7EC"></span><span class="legend-keys">Bksp</span><span class="legend-arrow">→</span><span class="legend-layer">Num</span></span><span class="legend-item" data-opens="nav"><span class="swatch" style="background:#F38BA8"></span><span class="legend-keys">Esc / Del</span><span class="legend-arrow">→</span><span class="legend-layer">Nav</span></span><span class="legend-item" data-opens="fn"><span class="swatch" style="background:#D20F39"></span><span class="legend-keys">Enter</span><span class="legend-arrow">→</span><span class="legend-layer">Fn</span></span>
     </div>
     <div class="layers">
       
-    <section class="layer" data-layer="base" data-index="0" data-title="Base" style="--layer-accent:#6100FF">
+    <section class="layer" data-layer="base" data-index="0" data-title="Base" style="--layer-accent:#8839EF">
       <h2><span class="layer-dot"></span><span class="layer-name">Base</span> <span class="hint">Home-row mods on A S D F and J K L ;</span></h2>
       <div class="board">
         <div class="half left">
@@ -570,7 +570,7 @@ Space</span></div></div>
       </div>
     </section>
     
-    <section class="layer" data-layer="sym" data-index="1" data-title="Sym" style="--layer-accent:#00C070">
+    <section class="layer" data-layer="sym" data-index="1" data-title="Sym" style="--layer-accent:#A6E3A1">
       <h2><span class="layer-dot"></span><span class="layer-name">Sym</span> <span class="hint">Hold Tab or Space</span></h2>
       <div class="board">
         <div class="half left">
@@ -594,7 +594,7 @@ Space</span></div></div>
       </div>
     </section>
     
-    <section class="layer" data-layer="num" data-index="2" data-title="Num" style="--layer-accent:#00C8FF">
+    <section class="layer" data-layer="num" data-index="2" data-title="Num" style="--layer-accent:#74C7EC">
       <h2><span class="layer-dot"></span><span class="layer-name">Num</span> <span class="hint">Hold Bksp</span></h2>
       <div class="board">
         <div class="half left">
@@ -618,7 +618,7 @@ Space</span></div></div>
       </div>
     </section>
     
-    <section class="layer" data-layer="nav" data-index="3" data-title="Nav" style="--layer-accent:#FF9000">
+    <section class="layer" data-layer="nav" data-index="3" data-title="Nav" style="--layer-accent:#F38BA8">
       <h2><span class="layer-dot"></span><span class="layer-name">Nav</span> <span class="hint">Hold Esc or Del</span></h2>
       <div class="board">
         <div class="half left">
@@ -647,7 +647,7 @@ Right</span></div><div class="key used" title="Win+Shift+S"><span class="tap">Sn
       </div>
     </section>
     
-    <section class="layer" data-layer="fn" data-index="4" data-title="Fn" style="--layer-accent:#FF3040">
+    <section class="layer" data-layer="fn" data-index="4" data-title="Fn" style="--layer-accent:#D20F39">
       <h2><span class="layer-dot"></span><span class="layer-name">Fn</span> <span class="hint">Hold Enter</span></h2>
       <div class="board">
         <div class="half left">
