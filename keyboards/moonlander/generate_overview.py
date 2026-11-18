@@ -27,15 +27,15 @@ CET = timezone(timedelta(hours=1), name="CET")
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": "18 Nov 2026, 11:17 CET",
+    "flashed": None,
 }
 
 LAYER_COLORS = {
-    0: "#6100FF",
-    1: "#00C070",
-    2: "#00C8FF",
-    3: "#FF9000",
-    4: "#FF3040",
+    0: "#8839EF",  # Catppuccin Latte Mauve — darker Base
+    1: "#A6E3A1",  # Mocha Green
+    2: "#74C7EC",  # Mocha Sapphire
+    3: "#FAB387",  # Mocha Peach
+    4: "#F38BA8",  # Mocha Red
 }
 
 LEFT_ROWS = [
@@ -427,11 +427,15 @@ def lighting_card() -> str:
         ),
         (
             "Mods & Caps Word",
-            "A held home-row mod lights that key and its mirror in cream. Caps Word pulses the letter keys in pale gold.",
+            "A held home-row mod lights that key and its mirror in rosewater cream. Caps Word pulses the letter keys in Mocha Yellow.",
         ),
         (
             "Active keys",
-            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 dim mauve.",
+            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 as a dim dark mauve.",
+        ),
+        (
+            "Status LEDs",
+            "The three lights above each half: off on Base; outer pair = Sym, middle pair = Num, inner pair = Nav; all six = Fn. Caps Word or Caps Lock also lights the inner pair.",
         ),
     ]
     rows = []
@@ -618,16 +622,16 @@ TEMPLATE = r"""<!DOCTYPE html>
     --shadow: rgba(28,36,48,.10);
     --cluster-rim: #7a3e3e;
     --status-pending: #8a5a20;
-    --mauve: #5f4e86;
-    --sym: #1c7a58;
-    --num: #1a7894;
-    --nav: #b36e12;
-    --fn: #b43e47;
-    --mauve-dot: #6100FF;
-    --sym-dot: #00C070;
-    --num-dot: #00C8FF;
-    --nav-dot: #FF9000;
-    --fn-dot: #FF3040;
+    --mauve: #8839EF;
+    --sym: #40A02B;
+    --num: #209FB5;
+    --nav: #FE640B;
+    --fn: #D20F39;
+    --mauve-dot: #8839EF;
+    --sym-dot: #A6E3A1;
+    --num-dot: #74C7EC;
+    --nav-dot: #FAB387;
+    --fn-dot: #F38BA8;
     --key: 54px;
     --gap: 7px;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
@@ -659,11 +663,11 @@ TEMPLATE = r"""<!DOCTYPE html>
       --shadow: rgba(0,0,0,.35);
       --cluster-rim: #a35656;
       --status-pending: #e0b060;
-      --mauve: #b9a8db;
-      --sym: #4ecf96;
-      --num: #5ec8e0;
-      --nav: #f0a84a;
-      --fn: #f07178;
+      --mauve: #CBA6F7;
+      --sym: #A6E3A1;
+      --num: #74C7EC;
+      --nav: #FAB387;
+      --fn: #F38BA8;
     }
   }
   html[data-theme="dark"] {
@@ -689,11 +693,11 @@ TEMPLATE = r"""<!DOCTYPE html>
     --shadow: rgba(0,0,0,.35);
     --cluster-rim: #a35656;
     --status-pending: #e0b060;
-    --mauve: #b9a8db;
-    --sym: #4ecf96;
-    --num: #5ec8e0;
-    --nav: #f0a84a;
-    --fn: #f07178;
+    --mauve: #CBA6F7;
+    --sym: #A6E3A1;
+    --num: #74C7EC;
+    --nav: #FAB387;
+    --fn: #F38BA8;
     color-scheme: dark;
   }
   html[data-theme="light"] { color-scheme: light; }

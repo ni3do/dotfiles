@@ -36,16 +36,16 @@
     --shadow: rgba(28,36,48,.10);
     --cluster-rim: #7a3e3e;
     --status-pending: #8a5a20;
-    --mauve: #5f4e86;
-    --sym: #1c7a58;
-    --num: #1a7894;
-    --nav: #b36e12;
-    --fn: #b43e47;
-    --mauve-dot: #6100FF;
-    --sym-dot: #00C070;
-    --num-dot: #00C8FF;
-    --nav-dot: #FF9000;
-    --fn-dot: #FF3040;
+    --mauve: #8839EF;
+    --sym: #40A02B;
+    --num: #209FB5;
+    --nav: #FE640B;
+    --fn: #D20F39;
+    --mauve-dot: #8839EF;
+    --sym-dot: #A6E3A1;
+    --num-dot: #74C7EC;
+    --nav-dot: #FAB387;
+    --fn-dot: #F38BA8;
     --key: 54px;
     --gap: 7px;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
@@ -77,11 +77,11 @@
       --shadow: rgba(0,0,0,.35);
       --cluster-rim: #a35656;
       --status-pending: #e0b060;
-      --mauve: #b9a8db;
-      --sym: #4ecf96;
-      --num: #5ec8e0;
-      --nav: #f0a84a;
-      --fn: #f07178;
+      --mauve: #CBA6F7;
+      --sym: #A6E3A1;
+      --num: #74C7EC;
+      --nav: #FAB387;
+      --fn: #F38BA8;
     }
   }
   html[data-theme="dark"] {
@@ -107,11 +107,11 @@
     --shadow: rgba(0,0,0,.35);
     --cluster-rim: #a35656;
     --status-pending: #e0b060;
-    --mauve: #b9a8db;
-    --sym: #4ecf96;
-    --num: #5ec8e0;
-    --nav: #f0a84a;
-    --fn: #f07178;
+    --mauve: #CBA6F7;
+    --sym: #A6E3A1;
+    --num: #74C7EC;
+    --nav: #FAB387;
+    --fn: #F38BA8;
     color-scheme: dark;
   }
   html[data-theme="light"] { color-scheme: light; }
@@ -530,18 +530,18 @@
         <h1>grokout</h1>
       </div>
       <div class="mast-meta">
-        <p class="status" data-pending="false">Flashed 18 Nov 2026, 11:17 CET</p>
+        <p class="status" data-pending="true">Firmware built 18 Nov · flash pending</p>
         <p class="rev">QMK 25.0<span class="sep">·</span>17 Nov 2026, 20:07 CET<span class="sep">·</span>rev <span class="mono">3vpmow</span></p>
       </div>
     </header>
     <aside class="settings-card"><div class="setting"><span class="sk">Tapping term</span><span class="sv">190 ms · D and F at 160 ms</span></div><div class="setting"><span class="sk">Holds</span><span class="sv">Permissive hold · Chordal hold, thumbs excluded</span></div><div class="setting"><span class="sk">RGB timeout</span><span class="sv">15 min</span></div></aside>
-    <aside class="settings-card lighting-card" aria-label="Lighting"><p class="card-title">Lighting</p><div class="setting"><span class="sk">Ripple</span><span class="sv">Each keypress sends a soft splash in the active layer colour that radiates out and fades back.</span></div><div class="setting"><span class="sk">Mods &amp; Caps Word</span><span class="sv">A held home-row mod lights that key and its mirror in cream. Caps Word pulses the letter keys in pale gold.</span></div><div class="setting"><span class="sk">Active keys</span><span class="sv">On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 dim mauve.</span></div></aside>
+    <aside class="settings-card lighting-card" aria-label="Lighting"><p class="card-title">Lighting</p><div class="setting"><span class="sk">Ripple</span><span class="sv">Each keypress sends a soft splash in the active layer colour that radiates out and fades back.</span></div><div class="setting"><span class="sk">Mods &amp; Caps Word</span><span class="sv">A held home-row mod lights that key and its mirror in rosewater cream. Caps Word pulses the letter keys in Mocha Yellow.</span></div><div class="setting"><span class="sk">Active keys</span><span class="sv">On Sym, Num, Nav and Fn only assigned keys glow in the layer colour; unused keys stay off. Base keeps the 3×5+3 as a dim dark mauve.</span></div><div class="setting"><span class="sk">Status LEDs</span><span class="sv">The three lights above each half: off on Base; outer pair = Sym, middle pair = Num, inner pair = Nav; all six = Fn. Caps Word or Caps Lock also lights the inner pair.</span></div></aside>
     <div class="tabs" role="tablist" aria-label="Layers">
       <button type="button" role="tab" data-layer="all" aria-selected="false">Show all</button>
       <button type="button" role="tab" data-layer="base" aria-selected="false"><span class="dot"></span>Base</button><button type="button" role="tab" data-layer="sym" aria-selected="false"><span class="dot"></span>Sym</button><button type="button" role="tab" data-layer="num" aria-selected="false"><span class="dot"></span>Num</button><button type="button" role="tab" data-layer="nav" aria-selected="false"><span class="dot"></span>Nav</button><button type="button" role="tab" data-layer="fn" aria-selected="false"><span class="dot"></span>Fn</button>
     </div>
     <div class="legend" aria-label="Thumb layer holds">
-      <span class="legend-item" data-opens="sym"><span class="swatch" style="background:#00C070"></span><span class="legend-keys">Tab / Space</span><span class="legend-arrow">→</span><span class="legend-layer">Sym</span></span><span class="legend-item" data-opens="num"><span class="swatch" style="background:#00C8FF"></span><span class="legend-keys">Bksp</span><span class="legend-arrow">→</span><span class="legend-layer">Num</span></span><span class="legend-item" data-opens="nav"><span class="swatch" style="background:#FF9000"></span><span class="legend-keys">Esc / Del</span><span class="legend-arrow">→</span><span class="legend-layer">Nav</span></span><span class="legend-item" data-opens="fn"><span class="swatch" style="background:#FF3040"></span><span class="legend-keys">Enter</span><span class="legend-arrow">→</span><span class="legend-layer">Fn</span></span>
+      <span class="legend-item" data-opens="sym"><span class="swatch" style="background:#A6E3A1"></span><span class="legend-keys">Tab / Space</span><span class="legend-arrow">→</span><span class="legend-layer">Sym</span></span><span class="legend-item" data-opens="num"><span class="swatch" style="background:#74C7EC"></span><span class="legend-keys">Bksp</span><span class="legend-arrow">→</span><span class="legend-layer">Num</span></span><span class="legend-item" data-opens="nav"><span class="swatch" style="background:#FAB387"></span><span class="legend-keys">Esc / Del</span><span class="legend-arrow">→</span><span class="legend-layer">Nav</span></span><span class="legend-item" data-opens="fn"><span class="swatch" style="background:#F38BA8"></span><span class="legend-keys">Enter</span><span class="legend-arrow">→</span><span class="legend-layer">Fn</span></span>
     </div>
     <div class="layers">
       

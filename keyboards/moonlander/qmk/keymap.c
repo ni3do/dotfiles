@@ -95,13 +95,26 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 };
 
+/* Catppuccin Mocha on the RGB matrix. Hex is the palette reference; HSV uses
+ * a boosted saturation so the ISSI LEDs actually read as those hues (the
+ * pastel hex sat would wash out). Base uses Latte Mauve #8839EF — a noticeably
+ * darker mauve than Mocha Mauve #CBA6F7 — so the idle board is a dim tint,
+ * not a bright violet. Value is applied per-key (bg / ripple / mods).
+ *   Base  #8839EF  H=188 S=220
+ *   Sym   #A6E3A1  H= 82 S=220
+ *   Num   #74C7EC  H=141 S=220
+ *   Nav   #FAB387  H= 16 S=220
+ *   Fn    #F38BA8  H=243 S=220
+ *   Mods  #F5E0DC  rosewater cream  H=7 S=50
+ *   Caps  #F9E2AF  yellow           H=29 S=180
+ */
 enum {
-    RIPPLE_COUNT  = 8,
-    RIPPLE_MS     = 450,
-    RIPPLE_MIN_R  = 10,
-    RIPPLE_MAX_R  = 56,
-    BASE_BG_VAL   = 72,
-    LAYER_BG_VAL  = 168,
+    RIPPLE_COUNT = 8,
+    RIPPLE_MS    = 450,
+    RIPPLE_MIN_R = 10,
+    RIPPLE_MAX_R = 56,
+    BASE_BG_VAL  = 120,
+    LAYER_BG_VAL = 255,
 };
 
 typedef struct {
@@ -114,16 +127,39 @@ typedef struct {
 } ripple_t;
 
 static ripple_t ripples[RIPPLE_COUNT];
+static uint8_t  cached_layer = 0;
+
+extern bool is_launching;
 
 static HSV layer_theme_hsv(uint8_t layer) {
+    static const HSV themes[5] = {
+        {188, 220, 255}, /* Base, darker mauve */
+        {82,  220, 255}, /* Sym,  green        */
+        {141, 220, 255}, /* Num,  sapphire     */
+        {16,  220, 255}, /* Nav,  peach        */
+        {243, 220, 255}, /* Fn,   red          */
+    };
     if (layer > 4) {
         layer = 0;
     }
-    return (HSV){
-        pgm_read_byte(&ledmap[layer][1][0]),
-        pgm_read_byte(&ledmap[layer][1][1]),
-        pgm_read_byte(&ledmap[layer][1][2]),
-    };
+    /* Keep ledmap in the binary for Oryx; theme no longer reads from it. */
+    (void)pgm_read_byte(&ledmap[0][0][0]);
+    return themes[layer];
+}
+
+static uint8_t active_rgb_layer(void) {
+    uint8_t layer = get_highest_layer(layer_state | default_layer_state);
+    if (layer > 4) {
+        layer = 0;
+    }
+    return layer;
+}
+
+static void sync_solid_color(uint8_t layer) {
+    /* SOLID_COLOR is what you see if indicators are skipped; keep it on the
+     * active layer hue at the hardware brightness cap (175 on Moonlander). */
+    HSV theme = layer_theme_hsv(layer);
+    rgb_matrix_sethsv_noeeprom(theme.h, theme.s, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
 }
 
 static uint8_t scale_val(uint8_t v, uint8_t max) {
@@ -132,12 +168,60 @@ static uint8_t scale_val(uint8_t v, uint8_t max) {
 
 static void set_led_hsv(uint8_t led, uint8_t h, uint8_t s, uint8_t v) {
     uint8_t bright = rgb_matrix_config.hsv.v;
-    if (bright < 120) {
-        bright = 180;
+    if (bright < 80) {
+        bright = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
     }
     HSV hsv = {h, s, scale_val(v, bright)};
     RGB rgb = hsv_to_rgb(hsv);
     rgb_matrix_set_color(led, rgb.r, rgb.g, rgb.b);
+}
+
+static void update_status_leds(void) {
+#ifdef COMMUNITY_MODULE_ORYX_ENABLE
+    if (rawhid_state.status_led_control) {
+        return;
+    }
+#endif
+    if (!keyboard_config.led_level) {
+        STATUS_LED_1(false);
+        STATUS_LED_2(false);
+        STATUS_LED_3(false);
+        STATUS_LED_4(false);
+        STATUS_LED_5(false);
+        STATUS_LED_6(false);
+        return;
+    }
+    uint8_t layer = active_rgb_layer();
+    bool    caps  = is_caps_word_on() || host_keyboard_led_state().caps_lock;
+    bool    led1  = false;
+    bool    led2  = false;
+    bool    led3  = false;
+    switch (layer) {
+        case 1:
+            led1 = true;
+            break;
+        case 2:
+            led2 = true;
+            break;
+        case 3:
+            led3 = true;
+            break;
+        case 4:
+            led1 = led2 = led3 = true;
+            break;
+        default:
+            break;
+    }
+    if (caps) {
+        led3 = true;
+    }
+    /* Left half = LED 1..3, right half = LED 4..6. Same pattern both sides. */
+    STATUS_LED_1(led1);
+    STATUS_LED_2(led2);
+    STATUS_LED_3(led3);
+    STATUS_LED_4(led1);
+    STATUS_LED_5(led2);
+    STATUS_LED_6(led3);
 }
 
 static uint16_t tap_keycode(uint16_t kc) {
@@ -186,11 +270,11 @@ static void start_ripple(keypos_t pos, uint8_t layer) {
     if (slot < 0) {
         return;
     }
-    HSV theme          = layer_theme_hsv(layer);
-    ripples[slot].x    = g_led_config.point[led].x;
-    ripples[slot].y    = g_led_config.point[led].y;
-    ripples[slot].hue  = theme.h;
-    ripples[slot].sat  = theme.s;
+    HSV theme            = layer_theme_hsv(layer);
+    ripples[slot].x      = g_led_config.point[led].x;
+    ripples[slot].y      = g_led_config.point[led].y;
+    ripples[slot].hue    = theme.h;
+    ripples[slot].sat    = theme.s;
     ripples[slot].start  = timer_read();
     ripples[slot].active = true;
 }
@@ -233,16 +317,42 @@ static void apply_ripple(uint8_t led, uint8_t *h, uint8_t *s, uint8_t *v) {
 }
 
 void keyboard_post_init_user(void) {
-    /* Do not set hsv.v to 0: indicator colours are scaled by this value. */
     rgb_matrix_enable_noeeprom();
     rgb_matrix_set_flags(LED_FLAG_ALL);
     keyboard_config.rgb_matrix_enable = true;
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-    uint8_t v = rgb_matrix_config.hsv.v;
-    if (v < 120) {
-        v = 180;
+    cached_layer = active_rgb_layer();
+    sync_solid_color(cached_layer);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    uint8_t layer = get_highest_layer(state | default_layer_state);
+    if (layer > 4) {
+        layer = 0;
     }
-    rgb_matrix_sethsv_noeeprom(rgb_matrix_config.hsv.h, rgb_matrix_config.hsv.s, v);
+    cached_layer = layer;
+    if (!rawhid_state.rgb_control) {
+        sync_solid_color(layer);
+    }
+    return state;
+}
+
+void housekeeping_task_user(void) {
+    /* If the boot chase stalls (right-half LEDs left on after case 5–8),
+     * take over after 4s so Base can actually go dark. */
+    if (is_launching && timer_read32() > 4000) {
+        is_launching = false;
+    }
+    if (!is_launching) {
+        update_status_leds();
+    }
+}
+
+void caps_word_set_user(bool active) {
+    (void)active;
+    if (!is_launching) {
+        update_status_leds();
+    }
 }
 
 bool rgb_matrix_indicators_user(void) {
@@ -263,17 +373,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
         return true;
     }
-    /* Paint layer colours even if Oryx "disable layer LED" is set, so the
-     * base/layer map cannot disappear while the matrix is enabled. */
 
-    const uint8_t layer = get_highest_layer(layer_state);
+    /* Use the cached highest layer from layer_state_set_user, and re-read
+     * live state so a missed hook cannot leave the board stuck on Base. */
+    uint8_t layer = active_rgb_layer();
+    cached_layer  = layer;
     const HSV     theme = layer_theme_hsv(layer);
     const uint8_t bg_v  = (layer == 0) ? BASE_BG_VAL : LAYER_BG_VAL;
     const uint8_t mods  = get_mods() | get_oneshot_mods() | get_weak_mods();
     const bool    caps  = is_caps_word_on();
-    uint8_t       cap_t  = (uint8_t)(timer_read() >> 2);
+    uint8_t       cap_t = (uint8_t)(timer_read() >> 2);
     uint8_t       cap_tri = (cap_t < 128) ? (uint8_t)(cap_t * 2) : (uint8_t)((255 - cap_t) * 2);
-    const uint8_t caps_v = 150 + scale_val(cap_tri, 105);
+    const uint8_t caps_v  = 150 + scale_val(cap_tri, 105);
 
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
         for (uint8_t col = 0; col < MATRIX_COLS; col++) {
@@ -293,17 +404,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
             apply_ripple(led, &h, &s, &v);
 
-            uint16_t tap     = tap_keycode(base_kc);
+            uint16_t tap      = tap_keycode(base_kc);
             bool     is_alpha = (tap >= KC_A && tap <= KC_Z);
             bool     is_cw    = keymap_key_to_keycode(3, pos) == CW_TOGG;
             if (caps && (is_alpha || is_cw)) {
-                h = 30;
-                s = 70;
+                h = 29;
+                s = 180;
                 v = caps_v;
             }
             if (home_row_mod_held(base_kc, mods)) {
-                h = 28;
-                s = 25;
+                h = 7;
+                s = 50;
                 v = 255;
             }
 
@@ -320,7 +431,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed && !rawhid_state.rgb_control) {
-    start_ripple(record->event.key, get_highest_layer(layer_state));
+    uint8_t ripple_layer = active_rgb_layer();
+    /* LT activates the layer after this hook, so colour the ripple for the
+     * layer the key is about to enter. */
+    if (IS_QK_LAYER_TAP(keycode)) {
+        ripple_layer = QK_LAYER_TAP_GET_LAYER(keycode);
+    }
+    start_ripple(record->event.key, ripple_layer);
   }
   switch (keycode) {
   case QK_MODS ... QK_MODS_MAX:
