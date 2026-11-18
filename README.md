@@ -41,6 +41,11 @@ Pi configuration is managed under `dot-pi/agent/`, which stows to `~/.pi/agent/`
 
 Secrets and runtime data are intentionally not tracked: `auth.json`, session logs, package install caches, and update-check files stay local.
 
+
+## Moonlander layout
+
+The current ZSA Moonlander layout (Oryx `Emvlv`) lives in [`keyboards/moonlander/`](keyboards/moonlander/). It is not stowed into `$HOME`. See that folder's README for the HTML overview, how to refresh the snapshot from Oryx, and how to flash with Keymapp.
+
 ## Notes for coding agents
 
 See [AGENTS.md](AGENTS.md) — in particular the stow tree-folding and ignore-list

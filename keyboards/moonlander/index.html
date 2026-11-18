@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moonlander · grokout · 3vpmow</title>
+<style>
+  :root {
+    --bg: #101216;
+    --bg-elev: #171a20;
+    --bg-key: #22262f;
+    --bg-empty: #181b21;
+    --line: #2a2f3a;
+    --text: #e8eaef;
+    --muted: #8b909c;
+    --soft: #c5c8d0;
+    --base: #6100FF;
+    --sym: #00C070;
+    --num: #00C8FF;
+    --nav: #FF9000;
+    --fn: #FF3040;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    line-height: 1.45;
+    min-height: 100vh;
+  }
+  a { color: #9cbcff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 36px 20px 64px; }
+  header h1 {
+    font-size: 1.55rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+  header .sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 16px;
+  }
+  header .sub code, .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+  }
+  .settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 18px;
+  }
+  .pill {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 0.8rem;
+    color: var(--soft);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin: 0 0 22px;
+    padding: 14px 16px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    font-size: 0.88rem;
+  }
+  .legend strong { font-weight: 600; }
+  .swatch {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .legend-sep { color: #4a5160; margin: 0 2px; }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 22px;
+  }
+  .tabs button {
+    appearance: none;
+    background: var(--bg-elev);
+    color: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 7px 13px;
+    font: inherit;
+    font-size: 0.88rem;
+    cursor: pointer;
+  }
+  .tabs button:hover { border-color: #4a5160; }
+  .tabs button[aria-selected="true"] {
+    color: #fff;
+    border-color: transparent;
+    background: #2c3140;
+  }
+  .tabs button[data-layer="all"][aria-selected="true"] { background: #2c3140; }
+  .tabs button[data-layer="0"][aria-selected="true"] { background: var(--base); }
+  .tabs button[data-layer="1"][aria-selected="true"] { background: var(--sym); color: #062015; }
+  .tabs button[data-layer="2"][aria-selected="true"] { background: var(--num); color: #062018; }
+  .tabs button[data-layer="3"][aria-selected="true"] { background: var(--nav); color: #2a1500; }
+  .tabs button[data-layer="4"][aria-selected="true"] { background: var(--fn); }
+  .layer {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px 18px 22px;
+    margin: 0 0 18px;
+  }
+  .layer h2 {
+    margin: 0 0 16px;
+    font-size: 1.05rem;
+    font-weight: 650;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .layer h2 .hint {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .board {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 52px;
+    flex-wrap: wrap;
+  }
+  .half {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .row, .thumbs {
+    display: flex;
+    gap: 7px;
+  }
+  .half.left .thumbs { justify-content: flex-end; }
+  .half.right .thumbs { justify-content: flex-start; flex-direction: row-reverse; }
+  .half.right .thumb-row { flex-direction: row; }
+  .thumb-row {
+    display: flex;
+    gap: 7px;
+  }
+  .cluster {
+    display: flex;
+    align-items: flex-end;
+    margin: 0 4px 34px 4px;
+  }
+  .thumbs {
+    margin-top: 14px;
+    align-items: flex-end;
+  }
+  .key {
+    width: 62px;
+    height: 62px;
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    border: 1px solid transparent;
+    user-select: none;
+    padding: 4px 3px 5px;
+  }
+  .key.empty {
+    background: #1c2028;
+    border: 1px solid #323846;
+  }
+  .key.trans {
+    background: #1c2028;
+    border: 1px dashed #5a6272;
+    color: #8b909c;
+  }
+  .key.cluster {
+    width: 58px;
+    height: 58px;
+  }
+  .key.used {
+    background: var(--key-color);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 14px rgba(0,0,0,0.22);
+  }
+  .key .tap {
+    font-weight: 650;
+    font-size: 0.92rem;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    white-space: pre-line;
+  }
+  .key .tap.long { font-size: 0.68rem; font-weight: 650; }
+  .key .tap.trans-mark { font-weight: 400; font-size: 0.85rem; white-space: nowrap; }
+  .key.has-hold .tap { margin-top: -2px; }
+  .key .hold {
+    margin-top: 3px;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.82);
+    line-height: 1;
+  }
+  .hold-layer-sym { color: #9ff3c8 !important; }
+  .hold-layer-num { color: #b9f0ff !important; }
+  .hold-layer-nav { color: #ffd399 !important; }
+  .hold-layer-fn { color: #ffc1c6 !important; }
+  .key .term {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #fff;
+    text-transform: none;
+    background: rgba(0,0,0,0.28);
+    border-radius: 4px;
+    padding: 0 3px;
+    line-height: 1.3;
+  }
+  .note {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  footer {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  body.single .layer { display: none; }
+  body.single .layer.is-active { display: block; }
+  @media (max-width: 760px) {
+    .board { gap: 22px; }
+    .key { width: 52px; height: 52px; border-radius: 9px; }
+    .key .tap { font-size: 0.8rem; }
+  }
+  @media print {
+    body { background: #fff; color: #111; }
+    .tabs { display: none; }
+    .layer { break-inside: avoid; border-color: #ccc; background: #fff; }
+    .key.empty { background: #f3f3f3; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>ZSA Moonlander · grokout</h1>
+      <p class="sub">
+        Revision <code>3vpmow</code>
+        · 17 Nov 2026, 20:07 CET
+        · QMK 25.0
+        · <a href="https://configure.zsa.io/moonlander/layouts/Emvlv/latest/0">Open in Oryx</a>
+      </p>
+      <div class="settings">
+        <span class="pill">Tapping term 190 ms</span><span class="pill">Per-key: D 160 ms, F 160 ms</span><span class="pill">Permissive hold</span><span class="pill">Chordal hold (thumbs excluded)</span><span class="pill">RGB timeout 15 min</span>
+      </div>
+    </header>
+    <div class="legend" aria-label="Thumb layer holds">
+      <span><strong>Tab</strong> hold <span class="swatch" style="background:#00C070"></span><strong>Sym</strong></span><span class="legend-sep">·</span><span><strong>Bksp</strong> hold <span class="swatch" style="background:#00C8FF"></span><strong>Num</strong></span><span class="legend-sep">·</span><span><strong>Esc</strong> hold <span class="swatch" style="background:#FF9000"></span><strong>Nav</strong></span><span class="legend-sep">·</span><span><strong>Del</strong> hold <span class="swatch" style="background:#00C070"></span><strong>Sym</strong></span><span class="legend-sep">·</span><span><strong>Enter</strong> hold <span class="swatch" style="background:#FF3040"></span><strong>Fn</strong></span><span class="legend-sep">·</span><span><strong>Space</strong> hold <span class="swatch" style="background:#00C070"></span><strong>Sym</strong></span>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Layers">
+      <button type="button" role="tab" data-layer="all" aria-selected="true">Show all</button>
+      <button type="button" role="tab" data-layer="0" aria-selected="false">Base</button><button type="button" role="tab" data-layer="1" aria-selected="false">Sym</button><button type="button" role="tab" data-layer="2" aria-selected="false">Num</button><button type="button" role="tab" data-layer="3" aria-selected="false">Nav</button><button type="button" role="tab" data-layer="4" aria-selected="false">Fn</button>
+    </div>
+    
+    <section class="layer" data-layer="0" data-title="Base">
+      <h2 style="color:#6100FF">Base <span class="hint">home-row mods on A S D F and J K L ;</span></h2>
+      <div class="board">
+        <div class="half left">
+          <div class="row"><div class="key used" style="--key-color:#6100FF" title="Q"><span class="tap">Q</span></div><div class="key used" style="--key-color:#6100FF" title="W"><span class="tap">W</span></div><div class="key used" style="--key-color:#6100FF" title="E"><span class="tap">E</span></div><div class="key used" style="--key-color:#6100FF" title="R"><span class="tap">R</span></div><div class="key used" style="--key-color:#6100FF" title="T"><span class="tap">T</span></div></div><div class="row"><div class="key used has-hold" style="--key-color:#6100FF" title="A · hold Win"><span class="tap">A</span><span class="hold">Win</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="S · hold Alt"><span class="tap">S</span><span class="hold">Alt</span></div><div class="key used has-hold has-term" style="--key-color:#6100FF" title="D · hold Shift · tapping term 160 ms"><span class="tap">D</span><span class="hold">Shift</span><span class="term">160</span></div><div class="key used has-hold has-term" style="--key-color:#6100FF" title="F · hold Ctrl · tapping term 160 ms"><span class="tap">F</span><span class="hold">Ctrl</span><span class="term">160</span></div><div class="key used" style="--key-color:#6100FF" title="G"><span class="tap">G</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="Z"><span class="tap">Z</span></div><div class="key used" style="--key-color:#6100FF" title="X"><span class="tap">X</span></div><div class="key used" style="--key-color:#6100FF" title="C"><span class="tap">C</span></div><div class="key used" style="--key-color:#6100FF" title="V"><span class="tap">V</span></div><div class="key used" style="--key-color:#6100FF" title="B"><span class="tap">B</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key used has-hold" style="--key-color:#6100FF" title="Tab · hold Momentary layer: Sym"><span class="tap">Tab</span><span class="hold hold-layer-sym">Sym</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Bksp · hold Momentary layer: Num"><span class="tap">Bksp</span><span class="hold hold-layer-num">Num</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Esc · hold Momentary layer: Nav"><span class="tap">Esc</span><span class="hold hold-layer-nav">Nav</span></div></div>
+            <div class="cluster"><div class="key used cluster" style="--key-color:#6100FF" title="Ctrl+Alt+Shift+Space"><span class="tap">Hyper</span></div></div>
+          </div>
+        </div>
+        <div class="half right">
+          <div class="row"><div class="key used" style="--key-color:#6100FF" title="Y"><span class="tap">Y</span></div><div class="key used" style="--key-color:#6100FF" title="U"><span class="tap">U</span></div><div class="key used" style="--key-color:#6100FF" title="I"><span class="tap">I</span></div><div class="key used" style="--key-color:#6100FF" title="O"><span class="tap">O</span></div><div class="key used" style="--key-color:#6100FF" title="P"><span class="tap">P</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="H"><span class="tap">H</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="J · hold Ctrl"><span class="tap">J</span><span class="hold">Ctrl</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="K · hold Shift"><span class="tap">K</span><span class="hold">Shift</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="L · hold Alt"><span class="tap">L</span><span class="hold">Alt</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="; · hold Win"><span class="tap">;</span><span class="hold">Win</span></div></div><div class="row"><div class="key used" style="--key-color:#6100FF" title="N"><span class="tap">N</span></div><div class="key used" style="--key-color:#6100FF" title="M"><span class="tap">M</span></div><div class="key used" style="--key-color:#6100FF" title=","><span class="tap">,</span></div><div class="key used" style="--key-color:#6100FF" title="."><span class="tap">.</span></div><div class="key used" style="--key-color:#6100FF" title="/"><span class="tap">/</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key used has-hold" style="--key-color:#6100FF" title="Del · hold Momentary layer: Sym"><span class="tap">Del</span><span class="hold hold-layer-sym">Sym</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Enter · hold Momentary layer: Fn"><span class="tap">Enter</span><span class="hold hold-layer-fn">Fn</span></div><div class="key used has-hold" style="--key-color:#6100FF" title="Space · hold Momentary layer: Sym"><span class="tap">Space</span><span class="hold hold-layer-sym">Sym</span></div></div>
+            <div class="cluster"><div class="key used cluster" style="--key-color:#6100FF" title="Ctrl+Space"><span class="tap long">Ctrl+
+Space</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="layer" data-layer="1" data-title="Sym">
+      <h2 style="color:#00C070">Sym <span class="hint">hold Tab, Del or Space</span></h2>
+      <div class="board">
+        <div class="half left">
+          <div class="row"><div class="key used" style="--key-color:#00C070" title="`"><span class="tap">`</span></div><div class="key used" style="--key-color:#00C070" title="["><span class="tap">[</span></div><div class="key used" style="--key-color:#00C070" title="]"><span class="tap">]</span></div><div class="key used" style="--key-color:#00C070" title="-"><span class="tap">-</span></div><div class="key used" style="--key-color:#00C070" title="="><span class="tap">=</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="~"><span class="tap">~</span></div><div class="key used" style="--key-color:#00C070" title="{"><span class="tap">{</span></div><div class="key used" style="--key-color:#00C070" title="}"><span class="tap">}</span></div><div class="key used" style="--key-color:#00C070" title="_"><span class="tap">_</span></div><div class="key used" style="--key-color:#00C070" title="+"><span class="tap">+</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="!"><span class="tap">!</span></div><div class="key used" style="--key-color:#00C070" title="@"><span class="tap">@</span></div><div class="key used" style="--key-color:#00C070" title="#"><span class="tap">#</span></div><div class="key used" style="--key-color:#00C070" title="$"><span class="tap">$</span></div><div class="key used" style="--key-color:#00C070" title="%"><span class="tap">%</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key used" style="--key-color:#00C070" title="."><span class="tap">.</span></div><div class="key empty" aria-hidden="true"></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+        <div class="half right">
+          <div class="row"><div class="key used" style="--key-color:#00C070" title="\"><span class="tap">\</span></div><div class="key used" style="--key-color:#00C070" title="'"><span class="tap">'</span></div><div class="key used" style="--key-color:#00C070" title=";"><span class="tap">;</span></div><div class="key used" style="--key-color:#00C070" title="&lt;"><span class="tap">&lt;</span></div><div class="key used" style="--key-color:#00C070" title="&gt;"><span class="tap">&gt;</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="|"><span class="tap">|</span></div><div class="key used" style="--key-color:#00C070" title="&quot;"><span class="tap">&quot;</span></div><div class="key used" style="--key-color:#00C070" title=":"><span class="tap">:</span></div><div class="key used" style="--key-color:#00C070" title="/"><span class="tap">/</span></div><div class="key used" style="--key-color:#00C070" title="?"><span class="tap">?</span></div></div><div class="row"><div class="key used" style="--key-color:#00C070" title="^"><span class="tap">^</span></div><div class="key used" style="--key-color:#00C070" title="&amp;"><span class="tap">&amp;</span></div><div class="key used" style="--key-color:#00C070" title="*"><span class="tap">*</span></div><div class="key used" style="--key-color:#00C070" title="("><span class="tap">(</span></div><div class="key used" style="--key-color:#00C070" title=")"><span class="tap">)</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="layer" data-layer="2" data-title="Num">
+      <h2 style="color:#00C8FF">Num <span class="hint">hold Bksp</span></h2>
+      <div class="board">
+        <div class="half left">
+          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="Win"><span class="tap">Win</span></div><div class="key used" style="--key-color:#00C8FF" title="Alt"><span class="tap">Alt</span></div><div class="key used" style="--key-color:#00C8FF" title="Shift"><span class="tap">Shift</span></div><div class="key used" style="--key-color:#00C8FF" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key trans" title="Transparent (falls through)"><span class="tap trans-mark">▽</span></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+        <div class="half right">
+          <div class="row"><div class="key used" style="--key-color:#00C8FF" title="*"><span class="tap">*</span></div><div class="key used" style="--key-color:#00C8FF" title="7"><span class="tap">7</span></div><div class="key used" style="--key-color:#00C8FF" title="8"><span class="tap">8</span></div><div class="key used" style="--key-color:#00C8FF" title="9"><span class="tap">9</span></div><div class="key used" style="--key-color:#00C8FF" title="/"><span class="tap">/</span></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="-"><span class="tap">-</span></div><div class="key used" style="--key-color:#00C8FF" title="4"><span class="tap">4</span></div><div class="key used" style="--key-color:#00C8FF" title="5"><span class="tap">5</span></div><div class="key used" style="--key-color:#00C8FF" title="6"><span class="tap">6</span></div><div class="key used" style="--key-color:#00C8FF" title="+"><span class="tap">+</span></div></div><div class="row"><div class="key used" style="--key-color:#00C8FF" title="="><span class="tap">=</span></div><div class="key used" style="--key-color:#00C8FF" title="1"><span class="tap">1</span></div><div class="key used" style="--key-color:#00C8FF" title="2"><span class="tap">2</span></div><div class="key used" style="--key-color:#00C8FF" title="3"><span class="tap">3</span></div><div class="key used" style="--key-color:#00C8FF" title="."><span class="tap">.</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key used" style="--key-color:#00C8FF" title=","><span class="tap">,</span></div><div class="key used" style="--key-color:#00C8FF" title="Enter"><span class="tap">Enter</span></div><div class="key used" style="--key-color:#00C8FF" title="0"><span class="tap">0</span></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="layer" data-layer="3" data-title="Nav">
+      <h2 style="color:#FF9000">Nav <span class="hint">hold Esc</span></h2>
+      <div class="board">
+        <div class="half left">
+          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Win"><span class="tap">Win</span></div><div class="key used" style="--key-color:#FF9000" title="Alt"><span class="tap">Alt</span></div><div class="key used" style="--key-color:#FF9000" title="Shift"><span class="tap">Shift</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl"><span class="tap">Ctrl</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+        <div class="half right">
+          <div class="row"><div class="key used" style="--key-color:#FF9000" title="Home"><span class="tap">Home</span></div><div class="key used" style="--key-color:#FF9000" title="PgDn"><span class="tap">PgDn</span></div><div class="key used" style="--key-color:#FF9000" title="PgUp"><span class="tap">PgUp</span></div><div class="key used" style="--key-color:#FF9000" title="End"><span class="tap">End</span></div><div class="key used" style="--key-color:#FF9000" title="Del"><span class="tap">Del</span></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Left"><span class="tap">Left</span></div><div class="key used" style="--key-color:#FF9000" title="Down"><span class="tap">Down</span></div><div class="key used" style="--key-color:#FF9000" title="Up"><span class="tap">Up</span></div><div class="key used" style="--key-color:#FF9000" title="Right"><span class="tap">Right</span></div><div class="key used" style="--key-color:#FF9000" title="Caps Word"><span class="tap long">Caps
+Word</span></div></div><div class="row"><div class="key used" style="--key-color:#FF9000" title="Ctrl+Z"><span class="tap">Undo</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+X"><span class="tap">Cut</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+C"><span class="tap">Copy</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+V"><span class="tap">Paste</span></div><div class="key used" style="--key-color:#FF9000" title="Ctrl+Y"><span class="tap">Redo</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key used" style="--key-color:#FF9000" title="Win+Left"><span class="tap">Win+←</span></div><div class="key used" style="--key-color:#FF9000" title="Win+Right"><span class="tap">Win+→</span></div><div class="key used" style="--key-color:#FF9000" title="Win+Shift+S"><span class="tap">Snip</span></div></div>
+            <div class="cluster"><div class="key used cluster" style="--key-color:#FF9000" title="PrtSc"><span class="tap">PrtSc</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="layer" data-layer="4" data-title="Fn">
+      <h2 style="color:#FF3040">Fn <span class="hint">hold Enter</span></h2>
+      <div class="board">
+        <div class="half left">
+          <div class="row"><div class="key used" style="--key-color:#FF3040" title="F12"><span class="tap">F12</span></div><div class="key used" style="--key-color:#FF3040" title="F7"><span class="tap">F7</span></div><div class="key used" style="--key-color:#FF3040" title="F8"><span class="tap">F8</span></div><div class="key used" style="--key-color:#FF3040" title="F9"><span class="tap">F9</span></div><div class="key used" style="--key-color:#FF3040" title="Vol+"><span class="tap">Vol+</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="F11"><span class="tap">F11</span></div><div class="key used" style="--key-color:#FF3040" title="F4"><span class="tap">F4</span></div><div class="key used" style="--key-color:#FF3040" title="F5"><span class="tap">F5</span></div><div class="key used" style="--key-color:#FF3040" title="F6"><span class="tap">F6</span></div><div class="key used" style="--key-color:#FF3040" title="Vol−"><span class="tap">Vol−</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="F10"><span class="tap">F10</span></div><div class="key used" style="--key-color:#FF3040" title="F1"><span class="tap">F1</span></div><div class="key used" style="--key-color:#FF3040" title="F2"><span class="tap">F2</span></div><div class="key used" style="--key-color:#FF3040" title="F3"><span class="tap">F3</span></div><div class="key used" style="--key-color:#FF3040" title="Mute"><span class="tap">Mute</span></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key used" style="--key-color:#FF3040" title="Prev"><span class="tap">Prev</span></div><div class="key used" style="--key-color:#FF3040" title="Play"><span class="tap">Play</span></div><div class="key used" style="--key-color:#FF3040" title="Next"><span class="tap">Next</span></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+        <div class="half right">
+          <div class="row"><div class="key empty" aria-hidden="true"></div><div class="key used" style="--key-color:#FF3040" title="Click 1"><span class="tap long">Click
+1</span></div><div class="key used" style="--key-color:#FF3040" title="Click 3"><span class="tap long">Click
+3</span></div><div class="key used" style="--key-color:#FF3040" title="Click 2"><span class="tap long">Click
+2</span></div><div class="key used" style="--key-color:#FF3040" title="Boot"><span class="tap">Boot</span></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="Ms Left"><span class="tap long">Ms
+Left</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Down"><span class="tap long">Ms
+Down</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Up"><span class="tap long">Ms
+Up</span></div><div class="key used" style="--key-color:#FF3040" title="Ms Right"><span class="tap long">Ms
+Right</span></div><div class="key empty" aria-hidden="true"></div></div><div class="row"><div class="key used" style="--key-color:#FF3040" title="Wh Left"><span class="tap long">Wh
+Left</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Down"><span class="tap long">Wh
+Down</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Up"><span class="tap long">Wh
+Up</span></div><div class="key used" style="--key-color:#FF3040" title="Wh Right"><span class="tap long">Wh
+Right</span></div><div class="key empty" aria-hidden="true"></div></div>
+          <div class="thumbs">
+            <div class="thumb-row"><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div><div class="key empty" aria-hidden="true"></div></div>
+            <div class="cluster"><div class="key empty cluster" aria-hidden="true"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <p class="note">3×5+3 layout; unused outer columns are omitted. The raised inner keys are the Moonlander cluster keys.</p>
+    <footer>Generated from the public Oryx layout <span class="mono">Emvlv</span> / revision <span class="mono">3vpmow</span>. Labels are derived from the layout JSON.</footer>
+  </div>
+<script>
+(function () {
+  const buttons = Array.from(document.querySelectorAll(".tabs button"));
+  const layers = Array.from(document.querySelectorAll(".layer"));
+  function show(id, updateHash) {
+    const valid = buttons.some((btn) => btn.dataset.layer === id) ? id : "all";
+    document.body.classList.toggle("single", valid !== "all");
+    layers.forEach((el) => el.classList.toggle("is-active", el.dataset.layer === valid));
+    buttons.forEach((btn) => btn.setAttribute("aria-selected", String(btn.dataset.layer === valid)));
+    if (updateHash) {
+      history.replaceState(null, "", valid === "all" ? location.pathname + location.search : "#" + valid);
+    }
+  }
+  buttons.forEach((btn) => btn.addEventListener("click", () => show(btn.dataset.layer, true)));
+  show((location.hash || "#all").slice(1), false);
+})();
+</script>
+</body>
+</html>

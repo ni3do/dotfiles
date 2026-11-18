@@ -129,7 +129,7 @@ These are non-obvious and have each caused a real bug:
   stow` and make stow exit non-zero.
 
 `.stow-local-ignore` lists what stow skips (git metadata, README, `setup.sh`,
-`*.zwc`, machine-specific configs). There is no `.stowrc`.
+`keyboards/`, `*.zwc`, machine-specific configs). There is no `.stowrc`.
 
 ## Directory Layout
 
@@ -152,9 +152,12 @@ These are non-obvious and have each caused a real bug:
 │   ├── extensions/      # Local TypeScript extensions (custom footer)
 │   └── themes/          # Catppuccin and Tokyo Night TUI themes
 ├── dot-zshrc            # Maps to ~/.zshrc (single-file zsh config)
+├── keyboards/moonlander/ # ZSA Moonlander layout snapshot (not stowed)
 ├── AGENTS.md            # This file (CLAUDE.md symlinks here)
 └── setup.sh             # Installation orchestrator
 ```
+
+`keyboards/` is reference material and is listed in `.stow-local-ignore`, so stow will not link it into `$HOME`.
 
 Pi runtime state — `auth.json`, `sessions/`, `.update-check` — stays in `$HOME`
 and is gitignored. Never commit it.
