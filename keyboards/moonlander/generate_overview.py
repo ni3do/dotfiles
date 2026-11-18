@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Generate a self-contained HTML overview from oryx-layout.json."""
+"""Generate a self-contained HTML overview from oryx-layout.json.
+
+The JSON is kept in sync with the QMK source in qmk/, which is the master copy
+once local edits diverge from Oryx.
+"""
 
 from __future__ import annotations
 
@@ -141,6 +145,8 @@ COMBO_LABELS = {
     frozenset({"leftGui"}): {
         "KC_LEFT": ("Win+←", "Win+Left"),
         "KC_RIGHT": ("Win+→", "Win+Right"),
+        "KC_UP": ("Win+↑", "Win+Up"),
+        "KC_DOWN": ("Win+↓", "Win+Down"),
     },
     frozenset({"leftGui", "leftShift"}): {
         "KC_S": ("Snip", "Win+Shift+S"),
@@ -576,6 +582,7 @@ HTML = """<!DOCTYPE html>
         · {created}
         · QMK {qmk_version}
         · <a href="https://configure.zsa.io/moonlander/layouts/Emvlv/latest/0">Open in Oryx</a>
+        {local_note}
       </p>
       <div class="settings">
         {settings}
@@ -590,7 +597,7 @@ HTML = """<!DOCTYPE html>
     </div>
     {layers}
     <p class="note">3×5+3 layout; unused outer columns are omitted. The raised inner keys are the Moonlander cluster keys.</p>
-    <footer>Generated from the public Oryx layout <span class="mono">Emvlv</span> / revision <span class="mono">{revision}</span>. Labels are derived from the layout JSON.</footer>
+    <footer>Generated from <span class="mono">oryx-layout.json</span> (kept in sync with the QMK source in <span class="mono">qmk/</span>, which is the master copy). Base Oryx snapshot is <span class="mono">Emvlv</span> / revision <span class="mono">{revision}</span>.</footer>
   </div>
 <script>
 (function () {{
@@ -737,6 +744,8 @@ def main() -> int:
     revision_id = revision.get("hashId") or "unknown"
     created = parse_created_at(revision.get("createdAt"))
     qmk_version = revision.get("qmkVersion") or "?"
+    local_note_text = data.get("localNote") or revision.get("localNote") or ""
+    local_note = f'<br><span>{esc(local_note_text)}</span>' if local_note_text else ""
 
     # Fix hints using the full layer list (base thumbs).
     sections = []
@@ -762,6 +771,7 @@ def main() -> int:
         revision=esc(revision_id),
         created=esc(created),
         qmk_version=esc(str(qmk_version)),
+        local_note=local_note,
         settings=settings_pills(config, layers),
         legend=legend_html(layer_names, layers),
         tab_buttons="".join(tab_buttons),

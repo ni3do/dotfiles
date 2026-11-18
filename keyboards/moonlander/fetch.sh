@@ -2,6 +2,9 @@
 # Refresh the Oryx layout snapshot (JSON + official QMK source) and regenerate
 # the HTML overview. Firmware binaries are downloaded only to a temp dir and
 # are never written into this folder.
+#
+# WARNING: qmk/ is the master copy once local edits exist. This script
+# overwrites qmk/, oryx-layout.json, and index.html with a fresh Oryx export.
 set -euo pipefail
 
 cd "$(dirname "$0")"

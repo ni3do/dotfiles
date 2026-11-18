@@ -1551,7 +1551,7 @@
               "hold": {
                 "code": "MO",
                 "color": null,
-                "layer": 1,
+                "layer": 3,
                 "macro": null,
                 "modifier": null,
                 "modifiers": null,
@@ -5116,15 +5116,28 @@
               "lockGlowColor": null
             },
             {
-              "tap": null,
+              "tap": {
+                "code": "KC_UP",
+                "color": null,
+                "layer": null,
+                "macro": null,
+                "modifier": null,
+                "modifiers": {
+                  "leftAlt": false,
+                  "leftGui": true,
+                  "leftCtrl": false,
+                  "rightAlt": false,
+                  "rightGui": false,
+                  "leftShift": false,
+                  "rightCtrl": false,
+                  "rightShift": false
+                },
+                "description": null
+              },
               "hold": null,
               "icon": null,
               "emoji": null,
-              "swapped": false,
               "tapHold": null,
-              "detached": false,
-              "pristine": true,
-              "swapping": false,
               "doubleTap": null,
               "glowColor": null,
               "customLabel": null,
@@ -5132,15 +5145,28 @@
               "lockGlowColor": null
             },
             {
-              "tap": null,
+              "tap": {
+                "code": "KC_DOWN",
+                "color": null,
+                "layer": null,
+                "macro": null,
+                "modifier": null,
+                "modifiers": {
+                  "leftAlt": false,
+                  "leftGui": true,
+                  "leftCtrl": false,
+                  "rightAlt": false,
+                  "rightGui": false,
+                  "leftShift": false,
+                  "rightCtrl": false,
+                  "rightShift": false
+                },
+                "description": null
+              },
               "hold": null,
               "icon": null,
               "emoji": null,
-              "swapped": false,
               "tapHold": null,
-              "detached": false,
-              "pristine": true,
-              "swapping": false,
               "doubleTap": null,
               "glowColor": null,
               "customLabel": null,
@@ -7286,5 +7312,7 @@
         }
       ]
     }
-  }
+  },
+  "sourceOfTruth": "qmk",
+  "localNote": "QMK source in qmk/ is the master copy as of 18 Nov 2026. These JSON edits mirror that source; Oryx revision 3vpmow is behind."
 }
