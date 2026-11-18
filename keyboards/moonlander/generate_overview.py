@@ -430,8 +430,8 @@ def lighting_card() -> str:
             "A held home-row mod lights that key and its mirror in rosewater cream. Caps Word pulses the letter keys in Mocha Yellow.",
         ),
         (
-            "Active keys",
-            "On Sym, Num, Nav and Fn only assigned keys glow in the layer colour at full brightness; unused keys stay off. Base lights the 3×5+3 at the same maximum (the board's 175 cap).",
+            "All keys",
+            "Every key lights in the active layer colour at full brightness (the board's 175 cap), including unmapped and transparent keys.",
         ),
         (
             "Status LEDs",

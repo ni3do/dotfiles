@@ -241,10 +241,6 @@ static uint16_t tap_keycode(uint16_t kc) {
     return kc;
 }
 
-static bool key_is_assigned(uint16_t kc) {
-    return kc != KC_NO && kc != KC_TRANSPARENT;
-}
-
 static bool home_row_mod_held(uint16_t base_kc, uint8_t mods8) {
     if (!IS_QK_MOD_TAP(base_kc)) {
         return false;
@@ -424,15 +420,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 continue;
             }
             keypos_t pos     = {.row = row, .col = col};
-            uint16_t kc      = keymap_key_to_keycode(layer, pos);
             uint16_t base_kc = keymap_key_to_keycode(0, pos);
 
-            uint8_t h = 0, s = 0, v = 0;
-            if (key_is_assigned(kc)) {
-                h = theme.h;
-                s = theme.s;
-                v = bg_v;
-            }
+            /* Every key, including unmapped/transparent, is the layer
+             * colour at the 175 cap. */
+            uint8_t h = theme.h, s = theme.s, v = bg_v;
             apply_ripple(led, &h, &s, &v);
 
             uint16_t tap      = tap_keycode(base_kc);
