@@ -435,7 +435,7 @@ def lighting_card() -> str:
         ),
         (
             "Status LEDs",
-            "Left: LED 1 Sym, LED 2 Num, LED 3 Nav (exactly one for the active layer). Right: LED 4 Fn, LED 5 Caps Word or Caps Lock, LED 6 any held modifier (including home-row mods and one-shots). All off on Base with nothing active.",
+            "Both halves match by colour: red = Nav (LED 1 and 4), green = Sym (LED 2 and 5), blue = Num (LED 3 and 6). All six light on Fn. All off on Base. Caps Word stays on the key LEDs only.",
         ),
     ]
     rows = []

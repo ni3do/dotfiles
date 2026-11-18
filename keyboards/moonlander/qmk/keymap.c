@@ -201,18 +201,28 @@ static void update_status_leds(void) {
         return;
     }
     uint8_t layer = active_rgb_layer();
-    uint8_t mods  = get_mods() | get_oneshot_mods() | get_oneshot_locked_mods() | get_weak_mods();
-    bool    caps  = is_caps_word_on() || host_keyboard_led_state().caps_lock;
-    /* Left: exactly one of LED1–3 for Sym/Num/Nav. Right: LED4 Fn,
-     * LED5 Caps Word/Caps Lock, LED6 any held modifier. Base + idle = all off. */
-    /* STATUS_LED_* casts the argument to bool without parentheses, so
-     * pass named bools — (bool)layer == 2 would always be false. */
-    bool led1 = (layer == 1);
-    bool led2 = (layer == 2);
-    bool led3 = (layer == 3);
-    bool led4 = (layer == 4);
-    bool led5 = caps;
-    bool led6 = (mods != 0);
+    /* Physical colours, from ZSA source:
+     * Right half nets in zsa/qmk_firmware firmware20
+     * keyboards/moonlander/config.h ("PCB default pin-out"):
+     *   MCP23_LED_R GPB7, MCP23_LED_G GPB6, MCP23_LED_B GPA7.
+     * matrix.c writes those bits from mcp23018_leds[0..2], which
+     * moonlander.h aliases as STATUS_LED_4/5/6, so:
+     *   LED 4 = red, LED 5 = green, LED 6 = blue.
+     * Left half (moonlander.h): LED 1/2/3 = B5/B4/B3. Stock
+     * layer_state_set_kb in moonlander.c pairs 1↔4, 2↔5, 3↔6
+     * so both hands show the same colour for layers 1–3.
+     *   LED 1 = red, LED 2 = green, LED 3 = blue.
+     * STATUS_LED_* casts the argument to bool without parentheses,
+     * so pass named bools. */
+    bool red   = (layer == 3) || (layer == 4); /* Nav, or all on Fn */
+    bool green = (layer == 1) || (layer == 4); /* Sym, or all on Fn */
+    bool blue  = (layer == 2) || (layer == 4); /* Num, or all on Fn */
+    bool led1 = red;
+    bool led2 = green;
+    bool led3 = blue;
+    bool led4 = red;
+    bool led5 = green;
+    bool led6 = blue;
     STATUS_LED_1(led1);
     STATUS_LED_2(led2);
     STATUS_LED_3(led3);
