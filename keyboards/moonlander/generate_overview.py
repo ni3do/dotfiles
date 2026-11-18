@@ -22,12 +22,12 @@ OUT_PATH = HERE / "index.html"
 
 CET = timezone(timedelta(hours=1), name="CET")
 
-# Flip `flashed` to a short date after the board is updated, e.g. "18 Nov".
+# Flip `flashed` to a datetime after the board is updated, e.g. "18 Nov 2026, 10:52 CET".
 # Leave it as None to show "flash pending". Can also be overridden by a
 # top-level "firmware" object in oryx-layout.json.
 FIRMWARE = {
     "built": "18 Nov",
-    "flashed": None,
+    "flashed": "18 Nov 2026, 10:52 CET",
 }
 
 LAYER_COLORS = {
@@ -374,7 +374,7 @@ def firmware_line(fw: dict) -> tuple[str, bool]:
     built = fw.get("built") or "unknown"
     flashed = fw.get("flashed")
     if flashed:
-        return f"Firmware built {built} · flashed {flashed}", False
+        return f"Flashed {flashed}", False
     return f"Firmware built {built} · flash pending", True
 
 
